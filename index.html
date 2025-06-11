@@ -1,68 +1,82 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>U.S. Corbiolo C5 - Home</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - U.S. Corbiolo</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <header>
-  <div class="logo-title">
-    <img src="img/C5CORB.png" class="small-logo" alt="Logo" />
-  </div>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-  <div id="popupMenu" class="popup-menu">
+  <header>
+    <img src="logo.png" alt="Logo" class="header-logo">
+    <h1>Home</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+  </header>
+
+  <div id="menu" class="popup-menu">
     <a href="index.html">🏠 Home</a>
     <a href="news.html">📰 News</a>
     <a href="squadra.html">👥 Squadra</a>
-    <a href="sponsor.html">💰 Sponsor</a>
     <a href="partite.html">📅 Partite</a>
+    <a href="sponsor.html">💰 Sponsor</a>
   </div>
-</header>
 
-
-  <main class="container">
-    <div class="grid">
-      <div class="tile">📰<p>News</p></div>
-      <div class="tile">👥<p>Squadra</p></div>
-      <div class="tile">💰<p>Sponsor</p></div>
-      <div class="tile">📅<p>Prossima Partita</p></div>
+  <main>
+    <!-- Sezione 1: Widget top -->
+    <div class="top-grid">
+      <a href="news.html" class="widget-box">📰<br>News<span class="badge">1</span></a>
+      <a href="squadra.html" class="widget-box">👥<br>Squadra</a>
+      <a href="sponsor.html" class="widget-box">💰<br>Sponsor</a>
     </div>
 
-    <div class="match-result">
-      <img src="img/C5CORB.png" class="small-logo" alt="Logo">
-      <strong>2 - 1</strong>
-      <img src="img/opponent.png" class="small-logo" alt="Logo avversario">
-      <div class="meta">29 apr. | Stadio Comun.</div>
-    </div>
-
-    <div class="section">
-      <h2>Prossima Partita</h2>
-      <p>📅 29 apr 2024, 18:30 · Stadio Comunale</p>
-    </div>
-
-    <div class="section news-highlight">
-      <h2>Ultima Notizia</h2>
-      <div class="news-content">
-        <div style="display: flex; align-items: center;">
-          <img src="img/C5CORB.png" class="small-logo" alt="Logo">
-          <p><strong>U.S. Corbiolo 2 - 1</strong><br><span class="mvp">MVP Luca Neri</span></p>
-        </div>
-        <p>Buona prestazione della squadra nella vittoria casalinga contro Olimpia Verona</p>
+    <!-- Sezione 2: Prossima Partita + Risultato -->
+    <div class="next-match-grid">
+      <a href="partite.html" class="widget-box">📅<br>Prossima<br>Partita<span class="badge">1</span></a>
+      <div class="match-result-box">
+        <img src="logo.png" alt="Logo" class="team-logo">
+        <span class="score">2 - 1</span>
+        <img src="opponent.png" alt="Avversario" class="team-logo">
+        <div class="match-date">29 apr. | Stadio Comun.</div>
       </div>
     </div>
 
+    <!-- Sezione 3: Prossima Partita -->
+    <div class="card">
+      <strong>Prossima Partita</strong><br>
+      📅 29 apr 2024, 18:30 · Stadio Comunale
+    </div>
+
+    <!-- Sezione 4: Ultima Notizia -->
+    <div class="card news-card">
+      <strong>Ultima Notizia</strong>
+      <div class="news-content">
+        <img src="logo.png" alt="logo" class="news-logo">
+        <div>
+          <strong>U.S. Corbiolo<br>2 - 1</strong><br>
+          <span class="mvp">MVP Luca Neri</span>
+        </div>
+        <div>
+          Buona prestazione della squadra nella vittoria casalinga contro Olimpia Verona
+        </div>
+      </div>
+    </div>
+
+    <!-- Sezione 5: Sponsor Carousel -->
     <div class="sponsor-section">
-      <h2>Sponsor</h2>
-      <div class="sponsor-logos">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
+      <strong>Sponsori</strong>
+      <div class="sponsor-carousel">
+        <img src="sponsor1.png" alt="Sponsor 1">
+        <img src="sponsor2.png" alt="Sponsor 2">
+        <img src="sponsor3.png" alt="Sponsor 3">
       </div>
     </div>
   </main>
 
-  <script src="js/script.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('visible');
+    }
+  </script>
 </body>
 </html>
