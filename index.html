@@ -1,84 +1,106 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - U.S. Corbiolo</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home - U.S. Corbiolo C5</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header>
-    <img src="img/logo.png" alt="Logo" class="header-logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1>Home</h1>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="popup-menu" id="popupMenu">
+      <a href="index.html">🏠 Home</a>
+      <a href="news.html">🗞️ News</a>
+      <a href="squadra.html">👥 Squadra</a>
+      <a href="partite.html">📅 Partite</a>
+      <a href="sponsor.html">💰 Sponsor</a>
+    </div>
   </header>
 
-  <div id="menu" class="popup-menu">
-    <a href="index.html">🏠 Home</a>
-    <a href="news.html">📰 News</a>
-    <a href="squadra.html">👥 Squadra</a>
-    <a href="partite.html">📅 Partite</a>
-    <a href="sponsor.html">💰 Sponsor</a>
-  </div>
-
   <main>
-    <!-- Sezione 1: Widget top -->
-    <div class="top-grid">
-      <a href="news.html" class="widget-box">📰<br>News<span class="badge">1</span></a>
-      <a href="squadra.html" class="widget-box">👥<br>Squadra</a>
-      <a href="sponsor.html" class="widget-box">💰<br>Sponsor</a>
+    <!-- Prima riga con 3 box -->
+    <div class="grid">
+      <div class="card">
+        <a href="news.html">
+          <span class="icon">🗞️</span>
+          <div class="card-text">News</div>
+        </a>
+      </div>
+      <div class="card">
+        <a href="squadra.html">
+          <span class="icon">👥</span>
+          <div class="card-text">Squadra</div>
+        </a>
+      </div>
+      <div class="card">
+        <a href="sponsor.html">
+          <span class="icon">💰</span>
+          <div class="card-text">Sponsor</div>
+        </a>
+      </div>
     </div>
 
-    <!-- Sezione 2: Prossima Partita + Risultato -->
-    <div class="next-match-grid">
-      <a href="partite.html" class="widget-box">📅<br>Prossima<br>Partita<span class="badge">1</span></a>
-      <div class="match-result-box">
-        <img src="img/logo.png" alt="Logo" class="team-logo">
-        <span class="score">2 - 1</span>
-        <img src="img/opponent.png" alt="Avversario" class="team-logo">
+    <!-- Seconda riga: Prossima Partita + Risultato -->
+    <div class="grid">
+      <div class="card">
+        <a href="partite.html">
+          <span class="icon">📅</span>
+          <div class="card-text">Prossima<br />Partita</div>
+        </a>
+      </div>
+      <div class="card result-box">
+        <div class="match-result">
+          <img src="img/logo.png" alt="Corbiolo" class="team-logo" />
+          <strong>2 - 1</strong>
+          <img src="img/sponsor3.png" alt="Avversario" class="team-logo" />
+        </div>
         <div class="match-date">29 apr. | Stadio Comun.</div>
       </div>
     </div>
 
-    <!-- Sezione 3: Prossima Partita -->
-    <div class="card">
-      <strong>Prossima Partita</strong><br>
-      📅 29 apr 2024, 18:30 · Stadio Comunale
+    <!-- Dettagli Prossima Partita -->
+    <div class="box">
+      <h2>📅 Prossima Partita</h2>
+      <p>29 apr 2024, 18:30 · Stadio Comunale</p>
     </div>
 
-    <!-- Sezione 4: Ultima Notizia -->
-    <div class="card news-card">
-      <strong>Ultima Notizia</strong>
-      <div class="news-content">
-        <img src="img/logo.png" alt="logo" class="news-logo">
+    <!-- Ultima Notizia -->
+    <div class="box">
+      <h2>📰 Ultima Notizia</h2>
+      <div class="news-row">
+        <img src="img/logo.png" alt="logo" class="team-logo" />
         <div>
-          <strong>U.S. Corbiolo<br>2 - 1</strong><br>
-          <span class="mvp">MVP Luca Neri</span>
-        </div>
-        <div>
-          Buona prestazione della squadra nella vittoria casalinga contro Olimpia Verona
+          <strong>U.S. Corbiolo<br />2 - 1</strong><br />
+          MVP Luca Neri
         </div>
       </div>
+      <p>
+        Buona prestazione della squadra nella vittoria casalinga contro
+        Olimpia Verona.
+      </p>
     </div>
 
-    <!-- Sezione 5: Sponsor Carousel -->
+    <!-- Carosello Sponsor -->
     <h2 class="sponsor-title">Sponsor</h2>
-<div class="sponsor-carousel-container">
-  <div class="sponsor-carousel-track">
-    <img src="img/sponsor1.png" alt="Sponsor 1">
-    <img src="img/sponsor2.png" alt="Sponsor 2">
-    <img src="img/sponsor3.png" alt="Sponsor 3">
-    <!-- Duplicati per scorrimento continuo -->
-    <img src="img/sponsor1.png" alt="Sponsor 1">
-    <img src="img/sponsor2.png" alt="Sponsor 2">
-    <img src="img/sponsor3.png" alt="Sponsor 3">
-  </div>
-</div>
+    <div class="carousel">
+      <div class="carousel-track">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
+      </div>
+    </div>
+  </main>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('menu');
-      menu.classList.toggle('visible');
+      const menu = document.getElementById("popupMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
 </body>
