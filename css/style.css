@@ -150,21 +150,39 @@ main {
   margin-top: 24px;
   color: white;
 }
-
-.sponsor-carousel {
-  display: flex;
-  gap: 24px;
-  animation: scrollSponsors 12s linear infinite;
-  margin-top: 12px;
-  overflow: hidden;
+.sponsor-title {
+  color: #fff3e6;
+  font-size: 20px;
+  margin: 20px 0 10px 16px;
 }
 
-.sponsor-carousel img {
+.sponsor-carousel-container {
+  overflow: hidden;
+  width: 100%;
+  background-color: transparent;
+  padding: 10px 0;
+}
+
+.sponsor-carousel-track {
+  display: flex;
+  width: fit-content;
+  animation: scroll-sponsors 20s linear infinite;
+  gap: 32px;
+  align-items: center;
+  padding-left: 100%;
+}
+
+.sponsor-carousel-track img {
   height: 50px;
   width: auto;
+  object-fit: contain;
 }
 
-@keyframes scrollSponsors {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+@keyframes scroll-sponsors {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
