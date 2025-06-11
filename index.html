@@ -1,44 +1,71 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Squadra Calcetto</title>
+  <title>U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">🏆</div>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <div id="popup-menu" class="popup-menu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html">🗞️ News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-      <a href="partite.html">⚽ Partite</a>
-    </div>
+  <header class="topbar">
+    <img src="logo.png" alt="Logo Corbiolo" class="logo">
+    <div class="menu-icon">☰</div>
   </header>
 
-  <main>
-    <h1>Benvenuto!</h1>
+  <main class="container">
+    <h1>Home</h1>
+
     <div class="grid">
-      <a class="widget" href="news.html">🗞️<br>News</a>
-      <a class="widget" href="squadra.html">👥<br>Squadra</a>
-      <a class="widget" href="sponsor.html">💰<br>Sponsor</a>
-      <a class="widget" href="partite.html">📅<br>Prossima Partita</a>
+      <a href="news.html" class="tile">
+        <span>📰</span>
+        <p>News</p>
+        <div class="badge">1</div>
+      </a>
+      <a href="squadra.html" class="tile">
+        <span>👥</span>
+        <p>Squadra</p>
+      </a>
+      <a href="sponsor.html" class="tile">
+        <span>💰</span>
+        <p>Sponsor</p>
+      </a>
+      <a href="partite.html" class="tile">
+        <span>📅</span>
+        <p>Prossima Partita</p>
+        <div class="badge">1</div>
+      </a>
     </div>
 
-    <div class="carousel-title">Sponsor</div>
-    <div class="carousel">
-      <div class="carousel-track">
-        <span>🪵 WOODLAND</span>
-        <span>🌿 SPODOR</span>
-        <span>💡 CREATIVE</span>
+    <div class="match-result">
+      <img src="logo.png" class="small-logo"> <strong>2 - 1</strong>
+      <img src="opponent.png" class="small-logo">
+      <div class="meta">29 apr. | Stadio Comun.</div>
+    </div>
+
+    <div class="section">
+      <h2>Prossima Partita</h2>
+      <p>📅 29 apr 2024, 18:30 · Stadio Comunale</p>
+    </div>
+
+    <div class="section news-highlight">
+      <h2>Ultima Notizia</h2>
+      <div class="news-content">
+        <div>
+          <img src="logo.png" class="small-logo">
+          <p><strong>U.S. Corbiolo 2 - 1</strong><br><span class="mvp">MVP Luca Neri</span></p>
+        </div>
+        <p>Buona prestazione della squadra nella vittoria casalinga contro Olimpia Verona</p>
+      </div>
+    </div>
+
+    <div class="sponsor-section">
+      <h2>Sponsori</h2>
+      <div class="sponsor-logos">
+        <img src="sponsor1.png" alt="Sponsor 1">
+        <img src="sponsor2.png" alt="Sponsor 2">
+        <img src="sponsor3.png" alt="Sponsor 3">
       </div>
     </div>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
