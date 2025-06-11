@@ -1,71 +1,69 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>App Calcetto - Home</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <img src="logo.png" alt="Logo Corbiolo" class="logo">
-    <div class="menu-icon">☰</div>
+
+  <!-- Header con logo e menu -->
+  <header>
+    <img src="img/logo.png" alt="Logo Squadra" class="logo" />
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
   </header>
 
-  <main class="container">
-    <h1>Home</h1>
+  <!-- Menu popup -->
+  <div class="popup-menu" id="popupMenu" style="display: none;">
+    <a href="index.html">Home</a>
+    <a href="news.html">News</a>
+    <a href="squadra.html">Squadra</a>
+    <a href="partite.html">Partite</a>
+    <a href="sponsor.html">Sponsor</a>
+  </div>
 
-    <div class="grid">
-      <a href="news.html" class="tile">
-        <span>📰</span>
-        <p>News</p>
-        <div class="badge">1</div>
-      </a>
-      <a href="squadra.html" class="tile">
-        <span>👥</span>
-        <p>Squadra</p>
-      </a>
-      <a href="sponsor.html" class="tile">
-        <span>💰</span>
-        <p>Sponsor</p>
-      </a>
-      <a href="partite.html" class="tile">
-        <span>📅</span>
-        <p>Prossima Partita</p>
-        <div class="badge">1</div>
-      </a>
-    </div>
+  <!-- Titolo -->
+  <h1>Benvenuto</h1>
 
-    <div class="match-result">
-      <img src="logo.png" class="small-logo"> <strong>2 - 1</strong>
-      <img src="opponent.png" class="small-logo">
-      <div class="meta">29 apr. | Stadio Comun.</div>
+  <!-- Sezione con i blocchi -->
+  <div class="grid">
+    <div class="card" onclick="location.href='news.html'">
+      📰
+      <div>News</div>
     </div>
+    <div class="card" onclick="location.href='partite.html'">
+      🏟️
+      <div>Partite</div>
+    </div>
+    <div class="card" onclick="location.href='squadra.html'">
+      👥
+      <div>Squadra</div>
+    </div>
+    <div class="card" onclick="location.href='sponsor.html'">
+      💼
+      <div>Sponsor</div>
+    </div>
+    <div class="card" onclick="location.href='classifica.html'">
+      📊
+      <div>Classifica</div>
+    </div>
+    <div class="card" onclick="location.href='contatti.html'">
+      📞
+      <div>Contatti</div>
+    </div>
+  </div>
 
-    <div class="section">
-      <h2>Prossima Partita</h2>
-      <p>📅 29 apr 2024, 18:30 · Stadio Comunale</p>
+  <!-- Sponsor carousel -->
+  <div class="sponsor-section">
+    <div class="sponsor-title">Sponsor ufficiali</div>
+    <div class="sponsors">
+      <img src="img/sponsor1.png" alt="Sponsor 1" />
+      <img src="img/sponsor2.png" alt="Sponsor 2" />
+      <img src="img/sponsor3.png" alt="Sponsor 3" />
     </div>
+  </div>
 
-    <div class="section news-highlight">
-      <h2>Ultima Notizia</h2>
-      <div class="news-content">
-        <div>
-          <img src="logo.png" class="small-logo">
-          <p><strong>U.S. Corbiolo 2 - 1</strong><br><span class="mvp">MVP Luca Neri</span></p>
-        </div>
-        <p>Buona prestazione della squadra nella vittoria casalinga contro Olimpia Verona</p>
-      </div>
-    </div>
-
-    <div class="sponsor-section">
-      <h2>Sponsori</h2>
-      <div class="sponsor-logos">
-        <img src="sponsor1.png" alt="Sponsor 1">
-        <img src="sponsor2.png" alt="Sponsor 2">
-        <img src="sponsor3.png" alt="Sponsor 3">
-      </div>
-    </div>
-  </main>
+  <script src="js/main.js"></script>
 </body>
 </html>
