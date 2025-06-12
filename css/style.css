@@ -167,23 +167,6 @@ body {
   100% { transform: translateX(-50%); }
 }
 
-/* Responsive */
-@media (max-width: 200px) {
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-custom {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    min-height: 80px;
-  }
 
   .result-score {
     font-size: 20px;
