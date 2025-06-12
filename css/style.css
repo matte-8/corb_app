@@ -1,17 +1,18 @@
+/* Base */
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background-color: #330d0d;
   color: #fff3e6;
 }
 
+/* Header */
 .header {
   background-color: #660000;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
 }
 
 .logo {
@@ -23,6 +24,7 @@ body {
   font-weight: bold;
   flex: 1;
   text-align: center;
+  color: white;
 }
 
 .menu-icon {
@@ -31,6 +33,7 @@ body {
   color: white;
 }
 
+/* Popup Menu */
 .popup-menu {
   position: absolute;
   top: 60px;
@@ -49,110 +52,144 @@ body {
   color: #fff3e6;
   border-bottom: 1px solid #552222;
 }
+
 .popup-menu a:hover {
   background-color: #551111;
 }
 
-/* Margin below header */
-main, .content {
-  padding: 12px 16px;
+/* Container per ogni riga */
+.box-row {
+  margin: 16px;
 }
 
-/* Grid responsive */
-.grid {
+/* Griglia 3 colonne responsiva */
+.grid-3 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 12px;
-  margin-bottom: 16px;
 }
 
-.box {
-  background-color: #801818;
+/* Griglia 2 colonne responsiva */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+/* Card box */
+.card {
+  background: #801e1e;
   padding: 16px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.box .emoji {
-  font-size: 32px;
+.card-icon {
+  font-size: 36px;
   margin-bottom: 8px;
 }
 
-.box-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff3e6;
-}
-
-/* Info section (Prossima Partita, Ultima Notizia) */
+/* Section box (per info o testo) */
 .section {
   background-color: #991f1f;
   border-radius: 12px;
-  padding: 14px 16px;
-  margin-bottom: 16px;
+  padding: 16px;
   font-size: 15px;
+  line-height: 1.4;
 }
 
-.section strong {
-  font-size: 16px;
-  display: block;
-  margin-bottom: 6px;
-}
-
-/* Title with icon */
 .section-title-icon {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
 }
 
-/* Match result section */
+/* Risultato partita */
 .result-box {
   background-color: #801818;
   border-radius: 12px;
   padding: 14px;
-  margin-bottom: 16px;
+  text-align: center;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
 }
 
-.result-box img {
+.team-logo {
   height: 40px;
   width: auto;
+  margin: 4px;
 }
 
-/* Sponsor carousel */
-.sponsor-section {
-  overflow-x: auto;
-  white-space: nowrap;
-  padding-bottom: 8px;
-  margin-top: 16px;
+.result-score {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 8px 0;
 }
 
-.sponsor-section img {
-  height: 50px;
-  margin-right: 16px;
-  border-radius: 6px;
+.mvp {
+  font-size: 13px;
+  color: #ffeedd;
 }
 
-/* Responsive fix */
+/* Titolo sponsor */
+.sponsor-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* Carosello Sponsor */
+.carousel-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-content {
+  display: flex;
+  animation: scroll 15s linear infinite;
+}
+
+.carousel-content img {
+  width: 80px;
+  height: auto;
+  margin-right: 24px;
+  object-fit: contain;
+}
+
+/* Scroll Animation */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Mobile optimization */
 @media (max-width: 400px) {
-  .popup-menu {
-    width: 160px;
-    right: 10px;
+  .logo {
+    height: 32px;
   }
 
   .page-title {
     font-size: 18px;
   }
 
-  .box-title {
-    font-size: 14px;
+  .card-icon {
+    font-size: 30px;
   }
 
-  .logo {
-    height: 32px;
+  .result-score {
+    font-size: 20px;
   }
 }
