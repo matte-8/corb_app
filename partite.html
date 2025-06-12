@@ -1,40 +1,56 @@
-
+<!-- Pagina Partite -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Partite</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partite - U.S. Corbiolo C5</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="logo-title">
-      <img src="img/logo_migliorato.png" alt="Logo"/>
-      <span>Partite</span>
-    </div>
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html">📰 News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-    </div>
+  <header class="header">
+    <img src="img/logo.png" alt="Logo" class="logo">
+    <h1 class="page-title">Partite</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
-  <div class="container">
-    
-<div class="card">
-  <h2>Prossime Partite</h2>
-  <ul>
-    <li>15 Giugno - vs Leoni FC</li>
-    <li>22 Giugno - vs Tigrotti</li>
-    <li>29 Giugno - vs Aquile</li>
-    <li>6 Luglio - vs Pantere</li>
-  </ul>
-</div>
 
+  <div class="popup-menu" id="popupMenu">
+    <a href="index.html">Home</a>
+    <a href="news.html">News</a>
+    <a href="squadra.html">Squadra</a>
+    <a href="sponsor.html">Sponsor</a>
+    <a href="partite.html">Partite</a>
   </div>
-  <script src="js/script.js"></script>
+
+  <div class="box-row">
+    <div class="section-title-icon">📅 Prossime Partite</div>
+    <div class="section">
+      <p>15 giu 2024, 18:00 · Campo Sportivo Comunale</p>
+      <p>Avversario: Leoni FC</p>
+    </div>
+    <div class="section">
+      <p>22 giu 2024, 18:00 · Stadio Esterno</p>
+      <p>Avversario: Tigrotti Club</p>
+    </div>
+  </div>
+
+  <div class="box-row">
+    <div class="section-title-icon">🕹️ Ultima Partita</div>
+    <div class="section result-box">
+      <div class="result-row">
+        <img src="img/logo.png" alt="Corbiolo" class="team-logo">
+        <div class="result-score">3 - 2</div>
+        <img src="img/sponsor1.png" alt="Tigrotti" class="team-logo">
+      </div>
+      <div class="mvp">MVP: Giovanni Verdi</div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('popupMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>
