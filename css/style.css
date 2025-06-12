@@ -1,192 +1,178 @@
-/* Base */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #330d0d;
-  color: #fff3e6;
+  font-family: 'Arial', sans-serif;
+  background-color: #2d0b0b;
+  color: white;
 }
 
 /* Header */
 .header {
   background-color: #660000;
-  padding: 12px 16px;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 10px 16px;
 }
 
 .logo {
-  height: 36px;
+  height: 40px;
 }
 
 .page-title {
   font-size: 20px;
   font-weight: bold;
-  flex: 1;
-  text-align: center;
-  color: white;
 }
 
 .menu-icon {
   font-size: 24px;
   cursor: pointer;
-  color: white;
 }
 
-/* Popup Menu */
+/* Menu popup */
 .popup-menu {
-  position: absolute;
-  top: 60px;
-  right: 16px;
-  background-color: #330d0d;
-  border: 1px solid #aa4444;
-  border-radius: 8px;
   display: none;
   flex-direction: column;
-  z-index: 1000;
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background-color: #660000;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 999;
 }
 
 .popup-menu a {
-  padding: 10px 16px;
+  color: white;
   text-decoration: none;
-  color: #fff3e6;
-  border-bottom: 1px solid #552222;
+  padding: 8px 0;
+  font-size: 16px;
 }
 
-.popup-menu a:hover {
-  background-color: #551111;
-}
-
-/* Container per ogni riga */
+/* Griglia principale */
 .box-row {
-  margin: 16px;
+  padding: 12px 16px;
 }
 
-/* Griglia 3 colonne responsiva */
 .grid-3 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
-/* Griglia 2 colonne responsiva */
 .grid-2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-/* Card box */
+/* Box generici */
 .card {
   background: #801e1e;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 10px;
   text-align: center;
-  font-size: 16px;
   text-decoration: none;
   color: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 90px;
 }
 
 .card-icon {
-  font-size: 36px;
-  margin-bottom: 8px;
+  font-size: 26px;
+  margin-bottom: 6px;
 }
 
-/* Section box (per info o testo) */
 .section {
-  background-color: #991f1f;
-  border-radius: 12px;
-  padding: 16px;
-  font-size: 15px;
-  line-height: 1.4;
+  background-color: #a32020;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
 }
 
 .section-title-icon {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
+  margin-bottom: 6px;
 }
 
-/* Risultato partita */
+/* Risultati */
 .result-box {
   background-color: #801818;
   border-radius: 12px;
-  padding: 14px;
+  padding: 12px;
   text-align: center;
+}
+
+.result-row {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
 .team-logo {
-  height: 40px;
+  height: 36px;
   width: auto;
-  margin: 4px;
 }
 
 .result-score {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
-  margin: 8px 0;
 }
 
 .mvp {
-  font-size: 13px;
+  margin-top: 6px;
+  font-size: 14px;
   color: #ffeedd;
 }
 
-/* Titolo sponsor */
+/* Sponsor carosello */
 .sponsor-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-/* Carosello Sponsor */
 .carousel-wrapper {
-  overflow: hidden;
-  width: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .carousel-content {
   display: flex;
-  animation: scroll 15s linear infinite;
+  animation: scroll 12s linear infinite;
+  gap: 24px;
 }
 
 .carousel-content img {
-  width: 80px;
-  height: auto;
-  margin-right: 24px;
-  object-fit: contain;
+  height: 40px;
+  width: auto;
 }
 
-/* Scroll Animation */
 @keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-/* Mobile optimization */
-@media (max-width: 400px) {
-  .logo {
-    height: 32px;
+/* Responsive fix */
+@media (max-width: 500px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .page-title {
-    font-size: 18px;
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .card-icon {
-    font-size: 30px;
+  .card {
+    min-height: 80px;
   }
 
   .result-score {
