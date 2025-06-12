@@ -2,78 +2,46 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home - U.S. Corbiolo C5</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>News - U.S. Corbiolo</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header>
+  <header class="header">
     <img src="img/logo.png" alt="Logo" class="logo" />
-    <h1>Home</h1>
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html">🗞️ News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-    </div>
+    <h1 class="page-title">News</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
 
-  <!-- Sezione 1: News, Squadra, Sponsor -->
-  <div class="grid-3">
-    <a href="news.html" class="card">
-      <div class="card-icon">🗞️</div>
-      News
-    </a>
-    <a href="squadra.html" class="card">
-      <div class="card-icon">👥</div>
-      Squadra
-    </a>
-    <a href="sponsor.html" class="card">
-      <div class="card-icon">💰</div>
-      Sponsor
-    </a>
+  <div class="popup-menu" id="popupMenu">
+    <a href="index.html">Home</a>
+    <a href="news.html">News</a>
+    <a href="squadra.html">Squadra</a>
+    <a href="sponsor.html">Sponsor</a>
+    <a href="partite.html">Partite</a>
   </div>
 
-  <!-- Sezione 2: Prossima Partita + Risultato -->
-  <div class="grid-2">
+  <div class="box-row">
+    <div class="section-title-icon">📰 Ultime Notizie</div>
+
     <div class="section">
-      <div class="section-title">📅 Prossima Partita</div>
-      <p>29 apr 2024, 18:30 · Stadio Comunale</p>
+      <strong>⚽ Vittoria in casa</strong><br />
+      La squadra ha battuto Olimpia Verona 2-1 grazie a un grande secondo tempo.
     </div>
-    <div class="result-box">
-      <img src="img/logo.png" alt="Corbiolo" class="team-logo" />
-      <div class="result-score">2 - 1</div>
-      <img src="img/sponsor1.png" alt="Avversario" class="team-logo" />
-    </div>
-  </div>
 
-  <!-- Sezione 3: Ultima Notizia -->
-  <div class="grid">
     <div class="section">
-      <div class="section-title">🗞️ Ultima Notizia</div>
-      <div class="news-row">
-        <img src="img/logo.png" alt="logo" class="team-logo" />
-        <div>
-          <strong>U.S. Corbiolo</strong><br />
-          Vittoria 2 - 1<br />
-          MVP Luca Neri<br />
-          Ottima prestazione in casa contro Olimpia Verona.
-        </div>
-      </div>
+      <strong>🧠 Allenamenti intensificati</strong><br />
+      Sessioni speciali per migliorare tecnica e tattica in vista della prossima gara.
     </div>
-  </div>
 
-  <!-- Sezione 4: Sponsor Carousel -->
-  <div class="sponsor-title">Sponsor</div>
-  <div class="carousel-wrapper">
-    <div class="carousel-content">
-      <img src="img/sponsor1.png" alt="Sponsor 1" />
-      <img src="img/sponsor2.png" alt="Sponsor 2" />
-      <img src="img/sponsor3.png" alt="Sponsor 3" />
-      <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
-      <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
+    <div class="section">
+      <strong>🤝 Nuovo sponsor: Creative</strong><br />
+      L’azienda “Creative” entra a far parte dei nostri partner ufficiali.
+    </div>
+
+    <div class="section">
+      <strong>📣 Convocazioni annunciate</strong><br />
+      Ecco la lista dei convocati per la partita contro Leoni FC.
     </div>
   </div>
 
