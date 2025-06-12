@@ -168,7 +168,7 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 500px) {
+@media (max-width: 200px) {
   .grid-3 {
     grid-template-columns: 1fr;
   }
