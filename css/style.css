@@ -61,10 +61,28 @@ h1 {
   border-bottom: none;
 }
 
-/* Responsive grid */
+/* Griglia base (singola colonna automatica) */
 .grid {
   display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+
+/* Griglia con due colonne responsiva */
+.grid-2 {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+
+/* Griglia con tre colonne responsiva */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 16px;
   padding: 0 16px;
   margin-bottom: 20px;
