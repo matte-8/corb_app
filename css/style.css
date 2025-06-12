@@ -172,3 +172,10 @@ body {
     font-size: 20px;
   }
 }
+
+@media (max-width: 80px) {
+  .grid-custom {
+    grid-template-columns: 1fr;
+  }
+}
+
