@@ -1,177 +1,158 @@
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #2e0e0b;
-  color: #fff5e6;
+  background-color: #330d0d;
+  color: #fff3e6;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.header {
   background-color: #660000;
-  padding: 10px 16px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
 .logo {
-  height: 40px;
+  height: 36px;
 }
 
-h1 {
-  text-align: center;
-  font-size: 24px;
-  margin: 12px 0;
-  color: #fff1e6;
+.page-title {
+  font-size: 20px;
+  font-weight: bold;
   flex: 1;
+  text-align: center;
 }
 
-.menu-btn {
-  font-size: 28px;
+.menu-icon {
+  font-size: 24px;
   cursor: pointer;
-  color: #fff5eb;
+  color: white;
 }
 
 .popup-menu {
   position: absolute;
   top: 60px;
   right: 16px;
-  background-color: #3d0e0a;
+  background-color: #330d0d;
+  border: 1px solid #aa4444;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
   display: none;
   flex-direction: column;
   z-index: 1000;
 }
 
 .popup-menu a {
-  padding: 12px 16px;
+  padding: 10px 16px;
   text-decoration: none;
-  color: white;
+  color: #fff3e6;
   border-bottom: 1px solid #552222;
 }
-
-.popup-menu a:last-child {
-  border-bottom: none;
+.popup-menu a:hover {
+  background-color: #551111;
 }
 
-/* Griglie */
+/* Margin below header */
+main, .content {
+  padding: 12px 16px;
+}
+
+/* Grid responsive */
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  padding: 0 16px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
-  padding: 0 16px;
-  margin-bottom: 20px;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 16px;
-  padding: 0 16px;
-  margin-bottom: 20px;
-}
-
-/* Card widget */
-.card {
-  background-color: #771c14;
-  padding: 20px 10px;
+.box {
+  background-color: #801818;
+  padding: 16px;
   border-radius: 12px;
   text-align: center;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: background 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.card:hover {
-  background-color: #922d21;
-}
-
-.card-icon {
+.box .emoji {
   font-size: 32px;
   margin-bottom: 8px;
 }
 
-/* Sezioni informative */
-.section {
-  background-color: #771c14;
-  border-radius: 12px;
-  padding: 16px;
-  color: white;
+.box-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff3e6;
 }
 
-.section-title {
+/* Info section (Prossima Partita, Ultima Notizia) */
+.section {
+  background-color: #991f1f;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.section strong {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Title with icon */
+.section-title-icon {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
 }
 
+/* Match result section */
 .result-box {
+  background-color: #801818;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #771c14;
-  border-radius: 12px;
-  padding: 12px;
 }
 
-.result-score {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 0 10px;
-}
-
-.team-logo {
+.result-box img {
   height: 40px;
   width: auto;
 }
 
-.news-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-/* Sponsor Carousel */
-.sponsor-title {
-  font-size: 18px;
-  font-weight: bold;
-  padding: 0 16px;
-  margin-top: 24px;
-}
-
-.carousel-wrapper {
-  overflow: hidden;
+/* Sponsor carousel */
+.sponsor-section {
+  overflow-x: auto;
   white-space: nowrap;
-  margin: 16px;
+  padding-bottom: 8px;
+  margin-top: 16px;
 }
 
-.carousel-content {
-  display: inline-flex;
-  gap: 32px;
-  animation: scroll-sponsor 20s linear infinite;
-}
-
-.carousel-content img {
+.sponsor-section img {
   height: 50px;
+  margin-right: 16px;
+  border-radius: 6px;
 }
 
-@keyframes scroll-sponsor {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+/* Responsive fix */
+@media (max-width: 400px) {
+  .popup-menu {
+    width: 160px;
+    right: 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .box-title {
+    font-size: 14px;
+  }
+
+  .logo {
+    height: 32px;
+  }
 }
