@@ -104,6 +104,8 @@ body {
   border-radius: 12px;
   padding: 12px;
   text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .result-row {
@@ -120,7 +122,9 @@ body {
 
 .result-score {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: bold; 
+  align-items: center;
+  justify-content: center;
 }
 
 .mvp {
