@@ -1,3 +1,4 @@
+/* Reset base */
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -5,6 +6,7 @@ body {
   color: #fff;
 }
 
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -20,12 +22,21 @@ header {
   height: 40px;
 }
 
+h1 {
+  font-size: 22px;
+  margin: 0;
+  color: #fff1e6;
+  flex: 1;
+  text-align: center;
+}
+
 .menu-btn {
   font-size: 26px;
   cursor: pointer;
   color: white;
 }
 
+/* Menu popup */
 .popup-menu {
   position: absolute;
   top: 64px;
@@ -50,57 +61,63 @@ header {
   border-bottom: none;
 }
 
-h1 {
-  font-size: 36px;
-  margin: 20px;
-  color: #ffeadd;
-}
-
+/* Responsive grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 12px;
-  padding: 0 20px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  padding: 0 16px;
   margin-bottom: 20px;
 }
 
+/* Card box */
 .card {
   background-color: #701d1d;
-  padding: 12px;
+  padding: 20px;
   border-radius: 12px;
   text-align: center;
-  font-size: 18px;
-  font-weight: bold;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card a {
   text-decoration: none;
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.card .icon {
+.icon {
   font-size: 40px;
-  display: block;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
-.card a:hover {
-  text-decoration: none;
-}
-
+/* Info boxes */
 .box {
   background-color: #701d1d;
-  margin: 12px 20px;
+  margin: 12px 16px;
   padding: 16px;
   border-radius: 12px;
-  font-size: 16px;
 }
 
 .box h2 {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  color: #fff1e6;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.box p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Match Result */
+.result-box {
+  padding: 16px 12px;
 }
 
 .match-result {
@@ -109,7 +126,6 @@ h1 {
   justify-content: center;
   gap: 16px;
   font-size: 20px;
-  margin-bottom: 8px;
 }
 
 .team-logo {
@@ -117,12 +133,31 @@ h1 {
   height: 36px;
 }
 
+.match-date {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* News */
+.news-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+/* Sponsor */
+.sponsor-title {
+  margin: 20px 16px 10px;
+  font-size: 18px;
+}
+
 .carousel {
   overflow: hidden;
   white-space: nowrap;
-  margin: 20px;
-  padding: 10px 0;
-  background-color: #4a0f0f;
+  margin: 0 16px 20px;
+  background: transparent;
 }
 
 .carousel-track {
