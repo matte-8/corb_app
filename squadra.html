@@ -1,46 +1,44 @@
-
+<!-- Pagina Squadra -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Squadra</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Squadra - U.S. Corbiolo C5</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="logo-title">
-      <img src="img/logo_migliorato.png" alt="Logo"/>
-      <span>Squadra</span>
-    </div>
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html">📰 News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-    </div>
+  <header class="header">
+    <img src="img/logo.png" alt="Logo" class="logo">
+    <h1 class="page-title">Squadra</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
-  <div class="container">
-    
-<div class="card">
-  <h2>Giocatori</h2>
-  <ul>
-    <li>Marco Rossi - 🧤 Portiere</li>
-    <li>Luca Bianchi - 🛡️ Centrale</li>
-    <li>Giovanni Verdi - 🔄 Laterale</li>
-    <li>Francesco Neri - 🔄 Laterale</li>
-    <li>Davide Gialli - 🎯 Pivot</li>
-    <li>Simone Azzurri - 🔄 Laterale</li>
-    <li>Riccardo Viola - 🛡️ Centrale</li>
-    <li>Matteo Blu - 🧤 Portiere</li>
-    <li>Alessandro Marrone - 🎯 Pivot</li>
-    <li>Tommaso Nero - 🔄 Laterale</li>
-  </ul>
-</div>
 
+  <div class="popup-menu" id="popupMenu">
+    <a href="index.html">Home</a>
+    <a href="news.html">News</a>
+    <a href="squadra.html">Squadra</a>
+    <a href="sponsor.html">Sponsor</a>
+    <a href="partite.html">Partite</a>
   </div>
-  <script src="js/script.js"></script>
+
+  <div class="box-row">
+    <div class="section-title-icon">👥 Rosa della Squadra</div>
+    <div class="section">
+      <p><strong>Marco Rossi</strong> - Attaccante</p>
+      <p><strong>Luca Bianchi</strong> - Centrocampista</p>
+      <p><strong>Giovanni Verdi</strong> - Difensore</p>
+      <p><strong>Matteo Neri</strong> - Portiere</p>
+      <p><strong>Davide Gialli</strong> - Attaccante</p>
+      <p><strong>Simone Azzurri</strong> - Centrocampista</p>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('popupMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>
