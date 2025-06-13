@@ -52,6 +52,7 @@ body {
 /* Contenitore sezioni */
 .box-row {
   padding: 12px 16px;
+  margin-bottom: 6px;
 }
 
 /* Griglie */
