@@ -38,7 +38,7 @@ body {
 
 /* Menu popup */
 .popup-menu {
-  display: none;
+  display: block;
   flex-direction: column;
   position: absolute;
   top: 60px;
