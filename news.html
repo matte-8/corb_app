@@ -1,37 +1,84 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>News</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News - U.S. Corbiolo C5</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="logo-title">
-      <img src="img/logo.png" alt="Logo"/>
-      <span>News</span>
-    </div>
- <div class="menu-icon" onclick="toggleMenu()">☰</div>
+  <header class="header">
+    <img src="img/logo.png" alt="Logo" class="logo">
+    <h1 class="page-title">News</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
 
   <div class="popup-menu" id="popupMenu">
-<a href="index.html">🏠 Home</a>
-      <a href="news.html">🗞️ News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
+    <a href="index.html">Home</a>
+    <a href="news.html">News</a>
+    <a href="squadra.html">Squadra</a>
+    <a href="sponsor.html">Sponsor</a>
+    <a href="partite.html">Partite</a>
   </div>
-  <div class="container">
-    
-<div class="card">
-  <h2>Grande vittoria in casa</h2>
-  <div class="subtitle">10 Giugno 2024 - Luca Neri</div>
-  <p>La squadra ha vinto 4-1 contro il Verona Calcio, dominando il secondo tempo.</p>
-</div>
 
+  <!-- RIGA NOTIZIE -->
+  <div class="box-row">
+
+    <!-- Notizia 1 -->
+    <div class="section">
+      <img src="img/notizia1.jpg" alt="Notizia 1" class="team-logo">
+      <div class="section-title-icon">⚽ Vittoria sofferta in casa</div>
+      <p>
+        Il Corbiolo C5 ha ottenuto una vittoria sofferta ma fondamentale contro il Mantova FC, con un punteggio di 3-2. Dopo un primo tempo in svantaggio, la squadra ha reagito con determinazione e tecnica, segnando tre gol nella ripresa. Il capitano Marco Rossi ha guidato i compagni con energia, mentre il giovane portiere Andrea Neri ha salvato il risultato con due parate decisive negli ultimi minuti. Questo successo rafforza la posizione in classifica e dimostra la maturità tattica del gruppo.
+      </p>
+    </div>
+
+    <!-- Notizia 2 -->
+    <div class="section">
+      <img src="img/notizia2.jpg" alt="Notizia 2" class="team-logo">
+      <div class="section-title-icon">🧤 Allenamenti speciali per i portieri</div>
+      <p>
+        Da questa settimana lo staff tecnico ha introdotto sessioni dedicate esclusivamente ai portieri, con un preparatore specializzato. Gli esercizi si concentrano su riflessi, gestione delle uscite e distribuzione della palla. Il mister ha dichiarato che “i portieri sono il primo attaccante e l’ultimo difensore”, sottolineando l’importanza di curare ogni dettaglio del ruolo. I risultati sono già visibili: maggiore sicurezza e miglior coordinamento tra portiere e difesa.
+      </p>
+    </div>
+
+    <!-- Notizia 3 -->
+    <div class="section">
+      <img src="img/notizia3.jpg" alt="Notizia 3" class="team-logo">
+      <div class="section-title-icon">💬 Conferenza stampa pre-match</div>
+      <p>
+        Alla vigilia del match contro il Verona Lions, l’allenatore ha parlato in conferenza stampa della condizione della squadra. “Abbiamo lavorato bene, l’obiettivo è vincere senza sottovalutare l’avversario”. I giornalisti hanno chiesto della formazione e dei recuperi degli infortunati: “Abbiamo tutti disponibili, valuteremo domani”. Si respira fiducia e concentrazione, con il gruppo determinato a continuare la serie positiva.
+      </p>
+    </div>
+
+    <!-- Notizia 4 -->
+    <div class="section">
+      <img src="img/notizia4.jpg" alt="Notizia 4" class="team-logo">
+      <div class="section-title-icon">🤝 Nuovo sponsor: VerdePiù</div>
+      <p>
+        L’azienda VerdePiù, specializzata in prodotti per il verde urbano, è ufficialmente sponsor del Corbiolo C5 per la stagione 2024/25. Il logo dell’azienda comparirà sulle maglie da gara e nei materiali ufficiali. La dirigenza ha espresso entusiasmo per la collaborazione: “È un passo importante che ci permette di crescere anche fuori dal campo”. Anche i tifosi hanno accolto positivamente la novità, già visibile sui pannelli a bordo campo.
+      </p>
+    </div>
   </div>
-  <script src="js/script.js"></script>
+
+  <!-- CAROSELLO SPONSOR -->
+  <div class="box-row">
+    <div class="sponsor-title">Sponsor</div>
+    <div class="carousel-wrapper">
+      <div class="carousel-content">
+        <img src="img/sponsor1.png" alt="Sponsor 1">
+        <img src="img/sponsor2.png" alt="Sponsor 2">
+        <img src="img/sponsor3.png" alt="Sponsor 3">
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('popupMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>
