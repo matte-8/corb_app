@@ -84,7 +84,21 @@ body {
 
 /* Card box principale */
 .card,
-.section,
+.section, {
+  background: #801e1e;
+  padding: 14px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 90px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 3px;
+}
+
 .result-box,
 .result-large {
   background: #801e1e;
@@ -99,6 +113,7 @@ body {
   min-height: 90px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   margin-bottom: 3px;
+  width: auto;
 }
 
 /* Icona all’interno delle card */
