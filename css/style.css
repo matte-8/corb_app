@@ -152,30 +152,6 @@ body {
   width: auto;
 }
 
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* Responsive */
-@media (max-width: 80px) {
-  .grid-3,
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    min-height: 80px;
-  }
-
-  .result-score {
-    font-size: 20px;
-  }
-
-  .grid-custom {
-    grid-template-columns: 1fr 2fr;
-  }
-
 /* Contenitore principale della lista giocatori */
 .team-container {
   display: flex;
@@ -225,3 +201,26 @@ body {
   color: #ffb3b3;
   margin-top: 2px;
 }
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Responsive */
+@media (max-width: 80px) {
+  .grid-3,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: 80px;
+  }
+
+  .result-score {
+    font-size: 20px;
+  }
+
+  .grid-custom {
+    grid-template-columns: 1fr 2fr;
+  }
