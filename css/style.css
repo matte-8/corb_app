@@ -174,9 +174,9 @@ body {
 
 /* Immagine avatar giocatore */
 .player-image {
-  width: 10px;
-  height: 1opx;
-  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 20%;
   object-fit: cover;
 }
 
