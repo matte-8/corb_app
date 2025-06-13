@@ -176,3 +176,50 @@ body {
     grid-template-columns: 1fr 2fr;
   }
 }
+/* LISTA GIOCATORI */
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+}
+
+.player-card {
+  display: flex;
+  align-items: center;
+  background-color: #861111; /* Stesso colore delle card */
+  border-radius: 12px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.player-card:hover {
+  transform: scale(1.01);
+}
+
+.player-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid #fff;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.player-role {
+  font-size: 0.95rem;
+  color: #ffcccc;
+  font-style: italic;
+}
