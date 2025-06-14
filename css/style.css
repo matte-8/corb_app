@@ -185,6 +185,55 @@ body {
   font-size: 14px;
   margin-top: 40px;
 }
+.team-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px;
+}
+
+.player-card {
+  display: flex;
+  align-items: center;
+  background-color: #8b0000;
+  border-radius: 12px;
+  padding: 12px;
+  gap: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.player-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.player-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.player-role {
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+.player-number {
+  font-size: 14px;
+  color: #ffb3b3;
+  margin-top: 2px;
+}
+
 
 /* === RESPONSIVE — ma NON modificare griglia! === */
 @media (max-width: 600px) {
