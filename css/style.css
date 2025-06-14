@@ -1,69 +1,39 @@
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #2d0b0b;
-  color: white;
-  padding-top: 80px; /* spazio per header fisso */
-}
-
-/* Header */
-.header {
-  background-color: #660000;
-  color: white;
+/* Risultato box layout */
+.result-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  height: 60px;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 6px;
 }
 
-.logo {
-  height: 40px;
-}
-
-.page-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.menu-icon {
+.result-score {
   font-size: 24px;
-  cursor: pointer;
-}
-
-/* Menu popup */
-.popup-menu {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: 60px;
-  right: 10px;
-  background-color: #660000;
-  padding: 10px;
-  border-radius: 10px;
-  z-index: 999;
-  position: fixed;
-}
-
-.popup-menu a {
+  font-weight: bold;
   color: white;
-  text-decoration: none;
-  padding: 8px 0;
-  font-size: 16px;
 }
 
-/* Contenitore sezioni */
-.box-row {
-  padding: 12px 16px;
-  margin-bottom: 3px;
+.team-logo {
+  height: 36px;
+  width: auto;
 }
 
-/* Griglie */
+.result-names {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 20px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff2e6;
+}
+
+.team-name {
+  flex: 1;
+  text-align: center;
+}
+
+/* Griglia responsive */
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -72,7 +42,7 @@ body {
 
 .grid-2 {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
@@ -82,7 +52,7 @@ body {
   gap: 10px;
 }
 
-/* Card box principale */
+/* Card stile */
 .card,
 .section,
 .result-box,
@@ -103,7 +73,7 @@ body {
 
 /* Icona nelle card */
 .card-icon {
-  font-size: 50px;
+  font-size: 60px;
   margin-bottom: 6px;
 }
 
@@ -115,47 +85,7 @@ body {
   text-align: center;
 }
 
-/* Box risultato */
-.result-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.team-logo {
-  height: 36px;
-  width: auto;
-}
-
-.result-score {
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.mvp {
-  margin-top: 6px;
-  font-size: 14px;
-  color: #ffeedd;
-}
-
-/* Footer */
-.footer {
-  background-color: #660000;
-  color: white;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 40px;
-}
-
-/* Sponsor Carousel */
-.sponsor-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
+/* Footer Sponsor */
 .carousel-wrapper {
   overflow-x: hidden;
   position: relative;
@@ -170,123 +100,6 @@ body {
 .carousel-content img {
   height: 40px;
   width: auto;
-}
-
-/* Giocatori */
-.team-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 20px;
-}
-
-.player-card {
-  display: flex;
-  align-items: center;
-  background-color: #8b0000;
-  border-radius: 12px;
-  padding: 12px;
-  gap: 15px;
-  margin: 6px;
-}
-
-.player-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 20%;
-  object-fit: cover;
-}
-
-.player-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.player-name {
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-}
-
-.player-role {
-  font-size: 14px;
-  color: #ccc;
-  margin-top: 2px;
-}
-
-.player-number {
-  font-size: 14px;
-  color: #ffb3b3;
-  margin-top: 2px;
-}
-
-/* Sponsor box */
-.grid-sponsor {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
-}
-
-.sponsor-box {
-  min-height: 140px;
-  padding: 18px;
-}
-
-.sponsor-icon {
-  height: 50px;
-  margin-bottom: 10px;
-}
-
-.sponsor-name {
-  font-weight: bold;
-  margin-bottom: 4px;
-  font-size: 16px;
-}
-
-.sponsor-link {
-  color: #ddd;
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.sponsor-link:hover {
-  text-decoration: underline;
-}
-.result-names {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 6px 24px 4px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff2e6;
-}
-
-.team-name {
-  text-align: center;
-  flex: 1;
-}
-/* 🔧 Responsive ottimizzato */
-@media (max-width: 600px) {
-  .grid-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .grid-2 {
-    grid-template-columns: 1fr 2fr;
-  }
-
-  .card {
-    min-height: 80px;
-  }
-
-  .result-score {
-    font-size: 20px;
-  }
-
-  .grid-custom {
-    grid-template-columns: 1fr 2fr;
-  }
 }
 
 @keyframes scroll {
