@@ -3,7 +3,7 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #2d0b0b;
   color: white;
-  padding-top: 80px; /* 👈 Spazio per header fisso */
+  padding-top: 80px; /* spazio per header fisso */
 }
 
 /* Header */
@@ -72,7 +72,7 @@ body {
 
 .grid-2 {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 2fr;
   gap: 10px;
 }
 
@@ -101,7 +101,7 @@ body {
   margin-bottom: 3px;
 }
 
-/* Icona all’interno delle card */
+/* Icona nelle card */
 .card-icon {
   font-size: 60px;
   margin-bottom: 6px;
@@ -115,21 +115,12 @@ body {
   text-align: center;
 }
 
-/* Box risultato interno */
+/* Box risultato */
 .result-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-}
-
-.footer {
-  background-color: #660000;
-  color: white;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 40px;
 }
 
 .team-logo {
@@ -146,6 +137,16 @@ body {
   margin-top: 6px;
   font-size: 14px;
   color: #ffeedd;
+}
+
+/* Footer */
+.footer {
+  background-color: #660000;
+  color: white;
+  padding: 14px;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 40px;
 }
 
 /* Sponsor Carousel */
@@ -171,7 +172,7 @@ body {
   width: auto;
 }
 
-/* Contenitore principale della lista giocatori */
+/* Giocatori */
 .team-container {
   display: flex;
   flex-direction: column;
@@ -179,7 +180,6 @@ body {
   margin: 20px;
 }
 
-/* Ogni giocatore */
 .player-card {
   display: flex;
   align-items: center;
@@ -190,7 +190,6 @@ body {
   margin: 6px;
 }
 
-/* Immagine avatar giocatore */
 .player-image {
   width: 60px;
   height: 60px;
@@ -198,7 +197,6 @@ body {
   object-fit: cover;
 }
 
-/* Info del giocatore */
 .player-info {
   display: flex;
   flex-direction: column;
@@ -222,13 +220,13 @@ body {
   margin-top: 2px;
 }
 
+/* Sponsor box */
 .grid-sponsor {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 16px;
 }
 
-/* Sponsor Box */
 .sponsor-box {
   min-height: 140px;
   padding: 18px;
@@ -255,16 +253,14 @@ body {
   text-decoration: underline;
 }
 
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+/* 🔧 Responsive ottimizzato */
+@media (max-width: 600px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-/* Responsive */
-@media (max-width: 80px) {
-  .grid-3,
   .grid-2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 2fr;
   }
 
   .card {
@@ -278,3 +274,9 @@ body {
   .grid-custom {
     grid-template-columns: 1fr 2fr;
   }
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
