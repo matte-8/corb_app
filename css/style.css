@@ -252,7 +252,20 @@ body {
 .sponsor-link:hover {
   text-decoration: underline;
 }
+.result-names {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 24px 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff2e6;
+}
 
+.team-name {
+  text-align: center;
+  flex: 1;
+}
 /* 🔧 Responsive ottimizzato */
 @media (max-width: 600px) {
   .grid-3 {
