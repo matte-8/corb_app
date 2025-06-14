@@ -3,7 +3,7 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #2d0b0b;
   color: white;
-  padding-top: 80px;
+  padding-top: 80px; /* spazio per header fisso */
 }
 
 /* Header */
@@ -36,17 +36,18 @@ body {
   cursor: pointer;
 }
 
-/* Popup menu */
+/* Menu popup */
 .popup-menu {
   display: none;
   flex-direction: column;
-  position: fixed;
+  position: absolute;
   top: 60px;
   right: 10px;
   background-color: #660000;
   padding: 10px;
   border-radius: 10px;
   z-index: 999;
+  position: fixed;
 }
 
 .popup-menu a {
@@ -56,7 +57,7 @@ body {
   font-size: 16px;
 }
 
-/* Layout generale */
+/* Contenitore sezioni */
 .box-row {
   padding: 12px 16px;
   margin-bottom: 3px;
@@ -71,7 +72,7 @@ body {
 
 .grid-2 {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 2fr;
   gap: 10px;
 }
 
@@ -81,7 +82,7 @@ body {
   gap: 10px;
 }
 
-/* Card stile */
+/* Card box principale */
 .card,
 .section,
 .result-box,
@@ -100,13 +101,13 @@ body {
   margin-bottom: 3px;
 }
 
-/* Icona */
+/* Icona nelle card */
 .card-icon {
   font-size: 60px;
   margin-bottom: 6px;
 }
 
-/* Titoli */
+/* Titolo sezione */
 .section-title-icon {
   font-size: 18px;
   font-weight: bold;
@@ -114,19 +115,12 @@ body {
   text-align: center;
 }
 
-/* Risultato */
+/* Box risultato */
 .result-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 6px;
-}
-
-.result-score {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
 }
 
 .team-logo {
@@ -134,19 +128,25 @@ body {
   width: auto;
 }
 
-.result-names {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 4px 20px 0;
-  font-size: 14px;
+.result-score {
+  font-size: 22px;
   font-weight: bold;
-  color: #fff2e6;
 }
 
-.team-name {
-  flex: 1;
+.mvp {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #ffeedd;
+}
+
+/* Footer */
+.footer {
+  background-color: #660000;
+  color: white;
+  padding: 14px;
   text-align: center;
+  font-size: 14px;
+  margin-top: 40px;
 }
 
 /* Sponsor Carousel */
@@ -172,17 +172,111 @@ body {
   width: auto;
 }
 
+/* Giocatori */
+.team-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px;
+}
+
+.player-card {
+  display: flex;
+  align-items: center;
+  background-color: #8b0000;
+  border-radius: 12px;
+  padding: 12px;
+  gap: 15px;
+  margin: 6px;
+}
+
+.player-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 20%;
+  object-fit: cover;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.player-role {
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 2px;
+}
+
+.player-number {
+  font-size: 14px;
+  color: #ffb3b3;
+  margin-top: 2px;
+}
+
+/* Sponsor box */
+.grid-sponsor {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.sponsor-box {
+  min-height: 140px;
+  padding: 18px;
+}
+
+.sponsor-icon {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.sponsor-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.sponsor-link {
+  color: #ddd;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.sponsor-link:hover {
+  text-decoration: underline;
+}
+
+/* 🔧 Responsive ottimizzato */
+@media (max-width: 600px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .card {
+    min-height: 80px;
+  }
+
+  .result-score {
+    font-size: 20px;
+  }
+
+  .grid-custom {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
-}
-
-/* Footer */
-.footer {
-  background-color: #660000;
-  color: white;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 40px;
 }
