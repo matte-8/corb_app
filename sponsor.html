@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sponsor - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#660000">
+  <link rel="icon" href="img/logo2.png" type="image/png">
 </head>
 <body>
   <header class="header">
@@ -13,58 +16,40 @@
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
 
- <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html">🗞️ News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
+  <div class="popup-menu" id="popupMenu">
+    <a href="index.html">🏠 Home</a>
+    <a href="news.html">🗞️ News</a>
+    <a href="squadra.html">👥 Squadra</a>
+    <a href="partite.html">📅 Partite</a>
+    <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
+  <!-- Lista Sponsor -->
   <div class="box-row">
     <div class="grid-2">
-      
-      <!-- Sponsor 1 -->
       <div class="card sponsor-box">
         <img src="img/sponsor1.png" alt="Sponsor 1" class="sponsor-icon">
         <div class="sponsor-name">Sponsor 1</div>
-        <a href="https://www.sponsor1.com" target="_blank" class="sponsor-link">www.sponsor1.com</a>
+        <a href="https://www.sponsor1.com" class="sponsor-link" target="_blank">www.sponsor1.com</a>
       </div>
-
-      <!-- Sponsor 2 -->
       <div class="card sponsor-box">
         <img src="img/sponsor2.png" alt="Sponsor 2" class="sponsor-icon">
         <div class="sponsor-name">Sponsor 2</div>
-        <a href="https://www.sponsor2.com" target="_blank" class="sponsor-link">www.sponsor2.com</a>
+        <a href="https://www.sponsor2.com" class="sponsor-link" target="_blank">www.sponsor2.com</a>
       </div>
-
-      <!-- Sponsor 3 -->
       <div class="card sponsor-box">
         <img src="img/sponsor3.png" alt="Sponsor 3" class="sponsor-icon">
         <div class="sponsor-name">Sponsor 3</div>
-        <a href="https://www.sponsor3.com" target="_blank" class="sponsor-link">www.sponsor3.com</a>
-      </div>
-
-    </div>
-  </div>
-  
-  <!-- RIGA 5: Sponsor Carousel -->
-  <div class="footer">
-    <div class="sponsor-title">Sponsor</div>
-    <div class="carousel-wrapper">
-      <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
-         <img src="img/sponsor2.png" alt="Sponsor 2 clone">
-         <img src="img/sponsor3.png" alt="Sponsor 3 clone">
-        
+        <a href="https://www.sponsor3.com" class="sponsor-link" target="_blank">www.sponsor3.com</a>
       </div>
     </div>
   </div>
 
-  
+  <!-- Footer (opzionale) -->
+  <footer class="footer">
+    <p>© 2025 U.S. Corbiolo C5</p>
+  </footer>
+
   <script>
     function toggleMenu() {
       const menu = document.getElementById('popupMenu');
