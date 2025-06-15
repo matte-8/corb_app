@@ -103,47 +103,29 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
-  <script>
-  const NEWS_API_URL = "https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec";
+ <script>
+  const badgeKey = "news_lette";
 
-  async function checkNewNews() {
-    try {
-      const res = await fetch(NEWS_API_URL);
-      const data = await res.json();
-      const newsCount = data.length;
+  function checkNewsBadge() {
+    const badge = document.getElementById("newsBadge");
 
-      const savedCount = localStorage.getItem("lastNewsCount");
+    fetch("https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec")
+      .then((res) => res.json())
+      .then((data) => {
+        const notizie = data.news;
+        const letti = JSON.parse(localStorage.getItem(badgeKey)) || [];
 
-      if (savedCount && Number(savedCount) < newsCount) {
-        showNewsBadge();
-      }
+        const ciSonoNuove = notizie.some((item, index) =>
+          item.nuova === "SI" && !letti.includes(`news${index}`)
+        );
 
-      localStorage.setItem("lastNewsCount", newsCount);
-    } catch (e) {
-      console.error("Errore nel caricamento news:", e);
-    }
+        if (ciSonoNuove) {
+          badge.style.display = "inline";
+        }
+      });
   }
 
-  function showNewsBadge() {
-    const card = document.querySelector(".card[href='news.html']");
-    const menuLink = document.querySelector(".popup-menu a[href='news.html']");
-    
-    if (card) {
-      const badge = document.createElement("span");
-      badge.className = "badge-news";
-      badge.textContent = "•";
-      card.appendChild(badge);
-    }
-
-    if (menuLink) {
-      const badge = document.createElement("span");
-      badge.className = "badge-news";
-      badge.textContent = "•";
-      menuLink.appendChild(badge);
-    }
-  }
-
-  checkNewNews();
+  checkNewsBadge();
 </script>
 
 </body>
