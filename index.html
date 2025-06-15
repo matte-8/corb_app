@@ -66,7 +66,7 @@
     }
 
     // Mostra il badge se nel foglio Google Sheet c'è una news con "NEW"
-    fetch("https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec")
+    fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
       .then(response => response.json())
       .then(data => {
         const hasNew = data.news.some(n => n.nuovo === "TRUE");
