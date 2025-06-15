@@ -21,10 +21,12 @@
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
+  <!-- RIGA NOTIZIE -->
   <div class="box-row" id="news-container">
-    <!-- Le notizie verranno caricate qui -->
+    <!-- Le notizie verranno caricate qui via JS -->
   </div>
 
+  <!-- CAROSELLO SPONSOR -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -39,63 +41,60 @@
     </div>
   </div>
 
- <script>
-  function toggleMenu() {
-    const menu = document.getElementById('popupMenu');
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-  }
-
-  async function loadNews() {
-    const NEWS_API = "https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec";
-    try {
-      const res = await fetch(NEWS_API);
-      const data = await res.json();
-
-      const container = document.getElementById("news-container");
-      container.innerHTML = "";
-
-      data.forEach(news => {
-        const section = document.createElement("div");
-        section.className = "section";
-
-        const img = document.createElement("img");
-        img.src = news.image;
-        img.alt = news.title;
-        img.className = "team-logo";
-
-        const titleDiv = document.createElement("div");
-        titleDiv.className = "section-title-icon";
-
-        const titleText = document.createElement("span");
-        titleText.textContent = news.title;
-
-        titleDiv.appendChild(titleText);
-
-        // Badge se è nuova
-        if (news.nuova === "✅" || news.nuova === "true" || news.nuova === "TRUE") {
-          const badge = document.createElement("span");
-          badge.textContent = " NUOVA";
-          badge.className = "badge-news";
-          titleDiv.appendChild(badge);
-        }
-
-        const content = document.createElement("p");
-        content.textContent = news.content;
-
-        section.appendChild(img);
-        section.appendChild(titleDiv);
-        section.appendChild(content);
-        container.appendChild(section);
-      });
-    } catch (e) {
-      console.error("Errore caricamento notizie:", e);
-      document.getElementById("news-container").innerHTML =
-        "<div class='section'>Errore nel caricamento delle notizie. Riprova più tardi.</div>";
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('popupMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-  }
+  </script>
 
-  loadNews();
-</script>
+  <!-- JS per caricare notizie e gestire badge -->
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec";
+    const container = document.getElementById("news-container");
+    const lettoKey = "news_lette";
 
+    function getLetti() {
+      return JSON.parse(localStorage.getItem(lettoKey)) || [];
+    }
+
+    function setLetto(id) {
+      const letti = getLetti();
+      if (!letti.includes(id)) {
+        letti.push(id);
+        localStorage.setItem(lettoKey, JSON.stringify(letti));
+      }
+    }
+
+    function createNewsCard(news, id) {
+      const letti = getLetti();
+      const badge = !letti.includes(id) && news.nuova === "SI"
+        ? `<span class="badge-news">🟢 NUOVA</span>` : "";
+
+      const card = document.createElement("div");
+      card.className = "section";
+      card.innerHTML = `
+        <img src="${news.img}" alt="${news.titolo}" class="team-logo">
+        <div class="section-title-icon">${news.titolo} ${badge}</div>
+        <p>${news.testo}</p>
+      `;
+
+      card.onclick = () => {
+        setLetto(id);
+        card.querySelector(".badge-news")?.remove();
+      };
+
+      container.appendChild(card);
+    }
+
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => {
+        const newsList = data.news; // Assicurati che il tuo foglio abbia intestazione 'news'
+        newsList.forEach((item, index) => {
+          createNewsCard(item, `news${index}`);
+        });
+      });
+  </script>
 </body>
 </html>
