@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Squadra - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#660000">
+  <link rel="icon" href="img/logo2.png" type="image/png">
 </head>
-<body>
+<body onload="caricaSquadra()">
   <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo" />
+    <img src="img/logo.png" alt="Logo" class="logo">
     <h1 class="page-title">Squadra</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -21,9 +24,23 @@
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <div class="box-row">
-    <div class="team-container" id="teamList">
-      <!-- Giocatori caricati da Google Sheets -->
+  <!-- Lista giocatori -->
+  <div class="team-container" id="teamContainer">
+    <!-- Giocatori caricati dinamicamente -->
+  </div>
+
+  <!-- Sponsor -->
+  <div class="footer">
+    <div class="sponsor-title">Sponsor</div>
+    <div class="carousel-wrapper">
+      <div class="carousel-content">
+        <img src="img/sponsor1.png" alt="Sponsor 1">
+        <img src="img/sponsor2.png" alt="Sponsor 2">
+        <img src="img/sponsor3.png" alt="Sponsor 3">
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
+      </div>
     </div>
   </div>
 
@@ -33,30 +50,29 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // ✅ Sostituisci questo con il tuo link personale dello script Google Apps
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec';
+    function caricaSquadra() {
+      fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
+        .then(response => response.json())
+        .then(data => {
+          const teamDiv = document.getElementById('teamContainer');
+          data.squadra.forEach(giocatore => {
+            const card = document.createElement('div');
+            card.className = 'player-card';
 
-    fetch(SHEET_URL + '?sheet=Squadra')
-      .then(res => res.json())
-      .then(data => {
-        const teamList = document.getElementById('teamList');
-        data.forEach(player => {
-          const card = document.createElement('div');
-          card.className = 'player-card';
-
-          card.innerHTML = `
-            <img src="${player.Immagine}" alt="${player.Nome}" class="player-image">
-            <div class="player-info">
-              <div class="player-name">${player.Nome} N°${player.Numero}</div>
-              <div class="player-role">${player.Ruolo}</div>
-            </div>
-          `;
-          teamList.appendChild(card);
+            card.innerHTML = `
+              <img src="img/${giocatore.foto}" alt="${giocatore.nome}" class="player-image">
+              <div class="player-info">
+                <div class="player-name">${giocatore.nome} N°${giocatore.numero}</div>
+                <div class="player-role">${giocatore.ruolo}</div>
+              </div>
+            `;
+            teamDiv.appendChild(card);
+          });
+        })
+        .catch(error => {
+          console.error("Errore nel caricamento della squadra:", error);
         });
-      })
-      .catch(error => {
-        console.error('Errore nel caricamento dati:', error);
-      });
+    }
   </script>
 </body>
 </html>
