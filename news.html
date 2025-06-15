@@ -19,15 +19,12 @@
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">📅 Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
-    <a href="calendario.html">🗓 Calendario</a>
   </div>
 
-  <!-- Sezione News -->
   <div class="box-row" id="newsContainer">
-    <!-- Le news verranno caricate qui via JS -->
+    <p>Caricamento notizie...</p>
   </div>
 
-  <!-- Footer Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -44,27 +41,50 @@
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('popupMenu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      const menu = document.getElementById("popupMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
 
-    const sheetURL = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
+    const url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // <-- sostituisci con il tuo URL
+    const container = document.getElementById("newsContainer");
 
-    fetch(sheetURL)
+    function renderNews(data) {
+      container.innerHTML = "";
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "section";
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.titolo}" class="team-logo">
+          <div class="section-title-icon">${item.titolo} ${item.nuova === "TRUE" ? '<span class="badge-news">NEW</span>' : ''}</div>
+          <p>${item.contenuto}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 1. Prova a caricare dalla memoria
+    const cached = localStorage.getItem("newsData");
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        renderNews(parsed);
+      } catch (e) {
+        console.error("Errore nel parsing della cache:", e);
+      }
+    }
+
+    // 2. Poi aggiorna da remoto
+    fetch(url)
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById("newsContainer");
-        container.innerHTML = "";
-        data.news.forEach(n => {
-          const box = document.createElement("div");
-          box.className = "section";
-          box.innerHTML = `
-            <img src="img/${n.img}" alt="${n.titolo}" class="team-logo" />
-            <div class="section-title-icon">${n.titolo}</div>
-            <p>${n.contenuto}</p>
-          `;
-          container.appendChild(box);
-        });
+        if (data.news) {
+          localStorage.setItem("newsData", JSON.stringify(data.news));
+          renderNews(data.news);
+        }
+      })
+      .catch(err => {
+        console.error("Errore fetch:", err);
+        if (!cached) container.innerHTML = "<p>Errore nel caricamento notizie.</p>";
       });
   </script>
 </body>
