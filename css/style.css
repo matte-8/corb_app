@@ -81,12 +81,8 @@ body {
   grid-template-columns: 1fr 2fr;
   gap: 10px;
 }
-.badge-news {
-  color: red;
-  font-size: 20px;
-  margin-left: 4px;
-  vertical-align: middle;
-}
+
+/* Badge per NEWS */
 .badge-news {
   background-color: #ff0;
   color: #000;
@@ -95,6 +91,14 @@ body {
   padding: 2px 6px;
   border-radius: 8px;
   margin-left: 6px;
+}
+
+/* Badge in alto a destra nella card */
+.badge-corner {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  z-index: 10;
 }
 
 /* Card Box */
@@ -113,6 +117,7 @@ body {
   align-items: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   margin-bottom: 4px;
+  position: relative; /* per posizionare il badge */
 }
 
 /* Icone */
