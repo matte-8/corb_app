@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#660000" />
+  <link rel="icon" href="img/logo2.png" type="image/png" />
 </head>
 <body>
-
   <header class="header">
-    <img src="img/logo2.png" alt="Logo" class="logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1 class="page-title">Home</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
 
   <div class="popup-menu" id="popupMenu">
     <a href="index.html">🏠 Home</a>
-    <a href="news.html">🗞️ News <span id="badgeNews" class="badge-news" style="display:none;">🔴</span></a>
+    <a href="news.html">🗞️ News</a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">📅 Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <!-- RIGA 1: Card fisse -->
+  <!-- RIGA 1: News, Squadra, Sponsor -->
   <div class="box-row">
     <div class="grid-3">
       <a href="news.html" class="card">
@@ -41,100 +42,66 @@
     </div>
   </div>
 
-  <!-- RIGA 2: Prossima partita + risultato -->
+  <!-- RIGA 2: Prossima partita + Risultato -->
   <div class="box-row">
     <div class="grid-custom">
-      <a href="partite.html" class="card" id="nextMatchCard">
+      <a href="partite.html" class="card">
         <div class="card-icon">📅</div>
         Prossima Partita
       </a>
-      <div class="card result-large" id="lastResultCard">
-        <!-- contenuto inserito via JS -->
+      <div class="card result-large">
+        <div class="result-row">
+          <img src="img/logo.png" alt="Corbiolo" class="team-logo" />
+          <div class="result-score">2 - 1</div>
+          <img src="img/opponent.png" alt="Avversario" class="team-logo" />
+        </div>
+        <div class="result-names">
+          <div class="team-name">Corbiolo</div>
+          <div class="team-name">Olimpia VR</div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- RIGA 3: Dettagli prossima partita -->
   <div class="box-row">
-    <div class="section" id="matchDetails">
-      <!-- Dettagli caricati da JS -->
+    <div class="section">
+      <div class="section-title-icon">⚽️ Prossima Partita</div>
+      <p>U.S. CORBIOLO - SENTINELLE F.C.</p>
+      <p>29 apr 2024, 18:30 · Stadio Comunale</p>
     </div>
   </div>
 
   <!-- RIGA 4: Ultima notizia -->
   <div class="box-row">
-    <div class="section" id="lastNews">
-      <!-- Ultima news da JS -->
+    <div class="section">
+      <div class="section-title-icon">🗞️ Ultima Notizia</div>
+      <p>
+        Ottima prestazione in casa contro Olimpia Verona. Vittoria 2 - 1 con Luca Neri MVP.
+      </p>
     </div>
   </div>
 
-  <!-- RIGA 5: Sponsor -->
+  <!-- RIGA 5: Sponsor carousel -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
       <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
-        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
-        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
       </div>
     </div>
   </div>
 
-  <!-- SCRIPT -->
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('popupMenu');
-      menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+      const menu = document.getElementById("popupMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
-
-    // Badge news
-    fetch("https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=news")
-      .then(res => res.json())
-      .then(data => {
-        const latestTitle = data[0].titolo;
-        if (localStorage.getItem("newsRead") !== latestTitle) {
-          document.getElementById("badgeNews").style.display = "inline";
-        }
-        document.getElementById("lastNews").innerHTML = `
-          <div class="section-title-icon">🗞️ Ultima Notizia</div>
-          <p><strong>${data[0].titolo}</strong></p>
-          <p>${data[0].contenuto}</p>
-        `;
-      });
-
-    // Prossima partita
-    fetch("https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=partite")
-      .then(res => res.json())
-      .then(data => {
-        const next = data.find(p => p.risultato === "");
-        const last = data.findLast(p => p.risultato && p.risultato !== "");
-
-        // box prossima
-        if (next) {
-          document.getElementById("matchDetails").innerHTML = `
-            <div class="section-title-icon">⚽️ Prossima Partita</div>
-            <p>${next.casa} - ${next.fuori}</p>
-            <p>${next.data}, ${next.ora}</p>
-          `;
-        }
-
-        // box risultato
-        if (last) {
-          document.getElementById("lastResultCard").innerHTML = `
-            <div class="result-row">
-              <img src="img/logo.png" class="team-logo">
-              <div class="result-score">${last.risultato}</div>
-              <img src="img/opponent.png" class="team-logo">
-            </div>
-            <div class="mvp" style="margin-top:8px;">
-              <strong>${last.casa}</strong> vs <strong>${last.fuori}</strong>
-            </div>
-          `;
-        }
-      });
   </script>
 </body>
 </html>
