@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>News - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1 class="page-title">News</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -21,12 +21,12 @@
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <!-- Contenitore notizie dinamiche -->
+  <!-- Sezione News -->
   <div class="box-row" id="newsContainer">
-    <p>Caricamento notizie...</p>
+    <!-- Le news verranno caricate qui via JS -->
   </div>
 
-  <!-- Footer sponsor -->
+  <!-- Footer Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -47,28 +47,23 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // URL del tuo Google Apps Script pubblicato
-    const SHEET_URL = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
+    const sheetURL = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
 
-    fetch(SHEET_URL)
-      .then(response => response.json())
+    fetch(sheetURL)
+      .then(res => res.json())
       .then(data => {
         const container = document.getElementById("newsContainer");
         container.innerHTML = "";
         data.news.forEach(n => {
-          const newsCard = document.createElement("div");
-          newsCard.className = "section";
-          newsCard.innerHTML = `
-            <img src="${n.img}" alt="${n.titolo}" class="team-logo">
-            <div class="section-title-icon"> ${n.titolo}</div>
+          const box = document.createElement("div");
+          box.className = "section";
+          box.innerHTML = `
+            <img src="img/${n.img}" alt="${n.titolo}" class="team-logo" />
+            <div class="section-title-icon">${n.titolo}</div>
             <p>${n.contenuto}</p>
           `;
-          container.appendChild(newsCard);
+          container.appendChild(box);
         });
-      })
-      .catch(err => {
-        document.getElementById("newsContainer").innerHTML = "Errore nel caricamento delle notizie.";
-        console.error("Errore nel caricamento delle news:", err);
       });
   </script>
 </body>
