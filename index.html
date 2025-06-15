@@ -103,5 +103,48 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
+  <script>
+  const NEWS_API_URL = "https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec";
+
+  async function checkNewNews() {
+    try {
+      const res = await fetch(NEWS_API_URL);
+      const data = await res.json();
+      const newsCount = data.length;
+
+      const savedCount = localStorage.getItem("lastNewsCount");
+
+      if (savedCount && Number(savedCount) < newsCount) {
+        showNewsBadge();
+      }
+
+      localStorage.setItem("lastNewsCount", newsCount);
+    } catch (e) {
+      console.error("Errore nel caricamento news:", e);
+    }
+  }
+
+  function showNewsBadge() {
+    const card = document.querySelector(".card[href='news.html']");
+    const menuLink = document.querySelector(".popup-menu a[href='news.html']");
+    
+    if (card) {
+      const badge = document.createElement("span");
+      badge.className = "badge-news";
+      badge.textContent = "•";
+      card.appendChild(badge);
+    }
+
+    if (menuLink) {
+      const badge = document.createElement("span");
+      badge.className = "badge-news";
+      badge.textContent = "•";
+      menuLink.appendChild(badge);
+    }
+  }
+
+  checkNewNews();
+</script>
+
 </body>
 </html>
