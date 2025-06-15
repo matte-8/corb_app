@@ -211,6 +211,11 @@ body {
 .sponsor-link:hover {
   text-decoration: underline;
 }
+.badge-news {
+  font-size: 12px;
+  margin-left: 4px;
+}
+
 
 @keyframes scroll {
   0% { transform: translateX(0); }
