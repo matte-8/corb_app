@@ -18,7 +18,7 @@
 
   <div class="popup-menu" id="popupMenu">
     <a href="index.html">🏠 Home</a>
-    <a href="news.html"> 🗞️News <span id="badgeNews" class="badge-news" style="display:none">NEW</span></a>
+    <a href="news.html">🗞️ News <span id="badgeNews" class="badge-news" style="display:none">NEW</span></a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">📅 Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
@@ -27,9 +27,10 @@
   <!-- RIGA 1: 3 Box -->
   <div class="box-row">
     <div class="grid-3">
-      <a href="news.html" class="card">
-        <div class="card-icon">🟢</div>
-        News <span id="badgeNewsCard" class="badge-news" style="display:none">NEW</span>
+      <a href="news.html" class="card card-news">
+        <span id="badgeNewsCard" class="badge-news badge-corner" style="display:none">NEW</span>
+        <div class="card-icon">🗞️</div>
+        News
       </a>
       <a href="squadra.html" class="card">
         <div class="card-icon">👥</div>
@@ -42,9 +43,47 @@
     </div>
   </div>
 
-  <!-- LE ALTRE SEZIONI DELLA HOME (prossima partita, risultato ecc.) -->
-  <!-- [OMESSO QUI PER BREVITÀ, MA MANTIENE TUTTO IL RESTO GIÀ PRESENTE NELLA TUA HOME] -->
+  <!-- RIGA 2: Prossima Partita + Risultato -->
+  <div class="box-row">
+    <div class="grid-custom">
+      <!-- Box 1: Prossima Partita -->
+      <a href="partite.html" class="card">
+        <div class="card-icon">📅</div>
+        Prossima Partita
+      </a>
 
+      <!-- Box 2: Risultato -->
+      <div class="card result-large">
+        <div class="result-row">
+          <img src="img/logo.png" alt="Corbiolo" class="team-logo">
+          <div class="result-score">2 - 1</div>
+          <img src="img/opponent.png" alt="Avversario" class="team-logo">
+        </div>
+        <div class="mvp">MVP: Luca Neri</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGA 3: Dettagli Prossima Partita -->
+  <div class="box-row">
+    <div class="section">
+      <div class="section-title-icon">⚽️ Prossima Partita</div>
+      <p>U.S. CORBIOLO - SENTINELLE F.C.</p>
+      <p>29 apr 2024, 18:30 · Stadio Comunale</p>
+    </div>
+  </div>
+
+  <!-- RIGA 4: Ultima Notizia -->
+  <div class="box-row">
+    <div class="section">
+      <div class="section-title-icon">🗞️ Ultima Notizia</div>
+      <p>
+        Ottima prestazione in casa contro Olimpia Verona. Vittoria 2 - 1 con Luca Neri MVP.
+      </p>
+    </div>
+  </div>
+
+  <!-- RIGA 5: Sponsor Carousel -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -65,7 +104,7 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Mostra il badge se nel foglio Google Sheet c'è una news con "NEW"
+    // Badge dinamico da Google Sheets
     fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
       .then(response => response.json())
       .then(data => {
