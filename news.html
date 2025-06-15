@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>News - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
   <header class="header">
-    <img src="img/logo2.png" alt="Logo" class="logo" />
+    <img src="img/logo.png" alt="Logo" class="logo">
     <h1 class="page-title">News</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -23,39 +21,61 @@
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <div class="box-row">
-    <div id="news-container"></div>
+  <div class="box-row" id="news-container">
+    <!-- Le notizie verranno caricate qui -->
+  </div>
+
+  <div class="footer">
+    <div class="sponsor-title">Sponsor</div>
+    <div class="carousel-wrapper">
+      <div class="carousel-content">
+        <img src="img/sponsor1.png" alt="Sponsor 1">
+        <img src="img/sponsor2.png" alt="Sponsor 2">
+        <img src="img/sponsor3.png" alt="Sponsor 3">
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
+      </div>
+    </div>
   </div>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("popupMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      const menu = document.getElementById('popupMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    const SHEET_API = "https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=news";
-
-    fetch(SHEET_API)
-      .then(res => res.json())
+    // Fetch dinamico da Google Sheets
+    fetch('https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec?sheet=news')
+      .then(response => response.json())
       .then(data => {
-        const container = document.getElementById("news-container");
-        container.innerHTML = "";
-        data.forEach(item => {
-          const box = document.createElement("div");
-          box.className = "section";
-          box.innerHTML = `
-            <div class="section-title-icon">🗞️ ${item.titolo}</div>
-            <p>${item.contenuto}</p>
-            ${item.immagine ? `<img src="${item.immagine}" style="max-width:100%; margin-top:8px;">` : ""}
-          `;
-          container.appendChild(box);
+        const container = document.getElementById('news-container');
+        data.forEach(news => {
+          const section = document.createElement('div');
+          section.className = 'section';
+
+          if (news.immagine) {
+            const img = document.createElement('img');
+            img.src = news.immagine;
+            img.className = 'team-logo';
+            section.appendChild(img);
+          }
+
+          const title = document.createElement('div');
+          title.className = 'section-title-icon';
+          title.textContent = news.titolo || 'Titolo';
+
+          const text = document.createElement('p');
+          text.textContent = news.testo || '';
+
+          section.appendChild(title);
+          section.appendChild(text);
+          container.appendChild(section);
         });
       })
       .catch(error => {
-        console.error("Errore nel caricamento delle news:", error);
+        console.error('Errore nel caricamento delle news:', error);
       });
   </script>
-localStorage.setItem("newsRead", data[0].titolo);
-
 </body>
 </html>
