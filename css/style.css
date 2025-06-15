@@ -94,6 +94,7 @@ body {
   padding: 14px;
   border-radius: 10px;
   text-align: center;
+  text-decoration: none;
   color: white;
   display: flex;
   flex-direction: column;
