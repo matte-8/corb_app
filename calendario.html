@@ -1,4 +1,3 @@
-<!-- calendario.html -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -7,52 +6,41 @@
   <title>Calendario - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .calendar-container {
+    #calendario {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .calendar-day {
-      background-color: #801e1e;
+    .cal-giorno {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #801e1e;
+      padding: 12px;
       border-radius: 10px;
-      padding: 10px;
-      color: white;
-      text-align: center;
-      position: relative;
     }
 
-    .calendar-date {
-      width: 28px;
-      height: 28px;
+    .cal-cerchio {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      line-height: 28px;
-      margin: 0 auto 6px;
+      background: gray;
+      color: white;
       font-weight: bold;
+      text-align: center;
+      line-height: 32px;
+      flex-shrink: 0;
     }
 
-    .casa {
-      background-color: #3ca0f8;
-    }
-
-    .trasferta {
-      background-color: #f6c744;
-      color: #000;
-    }
-
-    .calendar-info {
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .calendar-icon {
+    .cal-testo {
+      flex: 1;
       font-size: 16px;
-      margin-top: 4px;
+    }
+
+    .cal-icon {
+      margin-left: 8px;
     }
   </style>
 </head>
@@ -69,11 +57,13 @@
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">📅 Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
-    <a href="calendario.html">🗓 calendario</a>
+    <a href="calendario.html">🗓️ Calendario</a>
   </div>
 
-  <div class="calendar-container">
-    <div id="calendar" class="calendar-grid"></div>
+  <div class="box-row">
+    <div id="calendario">
+      <p style="text-align:center;">Caricamento partite...</p>
+    </div>
   </div>
 
   <script>
@@ -82,34 +72,42 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    const calendarEl = document.getElementById('calendar');
+    // Calendario dinamico
+    document.addEventListener("DOMContentLoaded", () => {
+      const calendarioContainer = document.getElementById("calendario");
+      calendarioContainer.innerHTML = "";
 
-    fetch('https://script.google.com/macros/s/YOUR_DEPLOYED_URL/exec')
-      .then(res => res.json())
-      .then(data => {
-        data.calendario.forEach(g => {
-          const giorno = document.createElement('div');
-          giorno.classList.add('calendar-day');
+      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec") // 🔁 Sostituisci con il tuo URL
+        .then((res) => res.json())
+        .then((data) => {
+          const eventi = data.calendario || [];
 
-          const dataNum = document.createElement('div');
-          dataNum.classList.add('calendar-date');
-          dataNum.classList.add(g.casa_fuori === 'casa' ? 'casa' : 'trasferta');
-          dataNum.textContent = new Date(g.data).getDate();
+          eventi.forEach(evento => {
+            const giorno = document.createElement("div");
+            giorno.classList.add("cal-giorno");
 
-          const info = document.createElement('div');
-          info.classList.add('calendar-info');
-          info.textContent = g.avversario;
+            const cerchio = document.createElement("div");
+            cerchio.classList.add("cal-cerchio");
+            cerchio.style.backgroundColor = evento.casa_fuori === "casa" ? "#0066cc" : "#ffcc00";
+            cerchio.textContent = new Date(evento.data).getDate();
 
-          const icon = document.createElement('div');
-          icon.classList.add('calendar-icon');
-          icon.textContent = g.casa_fuori === 'casa' ? '🏠' : '✈️';
+            const testo = document.createElement("div");
+            testo.classList.add("cal-testo");
+            testo.innerHTML = `
+              ${evento.data} - ${evento.avversario}
+              <span class="cal-icon">${evento.casa_fuori === "casa" ? "🏠" : "✈️"}</span>
+            `;
 
-          giorno.appendChild(dataNum);
-          giorno.appendChild(info);
-          giorno.appendChild(icon);
-          calendarEl.appendChild(giorno);
+            giorno.appendChild(cerchio);
+            giorno.appendChild(testo);
+            calendarioContainer.appendChild(giorno);
+          });
+        })
+        .catch(err => {
+          calendarioContainer.innerHTML = `<p style="text-align:center;">Errore nel caricamento</p>`;
+          console.error("Errore calendario:", err);
         });
-      });
+    });
   </script>
 </body>
 </html>
