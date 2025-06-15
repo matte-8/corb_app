@@ -1,15 +1,14 @@
-<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sponsor - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#660000">
   <link rel="icon" href="img/logo2.png" type="image/png">
 </head>
-<body>
+<body onload="caricaSponsor()">
   <header class="header">
     <img src="img/logo.png" alt="Logo" class="logo">
     <h1 class="page-title">Sponsor</h1>
@@ -18,29 +17,23 @@
 
   <div class="popup-menu" id="popupMenu">
     <a href="index.html">🏠 Home</a>
-    <a href="news.html"> 🗞️ News <span id="badgeNews" class="badge-news" style="display:none;">🔴</span> </a>
+    <a href="news.html">🗞️ News</a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">📅 Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <!-- Sezione Sponsor -->
-  <div class="box-row">
-    <div class="grid-sponsor">
-      <div class="card sponsor-box">
-        <img src="img/sponsor1.png" alt="Sponsor 1" class="sponsor-icon">
-        <div class="sponsor-name">Sponsor 1</div>
-        <a href="https://www.sponsor1.com" class="sponsor-link" target="_blank">www.sponsor1.com</a>
-      </div>
-      <div class="card sponsor-box">
-        <img src="img/sponsor2.png" alt="Sponsor 2" class="sponsor-icon">
-        <div class="sponsor-name">Sponsor 2</div>
-        <a href="https://www.sponsor2.com" class="sponsor-link" target="_blank">www.sponsor2.com</a>
-      </div>
-      <div class="card sponsor-box">
-        <img src="img/sponsor3.png" alt="Sponsor 3" class="sponsor-icon">
-        <div class="sponsor-name">Sponsor 3</div>
-        <a href="https://www.sponsor3.com" class="sponsor-link" target="_blank">www.sponsor3.com</a>
+  <div class="box-row grid-sponsor" id="sponsorGrid">
+    <!-- Sponsor caricati dinamicamente -->
+  </div>
+
+  <div class="footer">
+    <div class="sponsor-title">Sponsor</div>
+    <div class="carousel-wrapper">
+      <div class="carousel-content">
+        <img src="img/sponsor1.png" alt="Sponsor 1">
+        <img src="img/sponsor2.png" alt="Sponsor 2">
+        <img src="img/sponsor3.png" alt="Sponsor 3">
       </div>
     </div>
   </div>
@@ -50,18 +43,24 @@
       const menu = document.getElementById('popupMenu');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-  </script>
-  <script>
-  // Mostra badge se c'è una news nuova
-  fetch("https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=news")
-    .then(res => res.json())
-    .then(data => {
-      const latestTitle = data[0].titolo;
-      if (localStorage.getItem("newsRead") !== latestTitle) {
-        document.getElementById("badgeNews").style.display = "inline";
-      }
-    });
-</script>
 
+    function caricaSponsor() {
+      fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
+        .then(r => r.json())
+        .then(data => {
+          const grid = document.getElementById('sponsorGrid');
+          data.sponsor.forEach(s => {
+            const box = document.createElement('div');
+            box.className = 'sponsor-box';
+            box.innerHTML = `
+              <img src="img/${s.logo}" class="sponsor-icon" alt="${s.nome}">
+              <div class="sponsor-name">${s.nome}</div>
+              <a class="sponsor-link" href="${s.link}" target="_blank">${s.link}</a>
+            `;
+            grid.appendChild(box);
+          });
+        });
+    }
+  </script>
 </body>
 </html>
