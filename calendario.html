@@ -1,172 +1,115 @@
-<!-- Calendario + Badge + Notizie collegate a Google Sheets -->
-<!-- Questo è un template base. Lo completeremo con il link al tuo foglio quando sei pronto. -->
-
+<!-- calendario.html -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendario - U.S. Corbiolo</title>
+  <title>Calendario - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .calendar {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: white;
+    .calendar-container {
       padding: 20px;
     }
-    .calendar-month {
-      font-weight: bold;
-      font-size: 22px;
-      margin: 20px 0 10px;
-    }
+
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 10px;
-    }
-    .calendar-day {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-    }
-    .home-match {
-      background-color: #3a9df8; /* Blu */
-    }
-    .away-match {
-      background-color: #f8c53a; /* Giallo */
-    }
-    .match-list {
       margin-top: 20px;
-      padding: 0 16px;
     }
-    .match-item {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 0;
-      align-items: center;
-      border-bottom: 1px solid #444;
-      padding-bottom: 6px;
-    }
-    .match-icon {
-      font-size: 18px;
-    }
-    .badge-news {
-      background: red;
-      color: white;
-      font-size: 12px;
-      padding: 2px 6px;
+
+    .calendar-day {
+      background-color: #801e1e;
       border-radius: 10px;
-      margin-left: 6px;
+      padding: 10px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .calendar-date {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      line-height: 28px;
+      margin: 0 auto 6px;
+      font-weight: bold;
+    }
+
+    .casa {
+      background-color: #3ca0f8;
+    }
+
+    .trasferta {
+      background-color: #f6c744;
+      color: #000;
+    }
+
+    .calendar-info {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .calendar-icon {
+      font-size: 16px;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <img src="img/logo2.png" class="logo" alt="Logo">
+    <img src="img/logo.png" alt="Logo" class="logo">
     <h1 class="page-title">Calendario</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
+
   <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html"> 🗞️ News <span id="badgeNews" class="badge-news" style="display:none;">🔴</span> </a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-      <a href="calendario.html">🗓 Calendario</a>
+    <a href="index.html">🏠 Home</a>
+    <a href="news.html">🗞️ News</a>
+    <a href="squadra.html">👥 Squadra</a>
+    <a href="partite.html">📅 Partite</a>
+    <a href="sponsor.html">💰 Sponsor</a>
+    <a href="calendario.html">🗓 calendario</a>
   </div>
 
-  <div class="calendar">
-    <div class="calendar-month">Giugno 2024</div>
-    <div class="calendar-grid">
-      <div class="calendar-day">S</div>
-      <div class="calendar-day">M</div>
-      <div class="calendar-day">T</div>
-      <div class="calendar-day">W</div>
-      <div class="calendar-day">T</div>
-      <div class="calendar-day">F</div>
-      <div class="calendar-day">S</div>
-
-      <!-- Blank days (from June 1 starts on Saturday) -->
-      <div class="calendar-day"></div>
-      <div class="calendar-day"></div>
-      <div class="calendar-day"></div>
-      <div class="calendar-day"></div>
-      <div class="calendar-day"></div>
-      <div class="calendar-day"></div>
-      <div class="calendar-day">1</div>
-      <div class="calendar-day">2</div>
-      <div class="calendar-day">3</div>
-      <div class="calendar-day">4</div>
-      <div class="calendar-day">5</div>
-      <div class="calendar-day">6</div>
-      <div class="calendar-day home-match">7</div>
-      <div class="calendar-day">8</div>
-      <div class="calendar-day">9</div>
-      <div class="calendar-day">10</div>
-      <div class="calendar-day">11</div>
-      <div class="calendar-day">12</div>
-      <div class="calendar-day away-match">14</div>
-      <div class="calendar-day">15</div>
-      <div class="calendar-day">16</div>
-      <div class="calendar-day">17</div>
-      <div class="calendar-day">18</div>
-      <div class="calendar-day">19</div>
-      <div class="calendar-day away-match">21</div>
-      <div class="calendar-day">22</div>
-      <div class="calendar-day">23</div>
-      <div class="calendar-day">24</div>
-      <div class="calendar-day">25</div>
-      <div class="calendar-day">26</div>
-      <div class="calendar-day home-match">28</div>
-      <div class="calendar-day">29</div>
-      <div class="calendar-day">30</div>
-    </div>
-  </div>
-
-  <div class="match-list">
-    <div class="match-item">
-      <div>Venerdì 7 Giugno</div><div class="match-icon">🏠</div>
-    </div>
-    <div class="match-item">
-      <div>Venerdì 14 Giugno</div><div class="match-icon">✈️</div>
-    </div>
-    <div class="match-item">
-      <div>Venerdì 21 Giugno</div><div class="match-icon">✈️</div>
-    </div>
-    <div class="match-item">
-      <div>Venerdì 28 Giugno</div><div class="match-icon">🏠</div>
-    </div>
+  <div class="calendar-container">
+    <div id="calendar" class="calendar-grid"></div>
   </div>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("popupMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      const menu = document.getElementById('popupMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Badge notifica news da localStorage
-    if (localStorage.getItem("newsViewed") !== "yes") {
-      document.getElementById("badgeNews").style.display = "inline-block";
-    }
+    const calendarEl = document.getElementById('calendar');
+
+    fetch('https://script.google.com/macros/s/YOUR_DEPLOYED_URL/exec')
+      .then(res => res.json())
+      .then(data => {
+        data.calendario.forEach(g => {
+          const giorno = document.createElement('div');
+          giorno.classList.add('calendar-day');
+
+          const dataNum = document.createElement('div');
+          dataNum.classList.add('calendar-date');
+          dataNum.classList.add(g.casa_fuori === 'casa' ? 'casa' : 'trasferta');
+          dataNum.textContent = new Date(g.data).getDate();
+
+          const info = document.createElement('div');
+          info.classList.add('calendar-info');
+          info.textContent = g.avversario;
+
+          const icon = document.createElement('div');
+          icon.classList.add('calendar-icon');
+          icon.textContent = g.casa_fuori === 'casa' ? '🏠' : '✈️';
+
+          giorno.appendChild(dataNum);
+          giorno.appendChild(info);
+          giorno.appendChild(icon);
+          calendarEl.appendChild(giorno);
+        });
+      });
   </script>
-
-  <script>
-  // Mostra badge se c'è una news nuova
-  fetch("https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=news")
-    .then(res => res.json())
-    .then(data => {
-      const latestTitle = data[0].titolo;
-      if (localStorage.getItem("newsRead") !== latestTitle) {
-        document.getElementById("badgeNews").style.display = "inline";
-      }
-    });
-</script>
-
 </body>
 </html>
