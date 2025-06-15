@@ -81,6 +81,12 @@ body {
   grid-template-columns: 1fr 2fr;
   gap: 10px;
 }
+.badge-news {
+  color: red;
+  font-size: 20px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
 
 /* Card Box */
 .card,
