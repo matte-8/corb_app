@@ -1,52 +1,82 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calendario - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
   <style>
-    #calendario {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .calendar-container {
+      padding: 16px;
     }
 
-    .cal-giorno {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #801e1e;
-      padding: 12px;
-      border-radius: 10px;
-    }
-
-    .cal-cerchio {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: gray;
-      color: white;
+    .calendar-title {
+      font-size: 22px;
       font-weight: bold;
       text-align: center;
-      line-height: 32px;
-      flex-shrink: 0;
+      margin-bottom: 14px;
     }
 
-    .cal-testo {
-      flex: 1;
+    .calendar-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .calendar-entry {
+      display: flex;
+      align-items: center;
+      background-color: #801e1e;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      color: white;
+      justify-content: space-between;
+    }
+
+    .calendar-day {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: gray;
+      color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .calendar-day.casa {
+      background-color: #3cb5f0;
+    }
+
+    .calendar-day.fuori {
+      background-color: #f4c542;
+    }
+
+    .calendar-info {
+      flex-grow: 1;
+      padding: 0 10px;
+    }
+
+    .calendar-info .avversario {
       font-size: 16px;
+      font-weight: bold;
     }
 
-    .cal-icon {
-      margin-left: 8px;
+    .calendar-info .data {
+      font-size: 14px;
+      color: #eee;
+    }
+
+    .calendar-icon {
+      font-size: 22px;
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1 class="page-title">Calendario</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -57,12 +87,26 @@
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">📅 Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
-    <a href="calendario.html">🗓️ Calendario</a>
   </div>
 
-  <div class="box-row">
-    <div id="calendario">
-      <p style="text-align:center;">Caricamento partite...</p>
+  <div class="calendar-container">
+    <div class="calendar-title">Prossime Partite</div>
+    <div class="calendar-grid" id="calendarList">
+      <p>Caricamento calendario...</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="sponsor-title">Sponsor</div>
+    <div class="carousel-wrapper">
+      <div class="carousel-content">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
+      </div>
     </div>
   </div>
 
@@ -72,42 +116,34 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Calendario dinamico
-    document.addEventListener("DOMContentLoaded", () => {
-      const calendarioContainer = document.getElementById("calendario");
-      calendarioContainer.innerHTML = "";
+    // CARICAMENTO CALENDARIO da Google Sheets
+    fetch("https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec")
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById("calendarList");
+        list.innerHTML = ""; // svuota
 
-      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec") // 🔁 Sostituisci con il tuo URL
-        .then((res) => res.json())
-        .then((data) => {
-          const eventi = data.calendario || [];
+        const partite = data.calendario || [];
 
-          eventi.forEach(evento => {
-            const giorno = document.createElement("div");
-            giorno.classList.add("cal-giorno");
+        partite.forEach(p => {
+          const giorno = new Date(p.data).getDate();
+          const tipo = p.casa_fuori.toLowerCase(); // "casa" o "fuori"
+          const coloreClasse = tipo === "casa" ? "casa" : "fuori";
+          const icona = tipo === "casa" ? "🏠" : "✈️";
 
-            const cerchio = document.createElement("div");
-            cerchio.classList.add("cal-cerchio");
-            cerchio.style.backgroundColor = evento.casa_fuori === "casa" ? "#0066cc" : "#ffcc00";
-            cerchio.textContent = new Date(evento.data).getDate();
-
-            const testo = document.createElement("div");
-            testo.classList.add("cal-testo");
-            testo.innerHTML = `
-              ${evento.data} - ${evento.avversario}
-              <span class="cal-icon">${evento.casa_fuori === "casa" ? "🏠" : "✈️"}</span>
-            `;
-
-            giorno.appendChild(cerchio);
-            giorno.appendChild(testo);
-            calendarioContainer.appendChild(giorno);
-          });
-        })
-        .catch(err => {
-          calendarioContainer.innerHTML = `<p style="text-align:center;">Errore nel caricamento</p>`;
-          console.error("Errore calendario:", err);
+          const div = document.createElement("div");
+          div.className = "calendar-entry";
+          div.innerHTML = `
+            <div class="calendar-day ${coloreClasse}">${giorno}</div>
+            <div class="calendar-info">
+              <div class="avversario">${p.avversario}</div>
+              <div class="data">${p.data}</div>
+            </div>
+            <div class="calendar-icon">${icona}</div>
+          `;
+          list.appendChild(div);
         });
-    });
+      });
   </script>
 </body>
 </html>
