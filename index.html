@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Home - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#660000">
-  <link rel="icon" href="img/logo2.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#660000" />
+  <link rel="icon" href="img/logo2.png" type="image/png" />
 </head>
 <body>
   <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1 class="page-title">Home</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -24,13 +24,12 @@
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <!-- RIGA 1: 3 Box -->
+  <!-- RIGA 1: 3 Card -->
   <div class="box-row">
     <div class="grid-3">
-      <a href="news.html" class="card card-news">
-        <span id="badgeNewsCard" class="badge-news badge-corner" style="display:none">NEW</span>
+      <a href="news.html" class="card">
         <div class="card-icon">🗞️</div>
-        News
+        News <span id="badgeNewsCard" class="badge-news" style="display:none">NEW</span>
       </a>
       <a href="squadra.html" class="card">
         <div class="card-icon">👥</div>
@@ -43,75 +42,112 @@
     </div>
   </div>
 
-  <!-- RIGA 2: Prossima Partita + Risultato -->
+  <!-- RIGA 2: Prossima partita + risultato -->
   <div class="box-row">
     <div class="grid-custom">
-      <!-- Box 1: Prossima Partita -->
-      <a href="partite.html" class="card">
+      <a href="partite.html" class="card" id="nextMatchCard">
         <div class="card-icon">📅</div>
         Prossima Partita
       </a>
-
-      <!-- Box 2: Risultato -->
-      <div class="card result-large">
-        <div class="result-row">
-          <img src="img/logo.png" alt="Corbiolo" class="team-logo">
-          <div class="result-score">2 - 1</div>
-          <img src="img/opponent.png" alt="Avversario" class="team-logo">
-        </div>
-        <div class="mvp">MVP: Luca Neri</div>
+      <div class="card result-large" id="lastResultCard">
+        <!-- Risultato verrà inserito via JS -->
       </div>
     </div>
   </div>
 
-  <!-- RIGA 3: Dettagli Prossima Partita -->
+  <!-- RIGA 3: Info Prossima Partita -->
   <div class="box-row">
-    <div class="section">
-      <div class="section-title-icon">⚽️ Prossima Partita</div>
-      <p>U.S. CORBIOLO - SENTINELLE F.C.</p>
-      <p>29 apr 2024, 18:30 · Stadio Comunale</p>
+    <div class="section" id="matchDetails">
+      <!-- Dettagli partita futura -->
     </div>
   </div>
 
   <!-- RIGA 4: Ultima Notizia -->
   <div class="box-row">
-    <div class="section">
-      <div class="section-title-icon">🗞️ Ultima Notizia</div>
-      <p>
-        Ottima prestazione in casa contro Olimpia Verona. Vittoria 2 - 1 con Luca Neri MVP.
-      </p>
+    <div class="section" id="latestNews">
+      <!-- News JS -->
     </div>
   </div>
 
-  <!-- RIGA 5: Sponsor Carousel -->
+  <!-- Footer Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
       <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
-        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
-        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
       </div>
     </div>
   </div>
 
   <script>
+    const sheetURL = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
+
     function toggleMenu() {
       const menu = document.getElementById('popupMenu');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Badge dinamico da Google Sheets
-    fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
-      .then(response => response.json())
+    function formatDate(iso) {
+      const date = new Date(iso);
+      return `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth()+1).toString().padStart(2,"0")}/${date.getFullYear()}`;
+    }
+
+    fetch(sheetURL)
+      .then(res => res.json())
       .then(data => {
-        const hasNew = data.news.some(n => n.nuovo === "TRUE");
-        if (hasNew) {
+        const oggi = new Date();
+
+        // --- Badge news se c'è almeno una nuova
+        if (data.news?.some(n => n.nuova === "TRUE")) {
           document.getElementById("badgeNews").style.display = "inline-block";
           document.getElementById("badgeNewsCard").style.display = "inline-block";
+        }
+
+        // --- Ultima news
+        const ultima = data.news?.[0];
+        if (ultima) {
+          document.getElementById("latestNews").innerHTML = `
+            <div class="section-title-icon">🗞️ Ultima Notizia</div>
+            <p><strong>${ultima.titolo}</strong></p>
+            <p>${ultima.contenuto}</p>
+          `;
+        }
+
+        // --- Prossima e ultima partita
+        const partiteOrdinate = data.partite
+          .map(p => ({ ...p, dataObj: new Date(p.data) }))
+          .sort((a, b) => a.dataObj - b.dataObj);
+
+        const prossima = partiteOrdinate.find(p => p.dataObj >= oggi);
+        const ultimaPartita = [...partiteOrdinate].reverse().find(p => p.dataObj < oggi);
+
+        // Prossima dettagli
+        if (prossima) {
+          document.getElementById("matchDetails").innerHTML = `
+            <div class="section-title-icon">⚽️ Prossima Partita</div>
+            <p>${prossima.casa} - ${prossima.fuori}</p>
+            <p>${formatDate(prossima.data)} · ore ${prossima.ora}</p>
+          `;
+        }
+
+        // Ultimo risultato
+        if (ultimaPartita) {
+          document.getElementById("lastResultCard").innerHTML = `
+            <div class="result-row">
+              <img src="img/${ultimaPartita.logocasa}" alt="${ultimaPartita.casa}" class="team-logo" />
+              <div class="result-score">${ultimaPartita.risultato}</div>
+              <img src="img/${ultimaPartita.logoavv}" alt="${ultimaPartita.fuori}" class="team-logo" />
+            </div>
+            <div class="result-names">
+              <div class="team-name">${ultimaPartita.casa}</div>
+              <div class="team-name">${ultimaPartita.fuori}</div>
+            </div>
+          `;
         }
       });
   </script>
