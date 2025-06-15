@@ -39,43 +39,63 @@
     </div>
   </div>
 
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('popupMenu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
+ <script>
+  function toggleMenu() {
+    const menu = document.getElementById('popupMenu');
+    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  }
 
-    // Fetch dinamico da Google Sheets
-    fetch('https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec?sheet=news')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('news-container');
-        data.forEach(news => {
-          const section = document.createElement('div');
-          section.className = 'section';
+  async function loadNews() {
+    const NEWS_API = "https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec";
+    try {
+      const res = await fetch(NEWS_API);
+      const data = await res.json();
 
-          if (news.immagine) {
-            const img = document.createElement('img');
-            img.src = news.immagine;
-            img.className = 'team-logo';
-            section.appendChild(img);
-          }
+      const container = document.getElementById("news-container");
+      container.innerHTML = "";
 
-          const title = document.createElement('div');
-          title.className = 'section-title-icon';
-          title.textContent = news.titolo || 'Titolo';
+      data.forEach(news => {
+        const section = document.createElement("div");
+        section.className = "section";
 
-          const text = document.createElement('p');
-          text.textContent = news.testo || '';
+        const img = document.createElement("img");
+        img.src = news.image;
+        img.alt = news.title;
+        img.className = "team-logo";
 
-          section.appendChild(title);
-          section.appendChild(text);
-          container.appendChild(section);
-        });
-      })
-      .catch(error => {
-        console.error('Errore nel caricamento delle news:', error);
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "section-title-icon";
+
+        const titleText = document.createElement("span");
+        titleText.textContent = news.title;
+
+        titleDiv.appendChild(titleText);
+
+        // Badge se è nuova
+        if (news.nuova === "✅" || news.nuova === "true" || news.nuova === "TRUE") {
+          const badge = document.createElement("span");
+          badge.textContent = " NUOVA";
+          badge.className = "badge-news";
+          titleDiv.appendChild(badge);
+        }
+
+        const content = document.createElement("p");
+        content.textContent = news.content;
+
+        section.appendChild(img);
+        section.appendChild(titleDiv);
+        section.appendChild(content);
+        container.appendChild(section);
       });
-  </script>
+    } catch (e) {
+      console.error("Errore caricamento notizie:", e);
+      document.getElementById("news-container").innerHTML =
+        "<div class='section'>Errore nel caricamento delle notizie. Riprova più tardi.</div>";
+    }
+  }
+
+  loadNews();
+</script>
+
 </body>
 </html>
