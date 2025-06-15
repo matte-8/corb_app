@@ -89,5 +89,17 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
   </script>
+  <script>
+  // Mostra badge se c'è una news nuova
+  fetch("https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=news")
+    .then(res => res.json())
+    .then(data => {
+      const latestTitle = data[0].titolo;
+      if (localStorage.getItem("newsRead") !== latestTitle) {
+        document.getElementById("badgeNews").style.display = "inline";
+      }
+    });
+</script>
+
 </body>
 </html>
