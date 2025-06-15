@@ -21,12 +21,12 @@
     <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <!-- RIGA NOTIZIE -->
-  <div class="box-row" id="news-container">
-    <!-- Le notizie verranno caricate qui via JS -->
+  <!-- Contenitore notizie dinamiche -->
+  <div class="box-row" id="newsContainer">
+    <p>Caricamento notizie...</p>
   </div>
 
-  <!-- CAROSELLO SPONSOR -->
+  <!-- Footer sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -46,54 +46,29 @@
       const menu = document.getElementById('popupMenu');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-  </script>
 
-  <!-- JS per caricare notizie e gestire badge -->
-  <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbwmdjLdIbdISpa4ISXRnMk-AreQSeCZggiaHI35rpkdQexhbLzVgEu-P1dLXCBj5B_qUA/exec";
-    const container = document.getElementById("news-container");
-    const lettoKey = "news_lette";
+    // URL del tuo Google Apps Script pubblicato
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
 
-    function getLetti() {
-      return JSON.parse(localStorage.getItem(lettoKey)) || [];
-    }
-
-    function setLetto(id) {
-      const letti = getLetti();
-      if (!letti.includes(id)) {
-        letti.push(id);
-        localStorage.setItem(lettoKey, JSON.stringify(letti));
-      }
-    }
-
-    function createNewsCard(news, id) {
-      const letti = getLetti();
-      const badge = !letti.includes(id) && news.nuova === "SI"
-        ? `<span class="badge-news">🟢 NUOVA</span>` : "";
-
-      const card = document.createElement("div");
-      card.className = "section";
-      card.innerHTML = `
-        <img src="${news.img}" alt="${news.titolo}" class="team-logo">
-        <div class="section-title-icon">${news.titolo} ${badge}</div>
-        <p>${news.testo}</p>
-      `;
-
-      card.onclick = () => {
-        setLetto(id);
-        card.querySelector(".badge-news")?.remove();
-      };
-
-      container.appendChild(card);
-    }
-
-    fetch(endpoint)
-      .then(res => res.json())
+    fetch(SHEET_URL)
+      .then(response => response.json())
       .then(data => {
-        const newsList = data.news; // Assicurati che il tuo foglio abbia intestazione 'news'
-        newsList.forEach((item, index) => {
-          createNewsCard(item, `news${index}`);
+        const container = document.getElementById("newsContainer");
+        container.innerHTML = "";
+        data.news.forEach(n => {
+          const newsCard = document.createElement("div");
+          newsCard.className = "section";
+          newsCard.innerHTML = `
+            <img src="${n.img}" alt="${n.titolo}" class="team-logo">
+            <div class="section-title-icon">🗞️ ${n.titolo}</div>
+            <p>${n.contenuto}</p>
+          `;
+          container.appendChild(newsCard);
         });
+      })
+      .catch(err => {
+        document.getElementById("newsContainer").innerHTML = "Errore nel caricamento delle notizie.";
+        console.error("Errore nel caricamento delle news:", err);
       });
   </script>
 </body>
