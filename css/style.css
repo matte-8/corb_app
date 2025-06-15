@@ -165,6 +165,42 @@ body {
   flex: 1;
   text-align: center;
 }
+#calendario {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cal-giorno {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #801e1e;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.cal-cerchio {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: gray;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  line-height: 32px;
+  flex-shrink: 0;
+}
+
+.cal-testo {
+  flex: 1;
+  font-size: 16px;
+}
+
+.cal-icon {
+  margin-left: 8px;
+}
 
 /* Sponsor carousel */
 .sponsor-title {
