@@ -1,4 +1,3 @@
-<!-- Pagina Partite -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -6,47 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Partite - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#660000">
+  <link rel="icon" href="img/logo2.png" type="image/png">
 </head>
-<body>
-   <header class="header">
+<body onload="caricaPartite()">
+  <header class="header">
     <img src="img/logo.png" alt="Logo" class="logo">
     <h1 class="page-title">Partite</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
-    
-    <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html"> 🗞️ News <span id="badgeNews" class="badge-news" style="display:none;">🔴</span> </a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">📅 Partite</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-    </div>
 
-  <div class="box-row">
-    <div class="section-title-icon">📅 Prossime Partite</div>
-    <div class="section">
-      <p>15 giu 2024, 18:00 · Campo Sportivo Comunale</p>
-      <p>Avversario: Leoni FC</p>
-    </div>
-    <div class="section">
-      <p>22 giu 2024, 18:00 · Stadio Esterno</p>
-      <p>Avversario: Tigrotti Club</p>
-    </div>
+  <div class="popup-menu" id="popupMenu">
+    <a href="index.html">🏠 Home</a>
+    <a href="news.html">🗞️ News</a>
+    <a href="squadra.html">👥 Squadra</a>
+    <a href="partite.html">📅 Partite</a>
+    <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <div class="box-row">
-    <div class="section-title-icon">🕹️ Ultima Partita</div>
-    <div class="section result-box">
-      <div class="result-row">
-        <img src="img/logo.png" alt="Corbiolo" class="team-logo">
-        <div class="result-score">3 - 2</div>
-        <img src="img/sponsor1.png" alt="Tigrotti" class="team-logo">
-      </div>
-      <div class="mvp">MVP: Giovanni Verdi</div>
-    </div>
+  <div class="box-row" id="matchContainer">
+    <!-- Le partite verranno caricate qui -->
   </div>
 
-    <!-- RIGA 5: Sponsor Carousel -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -54,10 +35,6 @@
         <img src="img/sponsor1.png" alt="Sponsor 1">
         <img src="img/sponsor2.png" alt="Sponsor 2">
         <img src="img/sponsor3.png" alt="Sponsor 3">
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
-         <img src="img/sponsor2.png" alt="Sponsor 2 clone">
-         <img src="img/sponsor3.png" alt="Sponsor 3 clone">
-        
       </div>
     </div>
   </div>
@@ -67,18 +44,31 @@
       const menu = document.getElementById('popupMenu');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
-  </script>
-  <script>
-  // Mostra badge se c'è una news nuova
-  fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
-    .then(res => res.json())
-    .then(data => {
-      const latestTitle = data[0].titolo;
-      if (localStorage.getItem("newsRead") !== latestTitle) {
-        document.getElementById("badgeNews").style.display = "inline";
-      }
-    });
-</script>
 
+    function caricaPartite() {
+      fetch("https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec")
+        .then(r => r.json())
+        .then(data => {
+          const matchDiv = document.getElementById('matchContainer');
+          data.partite.forEach(p => {
+            const isCasa = p.casa_fuori.toLowerCase() === "casa";
+            const icon = isCasa ? "🏠" : "✈️";
+            const color = isCasa ? "#3399ff" : "#ffd700";
+
+            const box = document.createElement('div');
+            box.className = 'section';
+            box.innerHTML = `
+              <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">
+                <span style="display:inline-block; width:24px; height:24px; background:${color}; border-radius:50%; text-align:center; line-height:24px;">${p.data.split("-")[2]}</span>
+                ${p.data} - ${p.ora || ''}
+              </div>
+              <p>${p.avversario}</p>
+              <div style="font-size: 20px;">${icon}</div>
+            `;
+            matchDiv.appendChild(box);
+          });
+        });
+    }
+  </script>
 </body>
 </html>
