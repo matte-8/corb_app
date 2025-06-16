@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const risultatoContainer = document.getElementById("risultatoContainer");
 
   fetch(
-    "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec"
-  )
+    "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";  )
     .then((res) => res.json())
     .then((data) => {
       const partite = data.partite || [];
