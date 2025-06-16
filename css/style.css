@@ -36,7 +36,16 @@ body {
   font-size: 24px;
   cursor: pointer;
 }
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
+.install-icon {
+  font-size: 22px;
+  cursor: pointer;
+}
 /* Menu popup */
 .popup-menu {
   display: none;
