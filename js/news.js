@@ -1,47 +1,57 @@
-const urlNews = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
-const container = document.getElementById("news-container");
-const cacheKey = "corbiolo_news_cache";
+const newsCacheKey = "corbiolo_news_cache";
+const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const newsContainer = document.getElementById("newsContainer");
 
-// Mostra subito la cache se esiste
-const cache = localStorage.getItem(cacheKey);
-if (cache) {
+// 1. Carica dati da cache subito (offline / rapido)
+const cached = localStorage.getItem(newsCacheKey);
+if (cached) {
   try {
-    const parsed = JSON.parse(cache);
+    const parsed = JSON.parse(cached);
     renderNews(parsed);
   } catch (e) {
-    console.warn("Errore nella cache news.");
+    console.warn("Errore parsing cache news", e);
   }
 }
 
-// Carica dati aggiornati
-fetch(urlNews)
-  .then(res => res.json())
-  .then(data => {
-    localStorage.setItem(cacheKey, JSON.stringify(data));
-    renderNews(data);
-  })
-  .catch(() => {
-    if (!cache) container.innerHTML = "Errore nel caricamento delle notizie.";
-  });
-
-function renderNews(data) {
-  if (!data.news || data.news.length === 0) {
-    container.innerHTML = "Nessuna notizia disponibile.";
+// 2. Funzione per disegnare le notizie
+function renderNews(newsArray) {
+  if (!newsArray || newsArray.length === 0) {
+    newsContainer.innerHTML = "<p>Nessuna notizia disponibile.</p>";
     return;
   }
 
-  const html = data.news
-    .map(n => `
+  const html = newsArray
+    .map(item => `
       <div class="section">
-        <div class="section-title-icon">
-          🗞️ ${n.nuova === "TRUE" ? '<span class="badge-news">NEW</span>' : ''}
-        </div>
-        <p><strong>${n.titolo}</strong></p>
-        <p>${n.contenuto}</p>
-        ${n.img ? `<img src="img/${n.img}" alt="${n.titolo}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
+        <img src="img/${item.img}" alt="${item.titolo}" class="team-logo" />
+        <div class="section-title-icon">${item.titolo} ${item.nuova === "TRUE" ? '<span class="badge-news">NEW</span>' : ''}</div>
+        <p>${item.contenuto}</p>
       </div>
     `)
     .join("");
 
-  container.innerHTML = html;
+  newsContainer.innerHTML = html;
+}
+
+// 3. Se ricevo richiesta di aggiornamento da Admin
+document.addEventListener("aggiornaNews", () => {
+  aggiornaNewsDaRemoto();
+});
+
+// 4. Funzione per aggiornare i dati da remoto
+function aggiornaNewsDaRemoto() {
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(data => {
+      if (data.news) {
+        localStorage.setItem(newsCacheKey, JSON.stringify(data.news));
+        renderNews(data.news);
+      } else {
+        newsContainer.innerHTML = "<p>Errore: dati news non trovati.</p>";
+      }
+    })
+    .catch(err => {
+      console.error("Errore aggiornamento news:", err);
+      if (!cached) newsContainer.innerHTML = "<p>Errore nel caricamento.</p>";
+    });
 }
