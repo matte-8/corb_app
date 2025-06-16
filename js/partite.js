@@ -1,54 +1,40 @@
-const urlPartite = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const cacheKey = "corbiolo_partite_cache";
 const calendarioContainer = document.getElementById("calendarioContainer");
 const risultatoContainer = document.getElementById("risultatoContainer");
 const prossimaInfo = document.getElementById("prossimaInfo");
+const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 
-const cacheKey = "corbiolo_partite_cache";
-
-// 1. Mostra la cache subito
-const cache = localStorage.getItem(cacheKey);
-if (cache) {
+// 1. Prova subito a usare la cache
+const cached = localStorage.getItem(cacheKey);
+if (cached) {
   try {
-    const parsed = JSON.parse(cache);
-    renderPartite(parsed);
+    const data = JSON.parse(cached);
+    renderPartite(data);
   } catch (e) {
     console.warn("Errore cache partite:", e);
   }
 }
 
-// 2. Aggiorna live dai dati
-fetch(urlPartite)
-  .then(res => res.json())
-  .then(data => {
-    localStorage.setItem(cacheKey, JSON.stringify(data));
-    renderPartite(data);
-  })
-  .catch(err => {
-    console.error("Errore nel caricamento live:", err);
-    if (!cache) {
-      calendarioContainer.innerHTML = "Errore nel caricamento.";
-    }
-  });
-
-// 3. Funzione per mostrare i dati
+// 2. Rendering partite
 function renderPartite(data) {
   const partite = data.partite || [];
   const calendario = data.calendario || [];
   const oggi = new Date();
 
+  risultatoContainer.innerHTML = "";
+  calendarioContainer.innerHTML = "";
+  prossimaInfo.innerHTML = "";
+
+  // Ultima e prossima partita
   let ultima = null;
   let prossima = null;
 
-  partite.forEach(p => {
+  partite.forEach((p) => {
     const dataP = new Date(p.data);
     if (dataP < oggi) {
-      if (!ultima || dataP > new Date(ultima.data)) {
-        ultima = p;
-      }
+      if (!ultima || dataP > new Date(ultima.data)) ultima = p;
     } else {
-      if (!prossima || dataP < new Date(prossima.data)) {
-        prossima = p;
-      }
+      if (!prossima || dataP < new Date(prossima.data)) prossima = p;
     }
   });
 
@@ -75,8 +61,8 @@ function renderPartite(data) {
     `;
   }
 
-  calendarioContainer.innerHTML = ""; // Pulisce prima
-  calendario.forEach(p => {
+  // Calendario griglia
+  calendario.forEach((p) => {
     const colore = p.casa_fuori.toLowerCase() === "casa" ? "#3399ff" : "#ffd700";
     const icona = p.casa_fuori.toLowerCase() === "casa" ? "🏠" : "✈️";
     const giorno = new Date(p.data).getDate();
@@ -91,3 +77,23 @@ function renderPartite(data) {
     calendarioContainer.appendChild(box);
   });
 }
+
+// 3. Aggiorna live da Sheets
+function aggiornaPartiteDaRemoto() {
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(data => {
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+      renderPartite(data);
+    })
+    .catch(() => {
+      if (!cached) {
+        calendarioContainer.innerHTML = "<p>Errore nel caricamento.</p>";
+      }
+    });
+}
+
+// 4. Ascolta evento da admin
+document.addEventListener("aggiornaPartite", () => {
+  aggiornaPartiteDaRemoto();
+});
