@@ -19,24 +19,25 @@
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">⚽️ Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
-    <a href="calendario.html">🗓 calendario</a>
-
+    <a href="calendario.html">🗓 Calendario</a>
   </div>
 
-  <div class="box-row" id="newsContainer">
+  <!-- Contenitore notizie -->
+  <div class="box-row" id="news-container">
     <p>Caricamento notizie...</p>
   </div>
 
+  <!-- Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
       <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
-        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
-        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
       </div>
     </div>
   </div>
@@ -46,48 +47,7 @@
       const menu = document.getElementById("popupMenu");
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
-
-    const url = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
-    const container = document.getElementById("newsContainer");
-
-    function renderNews(data) {
-      container.innerHTML = "";
-      data.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "section";
-        card.innerHTML = `
-          <img src="${item.img}" alt="${item.titolo}" class="team-logo">
-          <div class="section-title-icon">${item.titolo} ${item.nuova === "TRUE" ? '<span class="badge-news">NEW</span>' : ''}</div>
-          <p>${item.contenuto}</p>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // 1. Prova a caricare dalla memoria
-    const cached = localStorage.getItem("newsData");
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        renderNews(parsed);
-      } catch (e) {
-        console.error("Errore nel parsing della cache:", e);
-      }
-    }
-
-    // 2. Poi aggiorna da remoto
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        if (data.news) {
-          localStorage.setItem("newsData", JSON.stringify(data.news));
-          renderNews(data.news);
-        }
-      })
-      .catch(err => {
-        console.error("Errore fetch:", err);
-        if (!cached) container.innerHTML = "<p>Errore nel caricamento notizie.</p>";
-      });
   </script>
+  <script src="js/news.js"></script>
 </body>
 </html>
