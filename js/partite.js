@@ -1,40 +1,41 @@
-const cacheKey = "corbiolo_partite_cache";
+const cacheKeyPartite = "corbiolo_partite_cache";
+const urlPartite = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+
 const calendarioContainer = document.getElementById("calendarioContainer");
 const risultatoContainer = document.getElementById("risultatoContainer");
-const prossimaInfo = document.getElementById("prossimaInfo");
-const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const prossimaContainer = document.getElementById("prossimaInfo");
 
-// 1. Prova subito a usare la cache
-const cached = localStorage.getItem(cacheKey);
-if (cached) {
+// Mostra subito i dati dalla cache
+const cachedPartite = localStorage.getItem(cacheKeyPartite);
+if (cachedPartite) {
   try {
-    const data = JSON.parse(cached);
-    renderPartite(data);
+    const parsed = JSON.parse(cachedPartite);
+    renderPartite(parsed.partite, parsed.calendario);
   } catch (e) {
-    console.warn("Errore cache partite:", e);
+    console.warn("Errore nella cache partite:", e);
   }
 }
 
-// 2. Rendering partite
-function renderPartite(data) {
-  const partite = data.partite || [];
-  const calendario = data.calendario || [];
-  const oggi = new Date();
-
+// Funzione principale di rendering
+function renderPartite(partite, calendario) {
   risultatoContainer.innerHTML = "";
+  prossimaContainer.innerHTML = "";
   calendarioContainer.innerHTML = "";
-  prossimaInfo.innerHTML = "";
 
-  // Ultima e prossima partita
+  const oggi = new Date();
   let ultima = null;
   let prossima = null;
 
   partite.forEach((p) => {
     const dataP = new Date(p.data);
     if (dataP < oggi) {
-      if (!ultima || dataP > new Date(ultima.data)) ultima = p;
+      if (!ultima || dataP > new Date(ultima.data)) {
+        ultima = p;
+      }
     } else {
-      if (!prossima || dataP < new Date(prossima.data)) prossima = p;
+      if (!prossima || dataP < new Date(prossima.data)) {
+        prossima = p;
+      }
     }
   });
 
@@ -54,14 +55,13 @@ function renderPartite(data) {
   }
 
   if (prossima) {
-    prossimaInfo.innerHTML = `
+    prossimaContainer.innerHTML = `
       <div class="section-title-icon">⚽️ Prossima Partita</div>
       <p>${prossima.casa} - ${prossima.fuori}</p>
       <p>${prossima.data}, ${prossima.ora}</p>
     `;
   }
 
-  // Calendario griglia
   calendario.forEach((p) => {
     const colore = p.casa_fuori.toLowerCase() === "casa" ? "#3399ff" : "#ffd700";
     const icona = p.casa_fuori.toLowerCase() === "casa" ? "🏠" : "✈️";
@@ -78,22 +78,20 @@ function renderPartite(data) {
   });
 }
 
-// 3. Aggiorna live da Sheets
+// Carica dati aggiornati
 function aggiornaPartiteDaRemoto() {
-  fetch(apiUrl)
-    .then(res => res.json())
-    .then(data => {
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      renderPartite(data);
+  fetch(urlPartite)
+    .then((res) => res.json())
+    .then((data) => {
+      localStorage.setItem(cacheKeyPartite, JSON.stringify(data));
+      renderPartite(data.partite, data.calendario);
     })
-    .catch(() => {
-      if (!cached) {
-        calendarioContainer.innerHTML = "<p>Errore nel caricamento.</p>";
-      }
+    .catch((err) => {
+      console.error("Errore fetch partite:", err);
     });
 }
 
-// 4. Ascolta evento da admin
+// Evento manuale per aggiornare
 document.addEventListener("aggiornaPartite", () => {
   aggiornaPartiteDaRemoto();
 });
