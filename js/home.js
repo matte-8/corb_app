@@ -1,9 +1,22 @@
-const cacheKey = "corbiolo_home_cache";
-const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const cacheKey = "homeData";
+const container = document.getElementById("homeContainer");
 
-// 1. Applica dati nella home
+// Carica dati dalla cache
+const cached = localStorage.getItem(cacheKey);
+if (cached) {
+  try {
+    const data = JSON.parse(cached);
+    renderHome(data);
+  } catch (e) {
+    container.innerHTML = "Errore nel caricamento dati dalla cache.";
+  }
+} else {
+  container.innerHTML = "<p>Dati non trovati. Vai su Admin per aggiornare.</p>";
+}
+
+// Rendering della home
 function renderHome(data) {
-  // Ultima notizia
+  // Ultima news
   document.getElementById("newsTitle").textContent = data.news[0]?.titolo || "Nessuna notizia";
   document.getElementById("newsText").textContent = data.news[0]?.contenuto || "";
 
@@ -11,7 +24,7 @@ function renderHome(data) {
   const prossima = data.partite.find(p => p.futura === "TRUE");
   if (prossima) {
     document.getElementById("nextMatchTeams").textContent = `${prossima.casa} - ${prossima.fuori}`;
-    document.getElementById("nextMatchDate").textContent = `${prossima.data}, ${prossima.ora} · Stadio Comunale`;
+    document.getElementById("nextMatchDate").textContent = `${prossima.data}, ${prossima.ora}`;
   }
 
   // Ultima partita
@@ -24,23 +37,3 @@ function renderHome(data) {
     document.getElementById("awayLogo").src = `img/${ultima.logoavv}`;
   }
 }
-
-// 2. Prova a caricare dalla cache
-const cached = localStorage.getItem(cacheKey);
-if (cached) {
-  try {
-    const cachedData = JSON.parse(cached);
-    renderHome(cachedData);
-  } catch {}
-}
-
-// 3. Poi aggiorna live dai dati di Sheets
-fetch(apiUrl)
-  .then(res => res.json())
-  .then(data => {
-    renderHome(data);
-    localStorage.setItem(cacheKey, JSON.stringify(data));
-  })
-  .catch(err => {
-    console.warn("Errore durante aggiornamento live:", err);
-  });
