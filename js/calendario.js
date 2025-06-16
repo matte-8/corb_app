@@ -1,34 +1,52 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const calendarioContainer = document.getElementById("calendario");
+const urlCalendario = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
 
-  fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec")  // Inserisci qui il tuo URL
-    .then((res) => res.json())
-    .then((data) => {
-      const eventi = data.calendario || [];
+const calendarioContainer = document.getElementById("calendario-container");
 
-      eventi.forEach(evento => {
-        const giorno = document.createElement("div");
-        giorno.classList.add("cal-giorno");
+// Mostra dati dalla cache subito (se disponibili)
+const cached = localStorage.getItem("calendario");
+if (cached) {
+  try {
+    const parsed = JSON.parse(cached);
+    renderCalendario(parsed);
+  } catch (e) {
+    console.warn("Cache corrotta, ignorata.");
+  }
+}
 
-        const cerchio = document.createElement("div");
-        cerchio.classList.add("cal-cerchio");
-        cerchio.style.backgroundColor = evento.casa_fuori === "casa" ? "#0066cc" : "#ffcc00";
-        cerchio.textContent = new Date(evento.data).getDate();
+// Carica i dati aggiornati da Google Sheets
+fetch(urlCalendario)
+  .then((r) => r.json())
+  .then((data) => {
+    localStorage.setItem("calendario", JSON.stringify(data));
+    renderCalendario(data);
+  })
+  .catch(() => {
+    if (!cached) {
+      calendarioContainer.innerHTML = "Errore nel caricamento calendario.";
+    }
+  });
 
-        const testo = document.createElement("div");
-        testo.classList.add("cal-testo");
-        testo.innerHTML = `
-          ${evento.data} - ${evento.avversario}
-          <span class="cal-icon">${evento.casa_fuori === "casa" ? "🏠" : "✈️"}</span>
-        `;
+// Rendering
+function renderCalendario(data) {
+  if (!data.calendario || data.calendario.length === 0) {
+    calendarioContainer.innerHTML = "Nessuna partita trovata.";
+    return;
+  }
 
-        giorno.appendChild(cerchio);
-        giorno.appendChild(testo);
-        calendarioContainer.appendChild(giorno);
-      });
+  const calendarioHTML = data.calendario
+    .map((match) => {
+      const isCasa = match.casa_fuori.toLowerCase() === "casa";
+      const icon = isCasa ? "🏠" : "✈️";
+      return `
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #600;">
+          <div>
+            <strong>${match.data}</strong><br>${match.avversario}
+          </div>
+          <div style="font-size: 20px;">${icon}</div>
+        </div>
+      `;
     })
-    .catch(err => {
-      calendarioContainer.innerHTML = `<p style="text-align:center;">Errore nel caricamento</p>`;
-      console.error("Errore fetch calendario:", err);
-    });
-});
+    .join("");
+
+  calendarioContainer.innerHTML = calendarioHTML;
+}
