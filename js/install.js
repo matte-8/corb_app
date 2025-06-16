@@ -1,6 +1,6 @@
 let deferredPrompt;
 
-// Mostra il pulsante di installazione su Android/Chrome
+// Per Android / Chrome
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -18,7 +18,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
   }
 });
 
-// Mostra un popup elegante su iOS
+// Per iOS elegante
 window.addEventListener("load", () => {
   const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
   const isInStandalone = window.matchMedia('(display-mode: standalone)').matches;
@@ -37,27 +37,31 @@ function showIOSPrompt() {
       bottom: 20px;
       left: 20px;
       right: 20px;
-      background: #fff;
-      color: #000;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      background: white;
+      color: black;
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      font-size: 15px;
       z-index: 9999;
-      font-size: 14px;
+      animation: slideUp 0.4s ease-out;
     ">
-      📲 Per installare l'app premi <strong>Condividi</strong> <span style="font-size: 18px;">🔗</span> e poi <strong>Aggiungi a Home</strong>.
-      <button onclick="document.getElementById('iosPrompt').remove()" style="
-        float: right;
-        margin-left: 10px;
-        padding: 4px 8px;
-        font-size: 12px;
-        border: none;
-        background: #660000;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-      ">OK</button>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span>📲 Per installare l'app: premi <strong>Condividi</strong> 🔗 e poi <strong>Aggiungi a Home</strong>.</span>
+        <span style="cursor:pointer; font-weight: bold; margin-left: 15px;" onclick="document.getElementById('iosPrompt').remove()">✖️</span>
+      </div>
     </div>
   `;
+
+  // Aggiungi animazione CSS dinamicamente
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
   document.body.appendChild(popup);
 }
