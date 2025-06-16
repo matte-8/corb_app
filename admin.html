@@ -6,7 +6,39 @@
   <title>Admin - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    #adminContent { display: none; padding-top:80px; }
+    details.admin-block {
+      background: #801e1e;
+      color: white;
+      margin: 16px;
+      border-radius: 8px;
+      padding: 8px;
+    }
+    .admin-title {
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 8px 0;
+    }
+    .section-list {
+      margin-top: 12px;
+      border-top: 1px solid #ffcc00;
+      padding-top: 10px;
+    }
+    .section input, .section textarea, .section select {
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+    }
+    .section button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      background: #ffcc00;
+      color: #000;
+      cursor: pointer;
+    }
     #passwordPrompt {
       position: fixed; top:0; left:0; right:0; bottom:0;
       background: rgba(0,0,0,0.9);
@@ -18,10 +50,7 @@
     #passwordPrompt button {
       padding:10px; font-size:16px; margin-top:10px;
     }
-    .section { margin:16px; padding:14px; background:#801e1e; border-radius:8px; }
-    .section-title-icon { font-size:18px; margin-bottom:8px; }
-    .section input, .section textarea { width:100%; margin-bottom:8px; padding:8px; border-radius:4px; border:none; }
-    .section button { padding:10px 16px; border:none; border-radius:4px; background:#ffcc00; color:#000; cursor:pointer; }
+    #adminContent { display: none; padding-top:80px; }
   </style>
 </head>
 <body>
@@ -47,52 +76,26 @@
       <a href="admin.html">🔐 Admin</a>
     </div>
 
-    <div class="section">
-      <div class="section-title-icon">🔄 Aggiorna Home</div>
-      <button onclick="clearCache('corbiolo_home_cache')">Aggiorna Home</button>
-    </div>
-    <div class="section">
-      <div class="section-title-icon">🆕 Inserisci News</div>
-      <input type="text" id="newsTitleInput" placeholder="Titolo" />
-      <textarea id="newsTextInput" placeholder="Corpo notizia"></textarea>
-      <button onclick="salvaNews()">Salva News</button>
-    </div>
-    <div class="section">
-      <div class="section-title-icon">👤 Aggiungi Giocatore</div>
-      <input type="text" id="nomeGiocatore" placeholder="Nome" />
-      <input type="text" id="ruoloGiocatore" placeholder="Ruolo" />
-      <input type="number" id="numeroGiocatore" placeholder="Numero" />
-      <input type="text" id="fotoGiocatore" placeholder="File immagine (es: gioc1.png)" />
-      <button onclick="salvaGiocatore()">Aggiungi Giocatore</button>
-    </div>
-    <div class="section">
-      <div class="section-title-icon">💼 Aggiungi Sponsor</div>
-      <input type="text" id="nomeSponsor" placeholder="Nome" />
-      <input type="text" id="logoSponsor" placeholder="File logo (es: logo.png)" />
-      <input type="url" id="linkSponsor" placeholder="Link (https://...)" />
-      <button onclick="salvaSponsor()">Aggiungi Sponsor</button>
-    </div>
-    <div class="section">
-      <div class="section-title-icon">📅 Aggiungi Partita</div>
-      <input type="date" id="dataPartita" />
-      <input type="time" id="oraPartita" />
-      <input type="text" id="casaPartita" placeholder="Squadra Casa" />
-      <input type="text" id="logoCasaPartita" placeholder="Logo Casa (es: casa.png)" />
-      <input type="text" id="fuoriPartita" placeholder="Squadra Fuori" />
-      <input type="text" id="logoFuoriPartita" placeholder="Logo Fuori (es: fuori.png)" />
-      <input type="text" id="risultatoPartita" placeholder="Risultato (es: 2‑1)" />
-      <button onclick="salvaPartita()">Aggiungi Partita</button>
-    </div>
-    <div class="section">
-      <div class="section-title-icon">🗓 Aggiungi Evento Calendario</div>
-      <input type="date" id="dataCalendario" />
-      <input type="text" id="avversarioCalendario" placeholder="Avversario" />
-      <select id="casaFuoriCalendario">
-        <option value="casa">Casa</option>
-        <option value="fuori">Fuori</option>
-      </select>
-      <button onclick="salvaCalendario()">Aggiungi Evento</button>
-    </div>
+    <details open class="admin-block">
+      <summary class="admin-title">📥 Inserisci Nuovi Dati</summary>
+      <div class="section-list">
+        <!-- esempio News -->
+        <div class="section">
+          <div class="section-title-icon">🆕 Inserisci News</div>
+          <input type="text" id="newsTitleInput" placeholder="Titolo" />
+          <textarea id="newsTextInput" placeholder="Corpo notizia"></textarea>
+          <button onclick="salvaNews()">Salva News</button>
+        </div>
+        <!-- Altri moduli possono essere aggiunti qui -->
+      </div>
+    </details>
+
+    <details class="admin-block">
+      <summary class="admin-title">🛠️ Modifica o Elimina Dati</summary>
+      <div class="section-list">
+        <p>Funzionalità in arrivo...</p>
+      </div>
+    </details>
 
     <div class="footer">
       <div class="sponsor-title">Sponsor</div>
@@ -111,19 +114,12 @@
       const m = document.getElementById("popupMenu");
       m.style.display = m.style.display === "flex" ? "none" : "flex";
     }
-
     function checkPassword() {
       if (document.getElementById("adminPass").value === "corb25") {
         document.getElementById("passwordPrompt").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
       } else alert("Password errata");
     }
-
-    function clearCache(key) {
-      localStorage.removeItem(key);
-      alert("Cache rimossa: " + key);
-    }
-
     function salvaNews() {
       const t = document.getElementById("newsTitleInput").value.trim();
       const c = document.getElementById("newsTextInput").value.trim();
@@ -134,68 +130,6 @@
       alert("News salvata");
       document.getElementById("newsTitleInput").value = "";
       document.getElementById("newsTextInput").value = "";
-    }
-
-    function salvaGiocatore(){
-  const nome = document.getElementById("nomeGiocatore").value.trim();
-  const ruolo = document.getElementById("ruoloGiocatore").value.trim();
-  const numero = document.getElementById("numeroGiocatore").value.trim();
-  let foto = document.getElementById("fotoGiocatore").value.trim();
-
-  if (!nome || !ruolo || !numero) {
-    alert("Compila almeno nome, ruolo e numero");
-    return;
-  }
-
-  if (!foto) foto = "default.png"; // Immagine di default se non inserita
-
-  const arr = JSON.parse(localStorage.getItem("giocatori") || "[]");
-  arr.push({ nome, ruolo, numero, foto });
-  localStorage.setItem("giocatori", JSON.stringify(arr));
-  alert("Giocatore aggiunto");
-
-  ["nomeGiocatore", "ruoloGiocatore", "numeroGiocatore", "fotoGiocatore"].forEach(id => {
-    document.getElementById(id).value = "";
-  });
-}
-
-
-    function salvaSponsor(){
-      const n = document.getElementById("nomeSponsor").value.trim();
-      const l = document.getElementById("logoSponsor").value.trim();
-      const u = document.getElementById("linkSponsor").value.trim();
-      if (!n||!l||!u) return alert("Compila tutti");
-      const arr = JSON.parse(localStorage.getItem("sponsor") || "[]");
-      arr.push({ nome:n, logo:l, link:u });
-      localStorage.setItem("sponsor", JSON.stringify(arr));
-      alert("Sponsor aggiunto");
-      ["nomeSponsor","logoSponsor","linkSponsor"].forEach(i=>document.getElementById(i).value="");
-    }
-
-    function salvaPartita(){
-      const d = document.getElementById("dataPartita").value;
-      const o = document.getElementById("oraPartita").value;
-      const casa = document.getElementById("casaPartita").value.trim();
-      const logoCasa = document.getElementById("logoCasaPartita").value.trim();
-      const fuori = document.getElementById("fuoriPartita").value.trim();
-      const logoFuori = document.getElementById("logoFuoriPartita").value.trim();
-      const ris = document.getElementById("risultatoPartita").value.trim();
-      if (!d||!o||!casa||!logoCasa||!fuori||!logoFuori) return alert("Inserisci data, ora, squadre e loghi");
-      const arr = JSON.parse(localStorage.getItem("partite") || "[]");
-      arr.push({ data:d, ora:o, casa, logocasa:logoCasa, fuori, logoavv:logoFuori, risultato:ris });
-      localStorage.setItem("partite", JSON.stringify(arr));
-      alert("Partita aggiunta");
-    }
-
-    function salvaCalendario(){
-      const d = document.getElementById("dataCalendario").value;
-      const avv = document.getElementById("avversarioCalendario").value.trim();
-      const cf = document.getElementById("casaFuoriCalendario").value;
-      if (!d||!avv) return alert("Compila tutti");
-      const arr = JSON.parse(localStorage.getItem("calendario") || "[]");
-      arr.push({ data:d, avversario:avv, casa_fuori:cf });
-      localStorage.setItem("calendario", JSON.stringify(arr));
-      alert("Evento aggiunto");
     }
   </script>
 </body>
