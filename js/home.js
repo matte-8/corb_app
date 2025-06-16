@@ -1,60 +1,43 @@
 const cacheKey = "corbiolo_home_cache";
 const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 
-// Funzione per mostrare i dati nella home
+// 1. Rendering HTML
 function renderHome(data) {
-  // Ultima notizia
-  const news = data.news?.[0];
-  document.getElementById("newsTitle").textContent = news?.titolo || "Nessuna notizia disponibile.";
-  document.getElementById("newsText").textContent = news?.contenuto || "";
+  // Ultima News
+  document.getElementById("newsTitle").textContent = data.news?.[0]?.titolo || "Nessuna notizia";
+  document.getElementById("newsText").textContent = data.news?.[0]?.contenuto || "";
 
   // Prossima partita
-  const prossima = data.partite?.find(p => p.futura === "TRUE");
+  const prossima = (data.partite || []).find(p => p.futura === "TRUE");
   if (prossima) {
-    document.getElementById("prossimaInfo").innerHTML = `
-      <div class="section-title-icon">⚽️ Prossima Partita</div>
-      <p>${prossima.casa} - ${prossima.fuori}</p>
-      <p>${prossima.data}, ${prossima.ora} · Stadio Comunale</p>
-    `;
+    document.getElementById("nextMatchTeams").textContent = `${prossima.casa} - ${prossima.fuori}`;
+    document.getElementById("nextMatchDate").textContent = `${prossima.data}, ${prossima.ora} · Stadio Comunale`;
   }
 
-  // Ultima partita
-  const ultima = data.partite?.filter(p => p.risultato)?.reverse()?.[0];
+  // Ultimo risultato
+  const ultimeGiocate = (data.partite || []).filter(p => p.risultato).reverse();
+  const ultima = ultimeGiocate[0];
   if (ultima) {
-    document.getElementById("risultatoContainer").innerHTML = `
-      <div class="card result-large">
-        <div class="result-row">
-          <img src="img/${ultima.logocasa}" alt="Casa" class="team-logo" />
-          <div class="result-score">${ultima.risultato}</div>
-          <img src="img/${ultima.logoavv}" alt="Avversario" class="team-logo" />
-        </div>
-        <div class="result-names">
-          <div class="team-name">${ultima.casa}</div>
-          <div class="team-name">${ultima.fuori}</div>
-        </div>
-      </div>
-    `;
-  }
-
-  // Mostra badge "NEW" se ci sono news nuove
-  const hasNew = data.news?.some(n => n.nuova === "TRUE");
-  if (hasNew) {
-    document.getElementById("badgeNewsCard").style.display = "inline-block";
+    document.getElementById("homeTeam").textContent = ultima.casa;
+    document.getElementById("awayTeam").textContent = ultima.fuori;
+    document.getElementById("lastResultScore").textContent = ultima.risultato;
+    document.getElementById("homeLogo").src = `img/${ultima.logocasa}`;
+    document.getElementById("awayLogo").src = `img/${ultima.logoavv}`;
   }
 }
 
-// 1. Carica dati dalla cache
+// 2. Mostra dati dalla cache subito (fallback)
 const cached = localStorage.getItem(cacheKey);
 if (cached) {
   try {
     const parsed = JSON.parse(cached);
     renderHome(parsed);
   } catch (e) {
-    console.warn("Errore nel parsing cache:", e);
+    console.warn("Errore cache home.");
   }
 }
 
-// 2. Carica dati aggiornati da remoto
+// 3. Aggiorna con i dati live da Sheets
 fetch(apiUrl)
   .then(res => res.json())
   .then(data => {
@@ -62,5 +45,5 @@ fetch(apiUrl)
     localStorage.setItem(cacheKey, JSON.stringify(data));
   })
   .catch(err => {
-    console.error("Errore aggiornamento dati:", err);
+    console.error("Errore aggiornamento dati home:", err);
   });
