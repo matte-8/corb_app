@@ -6,71 +6,45 @@
   <title>Calendario - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .calendar-container {
-      padding: 16px;
-    }
-
-    .calendar-title {
-      font-size: 22px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
     .calendar-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .calendar-entry {
-      display: flex;
-      align-items: center;
-      background-color: #801e1e;
-      border-radius: 10px;
-      padding: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      color: white;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      text-align: center;
+      font-size: 14px;
+      margin: 12px;
     }
 
     .calendar-day {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background-color: gray;
-      color: black;
+      background: #801e1e;
+      padding: 8px;
+      border-radius: 8px;
+      min-height: 60px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+    }
+
+    .day-number {
       font-weight: bold;
     }
 
-    .calendar-day.casa {
-      background-color: #3cb5f0;
+    .match-home {
+      background-color: #3399ff;
+      color: black;
+      margin-top: 4px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 11px;
     }
 
-    .calendar-day.fuori {
-      background-color: #f4c542;
-    }
-
-    .calendar-info {
-      flex-grow: 1;
-      padding: 0 10px;
-    }
-
-    .calendar-info .avversario {
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .calendar-info .data {
-      font-size: 14px;
-      color: #eee;
-    }
-
-    .calendar-icon {
-      font-size: 22px;
+    .match-away {
+      background-color: #ffd700;
+      color: black;
+      margin-top: 4px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 11px;
     }
   </style>
 </head>
@@ -87,11 +61,13 @@
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">⚽️ Partite</a>
     <a href="sponsor.html">💰 Sponsor</a>
+    <a href="calendario.html">🗓 Calendario</a>
   </div>
 
-  <div class="calendar-container">
-    <div class="calendar-grid" id="calendarList">
-      <p>Caricamento calendario...</p>
+  <div class="box-row">
+    <div class="section">
+      <div class="section-title-icon">📆 Calendario</div>
+      <div id="calendarioGrid">Caricamento calendario...</div>
     </div>
   </div>
 
@@ -99,51 +75,19 @@
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
       <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1" />
-        <img src="img/sponsor2.png" alt="Sponsor 2" />
-        <img src="img/sponsor3.png" alt="Sponsor 3" />
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
-        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
-        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
+        <img src="img/sponsor1.png" alt="Sponsor 1">
+        <img src="img/sponsor2.png" alt="Sponsor 2">
+        <img src="img/sponsor3.png" alt="Sponsor 3">
       </div>
     </div>
   </div>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('popupMenu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      const menu = document.getElementById("popupMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
-
-    // CARICAMENTO CALENDARIO da Google Sheets
-    fetch("rhttps://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec")
-      .then(res => res.json())
-      .then(data => {
-        const list = document.getElementById("calendarList");
-        list.innerHTML = ""; // svuota
-
-        const partite = data.calendario || [];
-
-        partite.forEach(p => {
-          const giorno = new Date(p.data).getDate();
-          const tipo = p.casa_fuori.toLowerCase(); // "casa" o "fuori"
-          const coloreClasse = tipo === "casa" ? "casa" : "fuori";
-          const icona = tipo === "casa" ? "🏠" : "✈️";
-
-          const div = document.createElement("div");
-          div.className = "calendar-entry";
-          div.innerHTML = `
-            <div class="calendar-day ${coloreClasse}">${giorno}</div>
-            <div class="calendar-info">
-              <div class="avversario">${p.avversario}</div>
-              <div class="data">${p.data}</div>
-            </div>
-            <div class="calendar-icon">${icona}</div>
-          `;
-          list.appendChild(div);
-        });
-      });
   </script>
-   <script src="js/calendario.js"></script>
+  <script src="js/calendario.js"></script>
 </body>
 </html>
