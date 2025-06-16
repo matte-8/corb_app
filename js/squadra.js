@@ -1,47 +1,55 @@
-const urlGiocatori = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const cacheKey = "corbiolo_squadra_cache";
 const container = document.getElementById("squadra-container");
-const cacheKey = "corbiolo_giocatori";
+const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 
-// 1. Mostra i dati dalla cache
-const cache = localStorage.getItem(cacheKey);
-if (cache) {
+// 1. Mostra subito i dati da cache
+const cached = localStorage.getItem(cacheKey);
+if (cached) {
   try {
-    const parsed = JSON.parse(cache);
+    const parsed = JSON.parse(cached);
     renderGiocatori(parsed);
   } catch (e) {
-    console.warn("Errore nella cache:", e);
+    console.warn("Errore nella cache della squadra", e);
   }
 }
 
-// 2. Recupera i dati live da Google Sheets
-fetch(urlGiocatori)
-  .then(res => res.json())
-  .then(data => {
-    localStorage.setItem(cacheKey, JSON.stringify(data));
-    renderGiocatori(data);
-  })
-  .catch(err => {
-    console.error("Errore nel fetch live:", err);
-    if (!cache) container.innerHTML = "Errore nel caricamento.";
-  });
-
-// 3. Rendering HTML dei giocatori
+// 2. Funzione di rendering
 function renderGiocatori(data) {
   if (!data.giocatori || data.giocatori.length === 0) {
-    container.innerHTML = "Nessun giocatore trovato.";
+    container.innerHTML = "<p>Nessun giocatore trovato.</p>";
     return;
   }
 
-  const html = data.giocatori.map(g => `
-    <div class="player-card">
-      <img src="img/${g.foto}" alt="${g.nome}" class="player-image" />
-      <div class="player-info">
-        <div class="player-name">${g.nome}</div>
-        <div class="player-role">${g.ruolo}</div>
-        <div class="player-number">#${g.numero}</div>
+  const html = data.giocatori
+    .map((g) => `
+      <div class="player-card">
+        <img src="img/${g.foto}" alt="${g.nome}" class="player-image" />
+        <div class="player-info">
+          <div class="player-name">${g.nome}</div>
+          <div class="player-role">${g.ruolo}</div>
+          <div class="player-number">#${g.numero}</div>
+        </div>
       </div>
-    </div>
-  `).join("");
+    `)
+    .join("");
 
   container.innerHTML = html;
+}
+
+// 3. Listener per aggiornamento manuale (da admin.js)
+document.addEventListener("aggiornaSquadra", () => {
+  aggiornaSquadraDaRemoto();
+});
+
+// 4. Funzione per aggiornare i dati
+function aggiornaSquadraDaRemoto() {
+  fetch(apiUrl)
+    .then((r) => r.json())
+    .then((data) => {
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+      renderGiocatori(data);
+    })
+    .catch(() => {
+      if (!cached) container.innerHTML = "<p>Errore nel caricamento.</p>";
+    });
 }
