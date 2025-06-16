@@ -1,52 +1,74 @@
-const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
-
+const url = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 const calendarioContainer = document.getElementById("calendario-container");
 
-// Mostra dati dalla cache subito (se disponibili)
-const cached = localStorage.getItem("calendario");
-if (cached) {
+// Mostra da cache subito
+const cache = localStorage.getItem("calendarioCache");
+if (cache) {
   try {
-    const parsed = JSON.parse(cached);
+    const parsed = JSON.parse(cache);
     renderCalendario(parsed);
   } catch (e) {
-    console.warn("Cache corrotta, ignorata.");
+    console.warn("Errore cache calendario");
   }
 }
 
-// Carica i dati aggiornati da Google Sheets
-fetch(urlCalendario)
-  .then((r) => r.json())
+// Poi aggiorna da rete
+fetch(url)
+  .then((res) => res.json())
   .then((data) => {
-    localStorage.setItem("calendario", JSON.stringify(data));
-    renderCalendario(data);
+    if (data.calendario) {
+      localStorage.setItem("calendarioCache", JSON.stringify(data.calendario));
+      renderCalendario(data.calendario);
+    }
   })
   .catch(() => {
-    if (!cached) {
-      calendarioContainer.innerHTML = "Errore nel caricamento calendario.";
+    if (!cache) calendarioContainer.innerHTML = "Errore nel caricamento.";
+  });
+
+function renderCalendario(partite) {
+  const oggi = new Date();
+  const meseCorrente = oggi.getMonth();
+  const calendario = [];
+
+  // Filtra partite del mese corrente
+  partite.forEach((p) => {
+    const d = new Date(p.data);
+    if (d.getMonth() === meseCorrente) {
+      calendario.push({ ...p, giorno: d.getDate() });
     }
   });
 
-// Rendering
-function renderCalendario(data) {
-  if (!data.calendario || data.calendario.length === 0) {
-    calendarioContainer.innerHTML = "Nessuna partita trovata.";
+  if (calendario.length === 0) {
+    calendarioContainer.innerHTML = "<p>Nessuna partita per questo mese.</p>";
     return;
   }
 
-  const calendarioHTML = data.calendario
-    .map((match) => {
-      const isCasa = match.casa_fuori.toLowerCase() === "casa";
-      const icon = isCasa ? "🏠" : "✈️";
-      return `
-        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #600;">
-          <div>
-            <strong>${match.data}</strong><br>${match.avversario}
-          </div>
-          <div style="font-size: 20px;">${icon}</div>
-        </div>
-      `;
-    })
-    .join("");
+  // Disegna griglia
+  calendarioContainer.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(7, 1fr)";
+  grid.style.gap = "8px";
 
-  calendarioContainer.innerHTML = calendarioHTML;
+  calendario.forEach((p) => {
+    const colore = p.casa_fuori.toLowerCase() === "casa" ? "#3399ff" : "#ffd700";
+    const icona = p.casa_fuori.toLowerCase() === "casa" ? "🏠" : "✈️";
+
+    const box = document.createElement("div");
+    box.className = "calendar-box";
+    box.style.background = "#801e1e";
+    box.style.borderRadius = "10px";
+    box.style.padding = "10px";
+    box.style.textAlign = "center";
+    box.style.fontSize = "14px";
+    box.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+    box.innerHTML = `
+      <div class="day-circle" style="background:${colore};width:24px;height:24px;margin:auto;border-radius:50%;">${p.giorno}</div>
+      <div style="margin-top:6px;">${p.avversario}</div>
+      <div style="font-size:18px;">${icona}</div>
+    `;
+    grid.appendChild(box);
+  });
+
+  calendarioContainer.appendChild(grid);
 }
