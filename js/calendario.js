@@ -1,23 +1,24 @@
-const url = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const urlCalendario = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 const calendarioContainer = document.getElementById("calendario-container");
+const cacheKey = "partiteCache";
 
-// Mostra da cache subito
-const cache = localStorage.getItem("calendarioCache");
+// 1. Mostra dati dalla cache
+const cache = localStorage.getItem(cacheKey);
 if (cache) {
   try {
     const parsed = JSON.parse(cache);
-    renderCalendario(parsed);
+    renderCalendario(parsed.calendario || []);
   } catch (e) {
-    console.warn("Errore cache calendario");
+    console.warn("Errore parsing cache calendario.");
   }
 }
 
-// Poi aggiorna da rete
-fetch(url)
-  .then((res) => res.json())
-  .then((data) => {
+// 2. Aggiorna live da Sheets
+fetch(urlCalendario)
+  .then(res => res.json())
+  .then(data => {
     if (data.calendario) {
-      localStorage.setItem("calendarioCache", JSON.stringify(data.calendario));
+      localStorage.setItem(cacheKey, JSON.stringify(data));
       renderCalendario(data.calendario);
     }
   })
@@ -25,50 +26,30 @@ fetch(url)
     if (!cache) calendarioContainer.innerHTML = "Errore nel caricamento.";
   });
 
+// 3. Render
 function renderCalendario(partite) {
-  const oggi = new Date();
-  const meseCorrente = oggi.getMonth();
-  const calendario = [];
-
-  // Filtra partite del mese corrente
-  partite.forEach((p) => {
-    const d = new Date(p.data);
-    if (d.getMonth() === meseCorrente) {
-      calendario.push({ ...p, giorno: d.getDate() });
-    }
-  });
-
-  if (calendario.length === 0) {
-    calendarioContainer.innerHTML = "<p>Nessuna partita per questo mese.</p>";
+  if (!Array.isArray(partite) || partite.length === 0) {
+    calendarioContainer.innerHTML = "<p>Nessuna partita trovata.</p>";
     return;
   }
 
-  // Disegna griglia
-  calendarioContainer.innerHTML = "";
-  const grid = document.createElement("div");
-  grid.style.display = "grid";
-  grid.style.gridTemplateColumns = "repeat(7, 1fr)";
-  grid.style.gap = "8px";
+  calendarioContainer.innerHTML = ""; // Pulisce
 
-  calendario.forEach((p) => {
-    const colore = p.casa_fuori.toLowerCase() === "casa" ? "#3399ff" : "#ffd700";
-    const icona = p.casa_fuori.toLowerCase() === "casa" ? "🏠" : "✈️";
+  const oggi = new Date();
+  partite.forEach(p => {
+    const dataMatch = new Date(p.data);
+    const giorno = dataMatch.getDate();
+    const casa = p.casa_fuori.toLowerCase() === "casa";
+    const colore = casa ? "#3399ff" : "#ffd700";
+    const icona = casa ? "🏠" : "✈️";
 
     const box = document.createElement("div");
     box.className = "calendar-box";
-    box.style.background = "#801e1e";
-    box.style.borderRadius = "10px";
-    box.style.padding = "10px";
-    box.style.textAlign = "center";
-    box.style.fontSize = "14px";
-    box.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
     box.innerHTML = `
-      <div class="day-circle" style="background:${colore};width:24px;height:24px;margin:auto;border-radius:50%;">${p.giorno}</div>
-      <div style="margin-top:6px;">${p.avversario}</div>
-      <div style="font-size:18px;">${icona}</div>
+      <div class="day-circle" style="background:${colore}">${giorno}</div>
+      <div class="team-vs">${p.avversario}</div>
+      <div class="match-type">${icona}</div>
     `;
-    grid.appendChild(box);
+    calendarioContainer.appendChild(box);
   });
-
-  calendarioContainer.appendChild(grid);
 }
