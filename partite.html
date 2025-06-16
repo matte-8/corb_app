@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Partite - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script defer src="js/partite.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1 class="page-title">Partite</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -19,14 +18,28 @@
     <a href="news.html">🗞️ News</a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">⚽️ Partite</a>
+    <a href="calendario.html">🗓 Calendario</a>
     <a href="sponsor.html">💰 Sponsor</a>
-    <a href="calendario.html">🗓 calendario</a>
+    <a href="admin.html">🔐 Admin</a>
   </div>
 
   <div class="box-row">
     <div class="section">
-      <div class="section-title-icon">📅 Calendario e Risultati</div>
-      <div id="partiteList"></div>
+      <div class="section-title-icon">🏆 Ultima Partita</div>
+      <div id="risultatoContainer">Caricamento risultato...</div>
+    </div>
+  </div>
+
+  <div class="box-row">
+    <div class="section">
+      <div id="prossimaInfo">Caricamento prossima partita...</div>
+    </div>
+  </div>
+
+  <div class="box-row">
+    <div class="section">
+      <div class="section-title-icon">📆 Calendario</div>
+      <div id="calendarioContainer" class="calendar-grid">Caricamento calendario...</div>
     </div>
   </div>
 
@@ -34,17 +47,17 @@
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
       <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
       </div>
     </div>
   </div>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('popupMenu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      const menu = document.getElementById("popupMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
   <script src="js/partite.js"></script>
