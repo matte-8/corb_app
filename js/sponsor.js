@@ -1,55 +1,54 @@
-const cacheKeySponsor = "corbiolo_sponsor_cache";
 const urlSponsor = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+const container = document.getElementById("sponsor-container");
+const carousel = document.getElementById("carousel-sponsor");
+const cacheKey = "sponsorCache";
 
-const sponsorContainer = document.getElementById("sponsor-container");
-
-// Mostra subito i dati dalla cache
-const cached = localStorage.getItem(cacheKeySponsor);
-if (cached) {
+// Mostra subito dati dalla cache
+const cache = localStorage.getItem(cacheKey);
+if (cache) {
   try {
-    const parsed = JSON.parse(cached);
-    renderSponsor(parsed.sponsor);
+    const parsed = JSON.parse(cache);
+    renderSponsor(parsed);
   } catch (e) {
-    console.warn("Errore nella cache sponsor:", e);
+    console.warn("Errore nella cache sponsor.");
   }
 }
 
-// Funzione di rendering sponsor
-function renderSponsor(sponsor) {
-  sponsorContainer.innerHTML = "";
+// Carica da Sheets
+fetch(urlSponsor)
+  .then(res => res.json())
+  .then(data => {
+    if (data.sponsor && Array.isArray(data.sponsor)) {
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+      renderSponsor(data);
+    }
+  })
+  .catch(() => {
+    if (!cache) container.innerHTML = "<p>Errore nel caricamento sponsor.</p>";
+  });
 
-  if (!sponsor || sponsor.length === 0) {
-    sponsorContainer.innerHTML = "<p>Nessuno sponsor disponibile.</p>";
+function renderSponsor(data) {
+  if (!data.sponsor || data.sponsor.length === 0) {
+    container.innerHTML = "<p>Nessun sponsor trovato.</p>";
     return;
   }
 
-  const html = sponsor
-    .map((s) => `
-      <div class="sponsor-box">
-        <img src="img/${s.logo}" alt="${s.nome}" class="sponsor-icon" />
-        <div class="sponsor-name">${s.nome}</div>
-        <a href="${s.link}" class="sponsor-link" target="_blank">Visita sito</a>
+  const staticList = data.sponsor
+    .map(s => `
+      <div class="section">
+        <img src="img/${s.logo}" alt="${s.nome}" class="team-logo">
+        <div class="section-title-icon">${s.nome}</div>
+        <p><a href="${s.link}" target="_blank">Visita</a></p>
       </div>
     `)
     .join("");
 
-  sponsorContainer.innerHTML = html;
-}
+  container.innerHTML = staticList;
 
-// Carica dati aggiornati
-function aggiornaSponsorDaRemoto() {
-  fetch(urlSponsor)
-    .then((res) => res.json())
-    .then((data) => {
-      localStorage.setItem(cacheKeySponsor, JSON.stringify(data));
-      renderSponsor(data.sponsor);
-    })
-    .catch((err) => {
-      console.error("Errore fetch sponsor:", err);
-    });
-}
+  // Aggiungi alla giostra
+  const logos = data.sponsor
+    .map(s => `<img src="img/${s.logo}" alt="${s.nome}" />`)
+    .join("");
 
-// Aggiorna manuale da admin
-document.addEventListener("aggiornaSponsor", () => {
-  aggiornaSponsorDaRemoto();
-});
+  carousel.innerHTML = logos + logos; // doppio per loop animazione
+}
