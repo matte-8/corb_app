@@ -1,16 +1,14 @@
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sponsor - U.S. Corbiolo C5</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#660000">
-  <link rel="icon" href="img/logo2.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body onload="caricaSponsor()">
+<body>
   <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo">
+    <img src="img/logo.png" alt="Logo" class="logo" />
     <h1 class="page-title">Sponsor</h1>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
@@ -20,12 +18,17 @@
     <a href="news.html">🗞️ News</a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">⚽️ Partite</a>
-    <a href="sponsor.html">💰 Sponsor</a>
     <a href="calendario.html">🗓 Calendario</a>
+    <a href="sponsor.html">💰 Sponsor</a>
   </div>
 
-  <div class="box-row grid-sponsor" id="sponsorGrid">
-    <!-- Sponsor caricati dinamicamente -->
+  <div class="box-row">
+    <div class="section">
+      <div class="section-title-icon">💼 I nostri Sponsor</div>
+      <div id="sponsorContainer">
+        <p>Caricamento sponsor...</p>
+      </div>
+    </div>
   </div>
 
   <div class="footer">
@@ -35,35 +38,19 @@
         <img src="img/sponsor1.png" alt="Sponsor 1">
         <img src="img/sponsor2.png" alt="Sponsor 2">
         <img src="img/sponsor3.png" alt="Sponsor 3">
+        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
+        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
+        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
       </div>
     </div>
   </div>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('popupMenu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    function caricaSponsor() {
-      fetch("Xhttps://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec")
-        .then(r => r.json())
-        .then(data => {
-          const grid = document.getElementById('sponsorGrid');
-          data.sponsor.forEach(s => {
-            const box = document.createElement('div');
-            box.className = 'sponsor-box';
-            box.innerHTML = `
-              <img src="img/${s.logo}" class="sponsor-icon" alt="${s.nome}">
-              <div class="sponsor-name">${s.nome}</div>
-              <a class="sponsor-link" href="${s.link}" target="_blank">${s.link}</a>
-            `;
-            grid.appendChild(box);
-          });
-        });
+      const menu = document.getElementById("popupMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
   <script src="js/sponsor.js"></script>
-
 </body>
 </html>
