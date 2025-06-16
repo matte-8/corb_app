@@ -1,4 +1,5 @@
-const urlGiocatori = "https://script.google.com/macros/s/AKfycbx1Lh2iRYAlC6JgYpGYXn9m4yv0wlSXpJedAAzzaBjksiv85Cw8pvHFj0gTv74amziuvg/exec";
+const urlGiocatori ="https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+
 const container = document.getElementById("squadra-container");
 
 // Mostra subito i dati dalla cache
