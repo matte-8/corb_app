@@ -137,17 +137,28 @@
     }
 
     function salvaGiocatore(){
-      const nome = document.getElementById("nomeGiocatore").value.trim();
-      const ruolo = document.getElementById("ruoloGiocatore").value.trim();
-      const numero = document.getElementById("numeroGiocatore").value.trim();
-      const foto = document.getElementById("fotoGiocatore").value.trim();
-      if (!nome||!ruolo||!numero||!foto) return alert("Compila tutti");
-      const arr = JSON.parse(localStorage.getItem("giocatori") || "[]");
-      arr.push({ nome, ruolo, numero, foto });
-      localStorage.setItem("giocatori", JSON.stringify(arr));
-      alert("Giocatore aggiunto");
-      ["nomeGiocatore","ruoloGiocatore","numeroGiocatore","fotoGiocatore"].forEach(id=>document.getElementById(id).value="");
-    }
+  const nome = document.getElementById("nomeGiocatore").value.trim();
+  const ruolo = document.getElementById("ruoloGiocatore").value.trim();
+  const numero = document.getElementById("numeroGiocatore").value.trim();
+  let foto = document.getElementById("fotoGiocatore").value.trim();
+
+  if (!nome || !ruolo || !numero) {
+    alert("Compila almeno nome, ruolo e numero");
+    return;
+  }
+
+  if (!foto) foto = "default.png"; // Immagine di default se non inserita
+
+  const arr = JSON.parse(localStorage.getItem("giocatori") || "[]");
+  arr.push({ nome, ruolo, numero, foto });
+  localStorage.setItem("giocatori", JSON.stringify(arr));
+  alert("Giocatore aggiunto");
+
+  ["nomeGiocatore", "ruoloGiocatore", "numeroGiocatore", "fotoGiocatore"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+}
+
 
     function salvaSponsor(){
       const n = document.getElementById("nomeSponsor").value.trim();
