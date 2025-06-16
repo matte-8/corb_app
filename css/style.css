@@ -325,6 +325,26 @@ body {
   border-radius: 6px;
   border: none;
 }
+details.admin-block {
+  background: #801e1e;
+  color: white;
+  margin: 16px;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.admin-title {
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.section-list {
+  margin-top: 12px;
+  border-top: 1px solid #ffcc00;
+  padding-top: 10px;
+}
 
 @keyframes scroll {
   0% { transform: translateX(0); }
