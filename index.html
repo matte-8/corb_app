@@ -109,25 +109,25 @@
   <script>
   let deferredPrompt;
 
-  window.addEventListener("beforeinstallprompt", (e) => {
+  window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-  });
-
-  function installApp() {
-    if (deferredPrompt) {
+    const btn = document.getElementById('installBtn');
+    btn.style.display = 'inline-block';
+    btn.addEventListener('click', () => {
+      btn.style.display = 'none';
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choice) => {
-        if (choice.outcome === "accepted") {
-          console.log("✅ App installata");
-        } else {
-          console.log("❌ Installazione rifiutata");
-        }
+      deferredPrompt.userChoice.then(() => {
         deferredPrompt = null;
       });
-    } else {
-      alert("ℹ️ Funzione disponibile solo su dispositivi supportati.");
-    }
+    });
+  });
+
+  // iOS install info
+  const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+  const isInStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  if (isIOS && !isInStandalone) {
+    alert("Per installare l'app, premi 'Condividi' e poi 'Aggiungi a Home'.");
   }
   </script>
 </body>
