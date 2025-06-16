@@ -6,7 +6,7 @@ function toggleMenu() {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script>
-const SHEET_API = "https://script.google.com/macros/s/AKfycbyVoIo10EdXZUwrPNGSAsYWeUVPHNbUcz6prIfWac-Vf2kzHkaVfW3UBSY8K00G_P5EWw/exec?sheet=news";
+const SHEET_API = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 
 fetch(SHEET_API)
   .then(res => res.json())
