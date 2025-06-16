@@ -3,101 +3,216 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>U.S. Corbiolo C5 - Home</title>
+  <title>Admin - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/home.js"></script>
+  <style>
+    body { font-family: sans-serif; background: #2d0b0b; color: white; padding-top: 80px; max-width: 600px; margin: 0 auto; }
+    .header { background: #660000; color: white; position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; z-index: 999; }
+    .logo { height: 40px; }
+    .menu-icon { font-size: 24px; cursor: pointer; }
+    .section { margin: 14px; padding: 12px; background: #801e1e; border-radius: 8px; }
+    .section-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
+    .collapsed .section-body { display: none; }
+    .section input, .section textarea, .section select {
+      width: 100%; margin-bottom: 8px; padding: 8px; border-radius: 4px; border: none; font-size: 15px;
+    }
+    .section button {
+      padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; margin-right: 6px;
+    }
+    .btn-yellow { background: #ffcc00; color: black; }
+    .btn-red { background: crimson; color: white; }
+    #passwordPrompt {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9); color: white; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; z-index: 2000;
+    }
+    #passwordPrompt input { padding: 10px; font-size: 16px; margin-top: 10px; }
+    #passwordPrompt button { padding: 10px 20px; margin-top: 10px; }
+    .item-group { margin-bottom: 16px; padding: 10px; border: 1px solid #999; border-radius: 6px; }
+    .item-group input, .item-group textarea { background: #fff; color: #000; }
+  </style>
 </head>
 <body>
-  <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo" />
-    <h1 class="page-title">Home</h1>
-    <div class="header-buttons">
-      <div class="install-icon" onclick="installApp()">📲</div>
+  <!-- PASSWORD PROTECTION -->
+  <div id="passwordPrompt">
+    <h2>Accesso Admin</h2>
+    <input type="password" id="adminPass" placeholder="Inserisci password" />
+    <button onclick="checkPassword()">Accedi</button>
+  </div>
+
+  <div id="adminContent" style="display:none">
+    <header class="header">
+      <img src="img/logo.png" alt="Logo" class="logo" />
+      <h1 class="page-title">Admin</h1>
       <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </header>
+
+    <!-- MENU -->
+    <div class="popup-menu" id="popupMenu">
+      <a href="index.html">🏠 Home</a>
+      <a href="news.html">🗞️ News</a>
+      <a href="squadra.html">👥 Squadra</a>
+      <a href="partite.html">⚽️ Partite</a>
+      <a href="calendario.html">🗓 Calendario</a>
+      <a href="sponsor.html">💰 Sponsor</a>
+      <a href="admin.html">🔐 Admin</a>
     </div>
-  </header>
 
-  <div class="popup-menu" id="popupMenu">
-    <a href="index.html">🏠 Home</a>
-    <a href="news.html">🗞️ News</a>
-    <a href="squadra.html">👥 Squadra</a>
-    <a href="partite.html">⚽️ Partite</a>
-    <a href="calendario.html">🗓 Calendario</a>
-    <a href="sponsor.html">💰 Sponsor</a>
-    <a href="admin.html">🔐 Admin</a>
-  </div>
-
-  <!-- Box principali -->
-  <div class="box-row">
-    <div class="grid-3">
-      <a href="news.html" class="card">
-        <div class="card-icon">🗞️</div>
-        News <span id="badgeNewsCard" class="badge-news" style="display:none;">NEW</span>
-      </a>
-      <a href="squadra.html" class="card">
-        <div class="card-icon">👥</div>
-        Squadra
-      </a>
-      <a href="sponsor.html" class="card">
-        <div class="card-icon">💰</div>
-        Sponsor
-      </a>
-    </div>
-  </div>
-
-  <!-- Ultima partita -->
-  <div class="box-row" id="risultatoContainer">
-    <div class="card result-large">
-      <div class="result-row">
-        <img id="homeLogo" src="img/logo.png" alt="Casa" class="team-logo" />
-        <div class="result-score" id="lastResultScore">-</div>
-        <img id="awayLogo" src="img/opponent.png" alt="Fuori" class="team-logo" />
-      </div>
-      <div class="result-names">
-        <div class="team-name" id="homeTeam">-</div>
-        <div class="team-name" id="awayTeam">-</div>
+    <!-- SEZIONI -->
+    <div class="section" id="sectionNews">
+      <div class="section-title" onclick="toggleSection(this)">🗞️ News</div>
+      <div class="section-body">
+        <input type="text" id="newsTitle" placeholder="Titolo" />
+        <textarea id="newsText" placeholder="Contenuto"></textarea>
+        <button class="btn-yellow" onclick="addItem('news')">Salva</button>
+        <div id="newsList"></div>
       </div>
     </div>
-  </div>
 
-  <!-- Prossima partita -->
-  <div class="box-row">
-    <div class="section" id="prossimaInfo">
-      <div class="section-title-icon">⚽️ Prossima Partita</div>
-      <p id="nextMatchTeams">--</p>
-      <p id="nextMatchDate">--</p>
+    <div class="section" id="sectionGiocatori">
+      <div class="section-title" onclick="toggleSection(this)">👥 Giocatori</div>
+      <div class="section-body">
+        <input type="text" id="giocNome" placeholder="Nome" />
+        <input type="text" id="giocRuolo" placeholder="Ruolo" />
+        <input type="number" id="giocNumero" placeholder="Numero" />
+        <input type="text" id="giocFoto" placeholder="Foto (es: nome.png)" />
+        <button class="btn-yellow" onclick="addItem('giocatori')">Salva</button>
+        <div id="giocatoriList"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Ultima notizia -->
-  <div class="box-row">
-    <div class="section">
-      <div class="section-title-icon">🗞️ Ultima Notizia</div>
-      <p id="newsTitle">Caricamento titolo...</p>
-      <p id="newsText">Caricamento contenuto...</p>
+    <div class="section" id="sectionSponsor">
+      <div class="section-title" onclick="toggleSection(this)">💰 Sponsor</div>
+      <div class="section-body">
+        <input type="text" id="sponsorNome" placeholder="Nome" />
+        <input type="text" id="sponsorLogo" placeholder="Logo (es: logo.png)" />
+        <input type="text" id="sponsorLink" placeholder="Link (facoltativo)" />
+        <button class="btn-yellow" onclick="addItem('sponsor')">Salva</button>
+        <div id="sponsorList"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Sponsor -->
-  <div class="footer">
-    <div class="sponsor-title">Sponsor</div>
-    <div class="carousel-wrapper">
-      <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1" />
-        <img src="img/sponsor2.png" alt="Sponsor 2" />
-        <img src="img/sponsor3.png" alt="Sponsor 3" />
+    <div class="section" id="sectionPartite">
+      <div class="section-title" onclick="toggleSection(this)">⚽️ Partite</div>
+      <div class="section-body">
+        <input type="date" id="partitaData" />
+        <input type="time" id="partitaOra" />
+        <input type="text" id="partitaCasa" placeholder="Squadra Casa" />
+        <input type="text" id="partitaLogoCasa" placeholder="Logo Casa" />
+        <input type="text" id="partitaFuori" placeholder="Squadra Fuori" />
+        <input type="text" id="partitaLogoFuori" placeholder="Logo Fuori" />
+        <input type="text" id="partitaRisultato" placeholder="Risultato (es: 3-2)" />
+        <input type="text" id="partitaMVP" placeholder="MVP (facoltativo)" />
+        <button class="btn-yellow" onclick="addItem('partite')">Salva</button>
+        <div id="partiteList"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sectionCalendario">
+      <div class="section-title" onclick="toggleSection(this)">🗓 Calendario</div>
+      <div class="section-body">
+        <input type="date" id="calData" />
+        <input type="text" id="calAvversario" placeholder="Avversario" />
+        <select id="calCasaFuori">
+          <option value="casa">Casa</option>
+          <option value="fuori">Fuori</option>
+        </select>
+        <button class="btn-yellow" onclick="addItem('calendario')">Salva</button>
+        <div id="calendarioList"></div>
       </div>
     </div>
   </div>
 
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById("popupMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    // --- AUTH ---
+    function checkPassword() {
+      const p = document.getElementById("adminPass").value;
+      if (p === "corb25") {
+        document.getElementById("passwordPrompt").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+        loadAll();
+      } else {
+        alert("Password errata");
+      }
     }
 
-    function installApp() {
-      alert("Funzione installazione in arrivo...");
+    // --- TOGGLE MENU ---
+    function toggleMenu() {
+      const m = document.getElementById("popupMenu");
+      m.style.display = m.style.display === "flex" ? "none" : "flex";
+    }
+
+    // --- TOGGLE SECTIONS ---
+    function toggleSection(el) {
+      el.parentElement.classList.toggle("collapsed");
+    }
+
+    // --- SAVE GENERIC ITEM ---
+    function addItem(type) {
+      const inputs = {
+        news: { titolo: "newsTitle", contenuto: "newsText", nuova: "TRUE", img: "" },
+        giocatori: { nome: "giocNome", ruolo: "giocRuolo", numero: "giocNumero", foto: "giocFoto" },
+        sponsor: { nome: "sponsorNome", logo: "sponsorLogo", link: "sponsorLink" },
+        partite: {
+          data: "partitaData", ora: "partitaOra", casa: "partitaCasa", logocasa: "partitaLogoCasa",
+          fuori: "partitaFuori", logoavv: "partitaLogoFuori", risultato: "partitaRisultato", mvp: "partitaMVP"
+        },
+        calendario: { data: "calData", avversario: "calAvversario", casa_fuori: "calCasaFuori" }
+      };
+      const template = inputs[type];
+      const item = {};
+      for (let key in template) {
+        const id = template[key];
+        item[key] = document.getElementById(id).value.trim();
+      }
+      const storage = localStorage.getItem(type) || "[]";
+      const arr = JSON.parse(storage);
+      arr.unshift(item);
+      localStorage.setItem(type, JSON.stringify(arr));
+      alert("Dati salvati in " + type);
+      loadAll();
+    }
+
+    // --- LOAD ALL ITEMS TO DISPLAY ---
+    function loadAll() {
+      ["news", "giocatori", "sponsor", "partite", "calendario"].forEach(type => {
+        const container = document.getElementById(type + "List");
+        if (!container) return;
+        const data = JSON.parse(localStorage.getItem(type) || "[]");
+        container.innerHTML = "";
+        data.forEach((item, i) => {
+          const box = document.createElement("div");
+          box.className = "item-group";
+          for (let key in item) {
+            const input = document.createElement("input");
+            input.value = item[key];
+            input.onchange = () => item[key] = input.value;
+            box.appendChild(input);
+          }
+          const saveBtn = document.createElement("button");
+          saveBtn.className = "btn-yellow";
+          saveBtn.innerText = "💾 Salva";
+          saveBtn.onclick = () => {
+            data[i] = item;
+            localStorage.setItem(type, JSON.stringify(data));
+            alert("Modificato!");
+          };
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "btn-red";
+          delBtn.innerText = "🗑 Elimina";
+          delBtn.onclick = () => {
+            if (confirm("Eliminare questo elemento?")) {
+              data.splice(i, 1);
+              localStorage.setItem(type, JSON.stringify(data));
+              loadAll();
+            }
+          };
+          box.appendChild(saveBtn);
+          box.appendChild(delBtn);
+          container.appendChild(box);
+        });
+      });
     }
   </script>
 </body>
