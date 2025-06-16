@@ -6,131 +6,205 @@
   <title>Admin - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    details.admin-block {
-      background: #801e1e;
-      color: white;
-      margin: 16px;
-      border-radius: 8px;
-      padding: 8px;
+    body { font-family: sans-serif; background: #2d0b0b; color: white; max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
+    .section { margin: 16px; padding: 16px; background: #801e1e; border-radius: 8px; }
+    .section h3 { margin: 0 0 8px 0; font-size: 18px; cursor: pointer; }
+    .section-content { display: none; margin-top: 10px; }
+    input, textarea, select {
+      width: 100%; padding: 8px; margin: 6px 0; border-radius: 5px; border: none; box-sizing: border-box;
     }
-    .admin-title {
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 8px 0;
-    }
-    .section-list {
-      margin-top: 12px;
-      border-top: 1px solid #ffcc00;
-      padding-top: 10px;
-    }
-    .section input, .section textarea, .section select {
-      width: 100%;
-      margin-bottom: 8px;
-      padding: 8px;
-      border-radius: 4px;
-      border: none;
-    }
-    .section button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 4px;
-      background: #ffcc00;
-      color: #000;
-      cursor: pointer;
-    }
-    #passwordPrompt {
-      position: fixed; top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.9);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      color: white; z-index:2000;
-    }
-    #passwordPrompt input,
-    #passwordPrompt button {
-      padding:10px; font-size:16px; margin-top:10px;
-    }
-    #adminContent { display: none; padding-top:80px; }
+    button { padding: 10px 16px; margin: 6px 0; background: #ffcc00; border: none; border-radius: 4px; color: #000; cursor: pointer; width: 100%; }
+    .entry { border: 1px solid #fff2; padding: 10px; border-radius: 5px; margin-top: 6px; }
+    .entry input, .entry textarea { margin: 2px 0; }
+    .two-btns { display: flex; gap: 10px; }
+    .two-btns button { flex: 1; }
   </style>
 </head>
 <body>
-  <div id="passwordPrompt">
-    <h2>Accesso Admin</h2>
-    <input type="password" id="adminPass" placeholder="Inserisci password">
-    <button onclick="checkPassword()">Accedi</button>
+  <div class="section">
+    <h3 onclick="toggleSection(this)">📝 Inserisci Dati</h3>
+    <div class="section-content">
+
+      <h4>➕ News</h4>
+      <input id="newsTitle" placeholder="Titolo" />
+      <textarea id="newsText" placeholder="Testo"></textarea>
+      <input id="newsImg" placeholder="Immagine (facoltativa)" />
+      <button onclick="addNews()">Salva News</button>
+
+      <h4>👤 Giocatore</h4>
+      <input id="giocNome" placeholder="Nome" />
+      <input id="giocRuolo" placeholder="Ruolo" />
+      <input id="giocNumero" placeholder="Numero" />
+      <input id="giocFoto" placeholder="Foto (facoltativa)" />
+      <button onclick="addGiocatore()">Aggiungi Giocatore</button>
+
+      <h4>💼 Sponsor</h4>
+      <input id="sponsorNome" placeholder="Nome" />
+      <input id="sponsorLogo" placeholder="Logo (facoltativo)" />
+      <input id="sponsorLink" placeholder="Link (facoltativo)" />
+      <button onclick="addSponsor()">Aggiungi Sponsor</button>
+
+      <h4>⚽ Partita</h4>
+      <input id="partitaData" type="date" />
+      <input id="partitaOra" type="time" />
+      <input id="partitaCasa" placeholder="Squadra Casa" />
+      <input id="partitaLogoCasa" placeholder="Logo Casa (facoltativo)" />
+      <input id="partitaFuori" placeholder="Squadra Fuori" />
+      <input id="partitaLogoFuori" placeholder="Logo Fuori (facoltativo)" />
+      <input id="partitaRisultato" placeholder="Risultato (facoltativo)" />
+      <button onclick="addPartita()">Aggiungi Partita</button>
+
+      <h4>📅 Evento Calendario</h4>
+      <input id="calData" type="date" />
+      <input id="calAvv" placeholder="Avversario" />
+      <select id="calCasaFuori">
+        <option value="casa">Casa</option>
+        <option value="fuori">Fuori</option>
+      </select>
+      <button onclick="addCalendario()">Aggiungi Evento</button>
+
+    </div>
   </div>
 
-  <div id="adminContent">
-    <header class="header">
-      <img src="img/logo.png" alt="Logo" class="logo" />
-      <h1 class="page-title">Admin</h1>
-      <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    </header>
-    <div class="popup-menu" id="popupMenu">
-      <a href="index.html">🏠 Home</a>
-      <a href="news.html">🗞️ News</a>
-      <a href="squadra.html">👥 Squadra</a>
-      <a href="partite.html">⚽️ Partite</a>
-      <a href="calendario.html">🗓 Calendario</a>
-      <a href="sponsor.html">💰 Sponsor</a>
-      <a href="admin.html">🔐 Admin</a>
-    </div>
-
-    <details open class="admin-block">
-      <summary class="admin-title">📥 Inserisci Nuovi Dati</summary>
-      <div class="section-list">
-        <!-- esempio News -->
-        <div class="section">
-          <div class="section-title-icon">🆕 Inserisci News</div>
-          <input type="text" id="newsTitleInput" placeholder="Titolo" />
-          <textarea id="newsTextInput" placeholder="Corpo notizia"></textarea>
-          <button onclick="salvaNews()">Salva News</button>
-        </div>
-        <!-- Altri moduli possono essere aggiunti qui -->
-      </div>
-    </details>
-
-    <details class="admin-block">
-      <summary class="admin-title">🛠️ Modifica o Elimina Dati</summary>
-      <div class="section-list">
-        <p>Funzionalità in arrivo...</p>
-      </div>
-    </details>
-
-    <div class="footer">
-      <div class="sponsor-title">Sponsor</div>
-      <div class="carousel-wrapper">
-        <div class="carousel-content">
-          <img src="img/sponsor1.png" alt="Sponsor 1" />
-          <img src="img/sponsor2.png" alt="Sponsor 2" />
-          <img src="img/sponsor3.png" alt="Sponsor 3" />
-        </div>
-      </div>
+  <div class="section">
+    <h3 onclick="toggleSection(this)">✏️ Modifica / Elimina</h3>
+    <div class="section-content" id="modificaContainer">
+      <p>Caricamento dati...</p>
     </div>
   </div>
 
   <script>
-    function toggleMenu() {
-      const m = document.getElementById("popupMenu");
-      m.style.display = m.style.display === "flex" ? "none" : "flex";
+    function toggleSection(h3) {
+      const content = h3.nextElementSibling;
+      content.style.display = content.style.display === "block" ? "none" : "block";
     }
-    function checkPassword() {
-      if (document.getElementById("adminPass").value === "corb25") {
-        document.getElementById("passwordPrompt").style.display = "none";
-        document.getElementById("adminContent").style.display = "block";
-      } else alert("Password errata");
+
+    // Generico salvataggio su localStorage
+    function salvaInLS(key, obj) {
+      const arr = JSON.parse(localStorage.getItem(key) || "[]");
+      arr.push(obj);
+      localStorage.setItem(key, JSON.stringify(arr));
+      alert("Salvato");
     }
-    function salvaNews() {
-      const t = document.getElementById("newsTitleInput").value.trim();
-      const c = document.getElementById("newsTextInput").value.trim();
-      if (!t || !c) return alert("Titolo e testo obbligatori");
-      const arr = JSON.parse(localStorage.getItem("newsData") || "[]");
-      arr.unshift({ titolo: t, contenuto: c, nuova: "TRUE", img: "" });
-      localStorage.setItem("newsData", JSON.stringify(arr));
-      alert("News salvata");
-      document.getElementById("newsTitleInput").value = "";
-      document.getElementById("newsTextInput").value = "";
+
+    // Aggiunta dati
+    function addNews() {
+      salvaInLS("newsData", {
+        titolo: newsTitle.value.trim(),
+        contenuto: newsText.value.trim(),
+        img: newsImg.value.trim(),
+        nuova: "TRUE"
+      });
+      newsTitle.value = newsText.value = newsImg.value = "";
+      renderModifica();
     }
+
+    function addGiocatore() {
+      salvaInLS("giocatori", {
+        nome: giocNome.value.trim(),
+        ruolo: giocRuolo.value.trim(),
+        numero: giocNumero.value.trim(),
+        foto: giocFoto.value.trim()
+      });
+      giocNome.value = giocRuolo.value = giocNumero.value = giocFoto.value = "";
+      renderModifica();
+    }
+
+    function addSponsor() {
+      salvaInLS("sponsor", {
+        nome: sponsorNome.value.trim(),
+        logo: sponsorLogo.value.trim(),
+        link: sponsorLink.value.trim()
+      });
+      sponsorNome.value = sponsorLogo.value = sponsorLink.value = "";
+      renderModifica();
+    }
+
+    function addPartita() {
+      salvaInLS("partite", {
+        data: partitaData.value,
+        ora: partitaOra.value,
+        casa: partitaCasa.value.trim(),
+        logocasa: partitaLogoCasa.value.trim(),
+        fuori: partitaFuori.value.trim(),
+        logoavv: partitaLogoFuori.value.trim(),
+        risultato: partitaRisultato.value.trim()
+      });
+      [partitaData, partitaOra, partitaCasa, partitaLogoCasa, partitaFuori, partitaLogoFuori, partitaRisultato].forEach(i => i.value = "");
+      renderModifica();
+    }
+
+    function addCalendario() {
+      salvaInLS("calendario", {
+        data: calData.value,
+        avversario: calAvv.value.trim(),
+        casa_fuori: calCasaFuori.value
+      });
+      calData.value = calAvv.value = "";
+      renderModifica();
+    }
+
+    // Sezione modifica
+    function renderModifica() {
+      const container = document.getElementById("modificaContainer");
+      container.innerHTML = "";
+
+      const sezioni = {
+        newsData: "🗞️ News",
+        giocatori: "👥 Giocatori",
+        sponsor: "💼 Sponsor",
+        partite: "⚽ Partite",
+        calendario: "📅 Calendario"
+      };
+
+      Object.entries(sezioni).forEach(([key, label]) => {
+        const dati = JSON.parse(localStorage.getItem(key) || "[]");
+        const div = document.createElement("div");
+        div.innerHTML = `<h4>${label}</h4>`;
+        dati.forEach((el, idx) => {
+          const entry = document.createElement("div");
+          entry.className = "entry";
+          for (let campo in el) {
+            const input = document.createElement(campo === "contenuto" ? "textarea" : "input");
+            input.value = el[campo];
+            input.dataset.field = campo;
+            entry.appendChild(input);
+          }
+          const btnDiv = document.createElement("div");
+          btnDiv.className = "two-btns";
+
+          const salvaBtn = document.createElement("button");
+          salvaBtn.textContent = "💾 Salva";
+          salvaBtn.onclick = () => {
+            const inputs = entry.querySelectorAll("input, textarea");
+            const nuovo = {};
+            inputs.forEach(i => nuovo[i.dataset.field] = i.value.trim());
+            dati[idx] = nuovo;
+            localStorage.setItem(key, JSON.stringify(dati));
+            alert("Modificato");
+          };
+
+          const delBtn = document.createElement("button");
+          delBtn.textContent = "❌ Elimina";
+          delBtn.onclick = () => {
+            if (confirm("Eliminare voce?")) {
+              dati.splice(idx, 1);
+              localStorage.setItem(key, JSON.stringify(dati));
+              renderModifica();
+            }
+          };
+
+          btnDiv.appendChild(salvaBtn);
+          btnDiv.appendChild(delBtn);
+          entry.appendChild(btnDiv);
+          div.appendChild(entry);
+        });
+        container.appendChild(div);
+      });
+    }
+
+    // Init
+    window.addEventListener("load", renderModifica);
   </script>
 </body>
 </html>
