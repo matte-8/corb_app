@@ -1,27 +1,27 @@
-const cacheKey = "corbiolo_squadra_cache";
+const cacheKeyGiocatori = "corbiolo_squadra_cache";
+const urlGiocatori = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 const container = document.getElementById("squadra-container");
-const apiUrl = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 
-// 1. Mostra subito i dati da cache
-const cached = localStorage.getItem(cacheKey);
-if (cached) {
+// 1. Mostra i dati salvati in cache
+const cachedSquadra = localStorage.getItem(cacheKeyGiocatori);
+if (cachedSquadra) {
   try {
-    const parsed = JSON.parse(cached);
-    renderGiocatori(parsed);
+    const parsed = JSON.parse(cachedSquadra);
+    renderGiocatori(parsed.giocatori);
   } catch (e) {
-    console.warn("Errore nella cache della squadra", e);
+    console.warn("Errore nella cache dei giocatori:", e);
   }
 }
 
-// 2. Funzione di rendering
-function renderGiocatori(data) {
-  if (!data.giocatori || data.giocatori.length === 0) {
-    container.innerHTML = "<p>Nessun giocatore trovato.</p>";
+// 2. Renderizza i giocatori
+function renderGiocatori(giocatori) {
+  if (!giocatori || giocatori.length === 0) {
+    container.innerHTML = "Nessun giocatore trovato.";
     return;
   }
 
-  const html = data.giocatori
-    .map((g) => `
+  const html = giocatori
+    .map(g => `
       <div class="player-card">
         <img src="img/${g.foto}" alt="${g.nome}" class="player-image" />
         <div class="player-info">
@@ -36,20 +36,21 @@ function renderGiocatori(data) {
   container.innerHTML = html;
 }
 
-// 3. Listener per aggiornamento manuale (da admin.js)
+// 3. Funzione per aggiornamento da remoto
+function aggiornaSquadraDaRemoto() {
+  fetch(urlGiocatori)
+    .then(r => r.json())
+    .then(data => {
+      localStorage.setItem(cacheKeyGiocatori, JSON.stringify(data));
+      renderGiocatori(data.giocatori);
+    })
+    .catch(err => {
+      console.error("Errore caricamento giocatori:", err);
+      if (!cachedSquadra) container.innerHTML = "Errore nel caricamento.";
+    });
+}
+
+// 4. Ascolta evento di aggiornamento
 document.addEventListener("aggiornaSquadra", () => {
   aggiornaSquadraDaRemoto();
 });
-
-// 4. Funzione per aggiornare i dati
-function aggiornaSquadraDaRemoto() {
-  fetch(apiUrl)
-    .then((r) => r.json())
-    .then((data) => {
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      renderGiocatori(data);
-    })
-    .catch(() => {
-      if (!cached) container.innerHTML = "<p>Errore nel caricamento.</p>";
-    });
-}
