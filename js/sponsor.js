@@ -1,47 +1,55 @@
+const cacheKeySponsor = "corbiolo_sponsor_cache";
 const urlSponsor = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
-const container = document.getElementById("sponsorContainer");
 
-// Prova a caricare dalla cache
-const cache = localStorage.getItem("sponsor");
-if (cache) {
+const sponsorContainer = document.getElementById("sponsor-container");
+
+// Mostra subito i dati dalla cache
+const cached = localStorage.getItem(cacheKeySponsor);
+if (cached) {
   try {
-    const parsed = JSON.parse(cache);
-    renderSponsor(parsed);
+    const parsed = JSON.parse(cached);
+    renderSponsor(parsed.sponsor);
   } catch (e) {
-    console.warn("Errore parsing cache sponsor:", e);
+    console.warn("Errore nella cache sponsor:", e);
   }
 }
 
-// Aggiorna live da Sheets
-fetch(urlSponsor)
-  .then((r) => r.json())
-  .then((data) => {
-    if (data.sponsor) {
-      localStorage.setItem("sponsor", JSON.stringify(data.sponsor));
-      renderSponsor(data.sponsor);
-    }
-  })
-  .catch(() => {
-    if (!cache) {
-      container.innerHTML = "<p>Errore nel caricamento sponsor.</p>";
-    }
-  });
+// Funzione di rendering sponsor
+function renderSponsor(sponsor) {
+  sponsorContainer.innerHTML = "";
 
-function renderSponsor(sponsorList) {
-  if (!sponsorList || sponsorList.length === 0) {
-    container.innerHTML = "<p>Nessuno sponsor disponibile al momento.</p>";
+  if (!sponsor || sponsor.length === 0) {
+    sponsorContainer.innerHTML = "<p>Nessuno sponsor disponibile.</p>";
     return;
   }
 
-  const html = sponsorList
-    .map(s => `
+  const html = sponsor
+    .map((s) => `
       <div class="sponsor-box">
-        <img src="img/${s.logo}" alt="${s.nome}" class="sponsor-icon">
+        <img src="img/${s.logo}" alt="${s.nome}" class="sponsor-icon" />
         <div class="sponsor-name">${s.nome}</div>
-        ${s.link ? `<a href="${s.link}" class="sponsor-link" target="_blank">Visita</a>` : ""}
+        <a href="${s.link}" class="sponsor-link" target="_blank">Visita sito</a>
       </div>
     `)
     .join("");
 
-  container.innerHTML = html;
+  sponsorContainer.innerHTML = html;
 }
+
+// Carica dati aggiornati
+function aggiornaSponsorDaRemoto() {
+  fetch(urlSponsor)
+    .then((res) => res.json())
+    .then((data) => {
+      localStorage.setItem(cacheKeySponsor, JSON.stringify(data));
+      renderSponsor(data.sponsor);
+    })
+    .catch((err) => {
+      console.error("Errore fetch sponsor:", err);
+    });
+}
+
+// Aggiorna manuale da admin
+document.addEventListener("aggiornaSponsor", () => {
+  aggiornaSponsorDaRemoto();
+});
