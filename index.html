@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>U.S. Corbiolo C5 - Home</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="img/logo2.png" />
   <script defer src="js/home.js"></script>
 </head>
 <body>
@@ -21,7 +19,7 @@
 
   <div class="popup-menu" id="popupMenu">
     <a href="index.html">🏠 Home</a>
-    <a href="news.html">🗞️ News <span id="badgeNewsCard" class="badge-news" style="display:none;">NEW</span></a>
+    <a href="news.html">🗞️ News</a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">⚽️ Partite</a>
     <a href="calendario.html">🗓 Calendario</a>
@@ -29,7 +27,7 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
-  <!-- 3 CARD -->
+  <!-- Box principali -->
   <div class="box-row">
     <div class="grid-3">
       <a href="news.html" class="card">
@@ -47,30 +45,29 @@
     </div>
   </div>
 
-<!-- RIGA 2: Ultima Partita -->
-<div class="box-row">
-  <div class="card result-large" id="risultatoContainer">
-    <div class="result-row">
-      <img id="homeLogo" src="img/logo.png" alt="Corbiolo" class="team-logo">
-      <div class="result-score" id="lastResultScore">-</div>
-      <img id="awayLogo" src="img/opponent.png" alt="Avversario" class="team-logo">
-    </div>
-    <div class="result-names">
-      <div class="team-name" id="homeTeam">-</div>
-      <div class="team-name" id="awayTeam">-</div>
+  <!-- Ultima partita -->
+  <div class="box-row" id="risultatoContainer">
+    <div class="card result-large">
+      <div class="result-row">
+        <img id="homeLogo" src="img/logo.png" alt="Casa" class="team-logo" />
+        <div class="result-score" id="lastResultScore">-</div>
+        <img id="awayLogo" src="img/opponent.png" alt="Fuori" class="team-logo" />
+      </div>
+      <div class="result-names">
+        <div class="team-name" id="homeTeam">-</div>
+        <div class="team-name" id="awayTeam">-</div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- RIGA 3: Prossima Partita -->
-<div class="box-row">
-  <div class="section" id="prossimaInfo">
-    <div class="section-title-icon">⚽️ Prossima Partita</div>
-    <p>--</p>
-    <p>--</p>
+  <!-- Prossima partita -->
+  <div class="box-row">
+    <div class="section" id="prossimaInfo">
+      <div class="section-title-icon">⚽️ Prossima Partita</div>
+      <p id="nextMatchTeams">--</p>
+      <p id="nextMatchDate">--</p>
+    </div>
   </div>
-</div>
-
 
   <!-- Ultima notizia -->
   <div class="box-row">
@@ -100,38 +97,8 @@
     }
 
     function installApp() {
-      if (window.deferredPrompt) {
-        window.deferredPrompt.prompt();
-        window.deferredPrompt.userChoice.then(() => {
-          window.deferredPrompt = null;
-        });
-      } else {
-        alert("Installazione non disponibile su questo dispositivo.");
-      }
-    }
-
-    // PWA & service worker
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("js/service-worker.js")
-          .then(reg => console.log("✅ SW registrato:", reg.scope))
-          .catch(err => console.error("❌ SW errore:", err));
-      });
-    }
-
-    // install icon
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      window.deferredPrompt = e;
-    });
-
-    // iOS fallback
-    const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
-    const isInStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    if (isIOS && !isInStandalone) {
-      alert("Per installare l'app, premi 'Condividi' e poi 'Aggiungi a Home'.");
+      alert("Funzione installazione in arrivo...");
     }
   </script>
-  <script defer src="js/install.js"></script>
 </body>
 </html>
