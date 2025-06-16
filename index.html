@@ -103,5 +103,29 @@
     });
   }
   </script>
+  <script>
+  let deferredPrompt;
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  function installApp() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choice) => {
+        if (choice.outcome === "accepted") {
+          console.log("✅ App installata");
+        } else {
+          console.log("❌ Installazione rifiutata");
+        }
+        deferredPrompt = null;
+      });
+    } else {
+      alert("ℹ️ Funzione disponibile solo su dispositivi supportati.");
+    }
+  }
+  </script>
 </body>
 </html>
