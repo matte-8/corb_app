@@ -6,27 +6,22 @@
   <title>Admin - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    #adminContent { display: none; }
+    #adminContent { display: none; padding-top:80px; }
     #passwordPrompt {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      position: fixed; top:0; left:0; right:0; bottom:0;
       background: rgba(0,0,0,0.9);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      z-index: 2000;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      color: white; z-index:2000;
     }
-    #passwordPrompt input {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-    }
+    #passwordPrompt input,
     #passwordPrompt button {
-      margin-top: 10px;
-      padding: 10px 20px;
+      padding:10px; font-size:16px; margin-top:10px;
     }
+    .section { margin:16px; padding:14px; background:#801e1e; border-radius:8px; }
+    .section-title-icon { font-size:18px; margin-bottom:8px; }
+    .section input, .section textarea { width:100%; margin-bottom:8px; padding:8px; border-radius:4px; border:none; }
+    .section button { padding:10px 16px; border:none; border-radius:4px; background:#ffcc00; color:#000; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -42,7 +37,6 @@
       <h1 class="page-title">Admin</h1>
       <div class="menu-icon" onclick="toggleMenu()">☰</div>
     </header>
-
     <div class="popup-menu" id="popupMenu">
       <a href="index.html">🏠 Home</a>
       <a href="news.html">🗞️ News</a>
@@ -53,31 +47,51 @@
       <a href="admin.html">🔐 Admin</a>
     </div>
 
-    <div class="box-row">
-      <div class="section">
-        <div class="section-title-icon">🔄 Aggiorna Tutto</div>
-        <button onclick="clearAllCaches()">Aggiorna tutte le pagine</button>
-      </div>
-
-      <div class="section">
-        <div class="section-title-icon">🏠 Home</div>
-        <button onclick="clearCache('corbiolo_home_cache')">Aggiorna Home</button>
-      </div>
-
-      <div class="section">
-        <div class="section-title-icon">🗞️ News</div>
-        <button onclick="clearCache('newsData')">Aggiorna News</button>
-      </div>
-
-      <div class="section">
-        <div class="section-title-icon">👥 Squadra</div>
-        <button onclick="clearCache('giocatori')">Aggiorna Squadra</button>
-      </div>
-
-      <div class="section">
-        <div class="section-title-icon">⚽️ Partite e Calendario</div>
-        <button onclick="clearCache('partiteCache')">Aggiorna Partite/Calendario</button>
-      </div>
+    <div class="section">
+      <div class="section-title-icon">🔄 Aggiorna Home</div>
+      <button onclick="clearCache('corbiolo_home_cache')">Aggiorna Home</button>
+    </div>
+    <div class="section">
+      <div class="section-title-icon">🆕 Inserisci News</div>
+      <input type="text" id="newsTitleInput" placeholder="Titolo" />
+      <textarea id="newsTextInput" placeholder="Corpo notizia"></textarea>
+      <button onclick="salvaNews()">Salva News</button>
+    </div>
+    <div class="section">
+      <div class="section-title-icon">👤 Aggiungi Giocatore</div>
+      <input type="text" id="nomeGiocatore" placeholder="Nome" />
+      <input type="text" id="ruoloGiocatore" placeholder="Ruolo" />
+      <input type="number" id="numeroGiocatore" placeholder="Numero" />
+      <input type="text" id="fotoGiocatore" placeholder="File immagine (es: gioc1.png)" />
+      <button onclick="salvaGiocatore()">Aggiungi Giocatore</button>
+    </div>
+    <div class="section">
+      <div class="section-title-icon">💼 Aggiungi Sponsor</div>
+      <input type="text" id="nomeSponsor" placeholder="Nome" />
+      <input type="text" id="logoSponsor" placeholder="File logo (es: logo.png)" />
+      <input type="url" id="linkSponsor" placeholder="Link (https://...)" />
+      <button onclick="salvaSponsor()">Aggiungi Sponsor</button>
+    </div>
+    <div class="section">
+      <div class="section-title-icon">📅 Aggiungi Partita</div>
+      <input type="date" id="dataPartita" />
+      <input type="time" id="oraPartita" />
+      <input type="text" id="casaPartita" placeholder="Squadra Casa" />
+      <input type="text" id="logoCasaPartita" placeholder="Logo Casa (es: casa.png)" />
+      <input type="text" id="fuoriPartita" placeholder="Squadra Fuori" />
+      <input type="text" id="logoFuoriPartita" placeholder="Logo Fuori (es: fuori.png)" />
+      <input type="text" id="risultatoPartita" placeholder="Risultato (es: 2‑1)" />
+      <button onclick="salvaPartita()">Aggiungi Partita</button>
+    </div>
+    <div class="section">
+      <div class="section-title-icon">🗓 Aggiungi Evento Calendario</div>
+      <input type="date" id="dataCalendario" />
+      <input type="text" id="avversarioCalendario" placeholder="Avversario" />
+      <select id="casaFuoriCalendario">
+        <option value="casa">Casa</option>
+        <option value="fuori">Fuori</option>
+      </select>
+      <button onclick="salvaCalendario()">Aggiungi Evento</button>
     </div>
 
     <div class="footer">
@@ -94,29 +108,83 @@
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("popupMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      const m = document.getElementById("popupMenu");
+      m.style.display = m.style.display === "flex" ? "none" : "flex";
+    }
+
+    function checkPassword() {
+      if (document.getElementById("adminPass").value === "corb25") {
+        document.getElementById("passwordPrompt").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+      } else alert("Password errata");
     }
 
     function clearCache(key) {
       localStorage.removeItem(key);
-      alert(`Cache della pagina "${key}" rimossa. Ricarica la pagina corrispondente.`);
+      alert("Cache rimossa: " + key);
     }
 
-    function clearAllCaches() {
-      const keys = ["corbiolo_home_cache", "newsData", "giocatori", "partiteCache"];
-      keys.forEach(k => localStorage.removeItem(k));
-      alert("Tutte le cache sono state cancellate. Ricarica le pagine per ottenere i dati aggiornati.");
+    function salvaNews() {
+      const t = document.getElementById("newsTitleInput").value.trim();
+      const c = document.getElementById("newsTextInput").value.trim();
+      if (!t || !c) return alert("Titolo e testo obbligatori");
+      const arr = JSON.parse(localStorage.getItem("newsData") || "[]");
+      arr.unshift({ titolo: t, contenuto: c, nuova: "TRUE", img: "" });
+      localStorage.setItem("newsData", JSON.stringify(arr));
+      alert("News salvata");
+      document.getElementById("newsTitleInput").value = "";
+      document.getElementById("newsTextInput").value = "";
     }
 
-    function checkPassword() {
-      const pass = document.getElementById("adminPass").value;
-      if (pass === "corb25") {
-        document.getElementById("passwordPrompt").style.display = "none";
-        document.getElementById("adminContent").style.display = "block";
-      } else {
-        alert("Password errata");
-      }
+    function salvaGiocatore(){
+      const nome = document.getElementById("nomeGiocatore").value.trim();
+      const ruolo = document.getElementById("ruoloGiocatore").value.trim();
+      const numero = document.getElementById("numeroGiocatore").value.trim();
+      const foto = document.getElementById("fotoGiocatore").value.trim();
+      if (!nome||!ruolo||!numero||!foto) return alert("Compila tutti");
+      const arr = JSON.parse(localStorage.getItem("giocatori") || "[]");
+      arr.push({ nome, ruolo, numero, foto });
+      localStorage.setItem("giocatori", JSON.stringify(arr));
+      alert("Giocatore aggiunto");
+      ["nomeGiocatore","ruoloGiocatore","numeroGiocatore","fotoGiocatore"].forEach(id=>document.getElementById(id).value="");
+    }
+
+    function salvaSponsor(){
+      const n = document.getElementById("nomeSponsor").value.trim();
+      const l = document.getElementById("logoSponsor").value.trim();
+      const u = document.getElementById("linkSponsor").value.trim();
+      if (!n||!l||!u) return alert("Compila tutti");
+      const arr = JSON.parse(localStorage.getItem("sponsor") || "[]");
+      arr.push({ nome:n, logo:l, link:u });
+      localStorage.setItem("sponsor", JSON.stringify(arr));
+      alert("Sponsor aggiunto");
+      ["nomeSponsor","logoSponsor","linkSponsor"].forEach(i=>document.getElementById(i).value="");
+    }
+
+    function salvaPartita(){
+      const d = document.getElementById("dataPartita").value;
+      const o = document.getElementById("oraPartita").value;
+      const casa = document.getElementById("casaPartita").value.trim();
+      const logoCasa = document.getElementById("logoCasaPartita").value.trim();
+      const fuori = document.getElementById("fuoriPartita").value.trim();
+      const logoFuori = document.getElementById("logoFuoriPartita").value.trim();
+      const ris = document.getElementById("risultatoPartita").value.trim();
+      if (!d||!o||!casa||!logoCasa||!fuori||!logoFuori) return alert("Inserisci data, ora, squadre e loghi");
+      const arr = JSON.parse(localStorage.getItem("partite") || "[]");
+      arr.push({ data:d, ora:o, casa, logocasa:logoCasa, fuori, logoavv:logoFuori, risultato:ris });
+      localStorage.setItem("partite", JSON.stringify(arr));
+      alert("Partita aggiunta");
+    }
+
+    function salvaCalendario(){
+      const d = document.getElementById("dataCalendario").value;
+      const avv = document.getElementById("avversarioCalendario").value.trim();
+      const cf = document.getElementById("casaFuoriCalendario").value;
+      if (!d||!avv) return alert("Compila tutti");
+      const arr = JSON.parse(localStorage.getItem("calendario") || "[]");
+      arr.push({ data:d, avversario:avv, casa_fuori:cf });
+      localStorage.setItem("calendario", JSON.stringify(arr));
+      alert("Evento aggiunto");
     }
   </script>
 </body>
