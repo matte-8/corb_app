@@ -16,7 +16,7 @@
 
   <div class="popup-menu" id="popupMenu">
     <a href="index.html">🏠 Home</a>
-    <a href="news.html">🗞️ News</a>
+    <a href="news.html">🗞️ News <span id="badgeNewsCard" class="badge-news" style="display:none;">NEW</span></a>
     <a href="squadra.html">👥 Squadra</a>
     <a href="partite.html">⚽️ Partite</a>
     <a href="calendario.html">🗓 Calendario</a>
@@ -24,11 +24,12 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
+  <!-- RIGA 1: 3 Box -->
   <div class="box-row">
     <div class="grid-3">
       <a href="news.html" class="card">
         <div class="card-icon">🗞️</div>
-        News <span id="badgeNewsCard" class="badge-news" style="display:none">NEW</span>
+        News <span id="badgeNewsCard" class="badge-news" style="display:none;">NEW</span>
       </a>
       <a href="squadra.html" class="card">
         <div class="card-icon">👥</div>
@@ -41,24 +42,40 @@
     </div>
   </div>
 
+  <!-- RIGA 2: Box Risultato Ultima Partita -->
   <div class="box-row" id="risultatoContainer">
-    <!-- Ultima partita caricata dinamicamente -->
-  </div>
-
-  <div class="box-row">
-    <div class="section" id="prossimaInfo">
-      <!-- Prossima partita caricata dinamicamente -->
+    <div class="card result-large">
+      <div class="result-row">
+        <img id="homeLogo" src="img/logo.png" alt="Corbiolo" class="team-logo">
+        <div class="result-score" id="lastResultScore">-</div>
+        <img id="awayLogo" src="img/opponent.png" alt="Avversario" class="team-logo">
+      </div>
+      <div class="result-names">
+        <div class="team-name" id="homeTeam">-</div>
+        <div class="team-name" id="awayTeam">-</div>
+      </div>
     </div>
   </div>
 
+  <!-- RIGA 3: Prossima Partita -->
+  <div class="box-row">
+    <div class="section" id="prossimaInfo">
+      <div class="section-title-icon">⚽️ Prossima Partita</div>
+      <p>--</p>
+      <p>--</p>
+    </div>
+  </div>
+
+  <!-- RIGA 4: Ultima Notizia -->
   <div class="box-row">
     <div class="section">
       <div class="section-title-icon">🗞️ Ultima Notizia</div>
-      <p id="newsTitle"></p>
-      <p id="newsText"></p>
+      <p id="newsTitle">Caricamento titolo...</p>
+      <p id="newsText">Caricamento contenuto...</p>
     </div>
   </div>
 
+  <!-- RIGA 5: Sponsor Carousel -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -70,6 +87,7 @@
     </div>
   </div>
 
+  <!-- Menu JS -->
   <script>
     function toggleMenu() {
       const menu = document.getElementById("popupMenu");
