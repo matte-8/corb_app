@@ -42,42 +42,45 @@
     </div>
   </div>
 
-  <!-- RIGA 2: Prossima Partita + Risultato -->
-  <div class="box-row">
-    <div class="grid-custom">
-      <!-- Box Prossima Partita -->
-      <div class="card" id="next-match-card">
-        <!-- JS lo riempirà -->
+<!-- Prossima Partita -->
+<div class="box-row">
+  <div class="grid-custom">
+    <a href="partite.html" class="card">
+      <div class="card-icon">📅</div>
+      <div id="nextMatchTitle">Prossima Partita</div>
+    </a>
+    <div class="card result-large">
+      <div class="result-row">
+        <img src="img/logo.png" class="team-logo" id="homeLogo" alt="Casa">
+        <div class="result-score" id="lastResultScore">-</div>
+        <img src="img/opponent.png" class="team-logo" id="awayLogo" alt="Avversario">
       </div>
-
-      <!-- Box Risultato Partita -->
-      <div class="card result-large" id="result-card">
-        <!-- JS lo riempirà -->
-      </div>
-    </div>
-  </div>
-
-  <!-- RIGA 3: Dettagli Prossima Partita -->
-  <div class="box-row">
-    <div class="section" id="last-news">
-      <!-- Ultima notizia da JS -->
-    </div>
-  </div>
-
-  <!-- RIGA 4: Sponsor Carousel -->
-  <div class="footer">
-    <div class="sponsor-title">Sponsor</div>
-    <div class="carousel-wrapper">
-      <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1" />
-        <img src="img/sponsor2.png" alt="Sponsor 2" />
-        <img src="img/sponsor3.png" alt="Sponsor 3" />
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone" />
-        <img src="img/sponsor2.png" alt="Sponsor 2 clone" />
-        <img src="img/sponsor3.png" alt="Sponsor 3 clone" />
+      <div class="result-names">
+        <div class="team-name" id="homeTeam">Corbiolo</div>
+        <div class="team-name" id="awayTeam">Avversario</div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Dettagli prossima -->
+<div class="box-row">
+  <div class="section">
+    <div class="section-title-icon">⚽️ Prossima Partita</div>
+    <p id="nextMatchTeams">-</p>
+    <p id="nextMatchDate">Caricamento...</p>
+  </div>
+</div>
+
+<!-- Ultima notizia -->
+<div class="box-row">
+  <div class="section">
+    <div class="section-title-icon">🗞️ Ultima Notizia</div>
+    <p id="newsTitle"><b>Caricamento...</b></p>
+    <p id="newsText">Attendi il caricamento delle ultime notizie.</p>
+  </div>
+</div>
+
 
   <script>
     function toggleMenu() {
