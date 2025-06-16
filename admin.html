@@ -5,58 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    #adminContent { display: none; }
+    #passwordPrompt {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      z-index: 2000;
+    }
+    #passwordPrompt input {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #passwordPrompt button {
+      margin-top: 10px;
+      padding: 10px 20px;
+    }
+  </style>
 </head>
 <body>
-  <header class="header">
-    <img src="img/logo.png" alt="Logo" class="logo" />
-    <h1 class="page-title">Admin</h1>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-  </header>
-
-  <div class="popup-menu" id="popupMenu">
-    <a href="index.html">🏠 Home</a>
-    <a href="news.html">🗞️ News</a>
-    <a href="squadra.html">👥 Squadra</a>
-    <a href="partite.html">⚽️ Partite</a>
-     <a href="sponsor.html">💰 Sponsor</a>
-    <a href="calendario.html">🗓 Calendario</a>
-    <a href="admin.html">🔐 Admin</a>
+  <div id="passwordPrompt">
+    <h2>Accesso Admin</h2>
+    <input type="password" id="adminPass" placeholder="Inserisci password">
+    <button onclick="checkPassword()">Accedi</button>
   </div>
 
-  <div class="box-row">
-    <div class="section">
-      <div class="section-title-icon">🔄 Aggiorna Tutto</div>
-      <button onclick="clearAllCaches()">Aggiorna tutte le pagine</button>
+  <div id="adminContent">
+    <header class="header">
+      <img src="img/logo.png" alt="Logo" class="logo" />
+      <h1 class="page-title">Admin</h1>
+      <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </header>
+
+    <div class="popup-menu" id="popupMenu">
+      <a href="index.html">🏠 Home</a>
+      <a href="news.html">🗞️ News</a>
+      <a href="squadra.html">👥 Squadra</a>
+      <a href="partite.html">⚽️ Partite</a>
+      <a href="calendario.html">🗓 Calendario</a>
+      <a href="sponsor.html">💰 Sponsor</a>
+      <a href="admin.html">🛠️ Admin</a>
     </div>
 
-    <div class="section">
-      <div class="section-title-icon">🏠 Home</div>
-      <button onclick="clearCache('corbiolo_home_cache')">Aggiorna Home</button>
+    <div class="box-row">
+      <div class="section">
+        <div class="section-title-icon">🔄 Aggiorna Tutto</div>
+        <button onclick="clearAllCaches()">Aggiorna tutte le pagine</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title-icon">🏠 Home</div>
+        <button onclick="clearCache('corbiolo_home_cache')">Aggiorna Home</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title-icon">🗞️ News</div>
+        <button onclick="clearCache('newsData')">Aggiorna News</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title-icon">👥 Squadra</div>
+        <button onclick="clearCache('giocatori')">Aggiorna Squadra</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title-icon">⚽️ Partite e Calendario</div>
+        <button onclick="clearCache('partiteCache')">Aggiorna Partite/Calendario</button>
+      </div>
     </div>
 
-    <div class="section">
-      <div class="section-title-icon">🗞️ News</div>
-      <button onclick="clearCache('newsData')">Aggiorna News</button>
-    </div>
-
-    <div class="section">
-      <div class="section-title-icon">👥 Squadra</div>
-      <button onclick="clearCache('giocatori')">Aggiorna Squadra</button>
-    </div>
-
-    <div class="section">
-      <div class="section-title-icon">⚽️ Partite e Calendario</div>
-      <button onclick="clearCache('partiteCache')">Aggiorna Partite/Calendario</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <div class="sponsor-title">Sponsor</div>
-    <div class="carousel-wrapper">
-      <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1" />
-        <img src="img/sponsor2.png" alt="Sponsor 2" />
-        <img src="img/sponsor3.png" alt="Sponsor 3" />
+    <div class="footer">
+      <div class="sponsor-title">Sponsor</div>
+      <div class="carousel-wrapper">
+        <div class="carousel-content">
+          <img src="img/sponsor1.png" alt="Sponsor 1" />
+          <img src="img/sponsor2.png" alt="Sponsor 2" />
+          <img src="img/sponsor3.png" alt="Sponsor 3" />
+        </div>
       </div>
     </div>
   </div>
@@ -76,6 +107,16 @@
       const keys = ["corbiolo_home_cache", "newsData", "giocatori", "partiteCache"];
       keys.forEach(k => localStorage.removeItem(k));
       alert("Tutte le cache sono state cancellate. Ricarica le pagine per ottenere i dati aggiornati.");
+    }
+
+    function checkPassword() {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === "corb25") {
+        document.getElementById("passwordPrompt").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+      } else {
+        alert("Password errata");
+      }
     }
   </script>
 </body>
