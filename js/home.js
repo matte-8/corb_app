@@ -1,36 +1,63 @@
+document.addEventListener("DOMContentLoaded", () => {
+  mostraUltimaNews();
+  mostraUltimaPartita();
+  mostraProssimaPartita();
+});
 
-// HOME.JS
-
-// NEWS
-const news = JSON.parse(localStorage.getItem("newsData") || "[]");
-if (news.length > 0) {
-  document.getElementById("newsTitle").textContent = news[0].titolo || "-";
-  document.getElementById("newsText").textContent = news[0].contenuto || "-";
-}
-
-// PROSSIMA PARTITA
-const calendario = JSON.parse(localStorage.getItem("calendario") || "[]");
-if (calendario.length > 0) {
-  const prossima = calendario.find(e => new Date(e.data) >= new Date());
-  if (prossima) {
-    const d = new Date(prossima.data);
-    const op = prossima.avversario || "-";
-    const cf = prossima.casa_fuori === "casa" ? "in casa" : "in trasferta";
-    document.getElementById("nextMatchTeams").textContent = "vs " + op + " (" + cf + ")";
-    document.getElementById("nextMatchDate").textContent = d.toLocaleDateString("it-IT", {
-      day: "numeric", month: "short", year: "numeric"
-    });
+function getDati(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || [];
+  } catch {
+    return [];
   }
 }
 
-// ULTIMA PARTITA
-const partite = JSON.parse(localStorage.getItem("partite") || "[]");
-if (partite.length > 0) {
-  const ultima = partite[0];
-  document.getElementById("homeTeam").textContent = ultima.casa || "-";
-  document.getElementById("awayTeam").textContent = ultima.fuori || "-";
-  document.getElementById("lastResultScore").textContent = ultima.risultato || "-";
-  document.getElementById("homeLogo").src = "img/" + (ultima.logocasa || "logo.png");
-  document.getElementById("awayLogo").src = "img/" + (ultima.logoavv || "opponent.png");
-  document.getElementById("mvpDisplay").textContent = "🏆 MVP: " + (ultima.mvp || "--");
+function mostraUltimaNews() {
+  const news = getDati("newsData");
+  if (news.length > 0) {
+    document.getElementById("newsTitle").textContent = news[0].titolo || "-";
+    document.getElementById("newsText").textContent = news[0].contenuto || "-";
+    document.getElementById("badgeNewsCard").style.display = "inline-block";
+  }
+}
+
+function mostraUltimaPartita() {
+  const partite = getDati("partite");
+
+  const passate = partite.filter(p => {
+    const d = new Date(p.data + "T" + (p.ora || "00:00"));
+    return d < new Date();
+  }).sort((a, b) => new Date(b.data) - new Date(a.data));
+
+  if (passate.length > 0) {
+    const partita = passate[0];
+    document.getElementById("homeLogo").src = "img/" + (partita.logocasa || "logo.png");
+    document.getElementById("awayLogo").src = "img/" + (partita.logoavv || "opponent.png");
+    document.getElementById("lastResultScore").textContent = partita.risultato || "-";
+    document.getElementById("homeTeam").textContent = partita.casa || "-";
+    document.getElementById("awayTeam").textContent = partita.fuori || "-";
+  }
+}
+
+function mostraProssimaPartita() {
+  const partite = getDati("partite");
+
+  const future = partite.filter(p => {
+    const d = new Date(p.data + "T" + (p.ora || "00:00"));
+    return d >= new Date();
+  }).sort((a, b) => new Date(a.data) - new Date(b.data));
+
+  if (future.length > 0) {
+    const prossima = future[0];
+    const squadre = (prossima.casa || "-") + " vs " + (prossima.fuori || "-");
+    const dataMatch = formattaData(prossima.data) + " " + (prossima.ora || "");
+    document.getElementById("nextMatchTeams").textContent = squadre;
+    document.getElementById("nextMatchDate").textContent = dataMatch;
+  }
+}
+
+function formattaData(d) {
+  if (!d) return "-";
+  const parts = d.split("-");
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
 }
