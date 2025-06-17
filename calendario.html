@@ -5,53 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calendario - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      margin: 16px;
-      text-align: center;
-    }
-
-    .day-box {
-      background: #801e1e;
-      padding: 12px;
-      border-radius: 6px;
-      color: white;
-      font-weight: bold;
-    }
-
-    .day-box.empty {
-      background: transparent;
-    }
-
-    .day-box.partita {
-      color: black;
-    }
-
-    .day-box.casa {
-      background: #3399ff;
-    }
-
-    .day-box.fuori {
-      background: #ffd700;
-    }
-
-    .partite-elenco {
-      margin: 0 16px 32px;
-    }
-
-    .partita-riga {
-      background: #801e1e;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      color: white;
-    }
-  </style>
+  <script defer src="js/calendario.js"></script>
 </head>
 <body>
   <header class="header">
@@ -72,13 +26,15 @@
 
   <div class="box-row">
     <div class="section">
-      <div class="section-title-icon">📅 Calendario del Mese</div>
-      <div id="calendarGrid" class="calendar-grid"></div>
+      <div class="section-title-icon" id="meseCorrente">📅 Mese in corso</div>
+      <div id="calendarioMese"></div>
     </div>
+  </div>
 
+  <div class="box-row">
     <div class="section">
-      <div class="section-title-icon">📆 Prossime Partite</div>
-      <div id="partiteElenco" class="partite-elenco">Caricamento...</div>
+      <div class="section-title-icon">📆 Partite in programma</div>
+      <div id="calendarioLista"></div>
     </div>
   </div>
 
@@ -95,10 +51,9 @@
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("popupMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      const m = document.getElementById("popupMenu");
+      m.style.display = m.style.display === "flex" ? "none" : "flex";
     }
   </script>
-  <script src="js/calendario.js"></script>
 </body>
 </html>
