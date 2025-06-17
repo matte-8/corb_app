@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Partite - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/partite.js"></script>
 </head>
 <body>
   <header class="header">
@@ -23,20 +24,8 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
-  <div class="box-row">
-    <div class="section">
-      <div class="section-title-icon">🏆 Ultima Partita</div>
-      <div id="risultatoContainer">Caricamento risultato...</div>
-    </div>
-  </div>
-
-
-
-  <div class="box-row">
-    <div class="section">
-      <div class="section-title-icon">📆 Calendario</div>
-      <div id="calendarioContainer" class="calendar-grid">Caricamento calendario...</div>
-    </div>
+  <div class="box-row" id="partite-container">
+    <p>Caricamento partite...</p>
   </div>
 
   <div class="footer">
@@ -56,6 +45,5 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
-  <script src="js/partite.js"></script>
 </body>
 </html>
