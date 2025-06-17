@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -28,6 +27,7 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
+  <!-- Box principali -->
   <div class="box-row">
     <div class="grid-3">
       <a href="news.html" class="card">
@@ -45,13 +45,13 @@
     </div>
   </div>
 
-  <div class="box-row" id="prossimaPartitaBox">
+  <!-- Riga 2: Prossima partita (solo icona e titolo) + Ultimo risultato -->
+  <div class="box-row">
     <div class="grid-2">
-      <div class="card" id="nextMatchCard">
+      <a href="partite.html" class="card">
         <div class="card-icon">📅</div>
-        <div id="nextMatchTeams">--</div>
-        <div id="nextMatchDate">--</div>
-      </div>
+        <div class="section-title-icon">Prossima Partita</div>
+      </a>
       <div class="card result-box">
         <div class="result-row">
           <img id="homeLogo" src="img/logo.png" alt="Casa" class="team-logo" />
@@ -62,11 +62,20 @@
           <div class="team-name" id="homeTeam">-</div>
           <div class="team-name" id="awayTeam">-</div>
         </div>
-        <div class="section-title-icon" id="mvpDisplay">🏆 MVP: --</div>
       </div>
     </div>
   </div>
 
+  <!-- Riga 3: Dettagli prossima partita -->
+  <div class="box-row">
+    <div class="section">
+      <div class="section-title-icon">⚽ Dettagli Prossima Partita</div>
+      <p id="nextMatchTeams">-</p>
+      <p id="nextMatchDate">-</p>
+    </div>
+  </div>
+
+  <!-- Ultima notizia -->
   <div class="box-row">
     <div class="section">
       <div class="section-title-icon">🗞️ Ultima Notizia</div>
@@ -75,6 +84,7 @@
     </div>
   </div>
 
+  <!-- Footer Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -86,6 +96,7 @@
     </div>
   </div>
 
+  <!-- JS per menu -->
   <script>
     function toggleMenu() {
       const menu = document.getElementById("popupMenu");
