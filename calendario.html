@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calendario - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/calendario.js"></script>
@@ -24,20 +24,25 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
+  <!-- Calendario mese corrente -->
   <div class="box-row">
     <div class="section">
-      <div class="section-title-icon" id="meseCorrente">📅 Mese in corso</div>
-      <div id="calendarioMese"></div>
+      <div class="section-title-icon" id="meseCorrente">📅 Calendario Mensile</div>
+      <div id="grigliaMese" class="grid-custom"></div>
     </div>
   </div>
 
+  <!-- Elenco partite -->
   <div class="box-row">
     <div class="section">
-      <div class="section-title-icon">📆 Partite in programma</div>
-      <div id="calendarioLista"></div>
+      <div class="section-title-icon">📆 Prossime Partite</div>
+      <div id="calendario" class="calendario-list">
+        <p>Caricamento calendario...</p>
+      </div>
     </div>
   </div>
 
+  <!-- Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
