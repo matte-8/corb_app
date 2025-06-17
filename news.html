@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>News - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/news.js"></script>
 </head>
 <body>
   <header class="header">
@@ -23,20 +24,19 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
-  <div class="box-row" id="newsContainer">
-    <p>Caricamento notizie...</p>
+  <!-- Contenitore notizie -->
+  <div class="box-row">
+    <div id="newsContainer"></div>
   </div>
 
+  <!-- Footer sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
       <div class="carousel-content">
-        <img src="img/sponsor1.png" alt="Sponsor 1">
-        <img src="img/sponsor2.png" alt="Sponsor 2">
-        <img src="img/sponsor3.png" alt="Sponsor 3">
-        <img src="img/sponsor1.png" alt="Sponsor 1 clone">
-        <img src="img/sponsor2.png" alt="Sponsor 2 clone">
-        <img src="img/sponsor3.png" alt="Sponsor 3 clone">
+        <img src="img/sponsor1.png" alt="Sponsor 1" />
+        <img src="img/sponsor2.png" alt="Sponsor 2" />
+        <img src="img/sponsor3.png" alt="Sponsor 3" />
       </div>
     </div>
   </div>
@@ -47,6 +47,5 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
-  <script src="js/news.js"></script>
 </body>
 </html>
