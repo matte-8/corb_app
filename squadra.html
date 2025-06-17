@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Squadra - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/squadra.js"></script>
 </head>
 <body>
   <header class="header">
@@ -13,7 +14,6 @@
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </header>
 
-  <!-- Menu a comparsa -->
   <div class="popup-menu" id="popupMenu">
     <a href="index.html">🏠 Home</a>
     <a href="news.html">🗞️ News</a>
@@ -24,12 +24,12 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
-  <!-- Lista giocatori -->
+  <!-- Giocatori -->
   <div id="squadra-container">
-    <p>Caricamento squadra...</p>
+    <p>Caricamento giocatori...</p>
   </div>
 
-  <!-- Footer sponsor -->
+  <!-- Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -41,13 +41,11 @@
     </div>
   </div>
 
-  <!-- JS Menu + Squadra -->
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("popupMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      const m = document.getElementById("popupMenu");
+      m.style.display = m.style.display === "flex" ? "none" : "flex";
     }
   </script>
-  <script src="js/squadra.js"></script>
 </body>
 </html>
