@@ -1,60 +1,58 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const calendario = JSON.parse(localStorage.getItem("calendario") || "[]");
-  const grid = document.getElementById("calendarGrid");
-  const elenco = document.getElementById("partiteElenco");
+  const eventi = JSON.parse(localStorage.getItem("calendario") || "[]");
+  const contenitoreMese = document.getElementById("calendarioMese");
+  const contenitoreLista = document.getElementById("calendarioLista");
+  const meseCorrente = new Date().getMonth();
+  const annoCorrente = new Date().getFullYear();
 
-  const oggi = new Date();
-  const mese = oggi.getMonth(); // 0-11
-  const anno = oggi.getFullYear();
+  document.getElementById("meseCorrente").textContent =
+    "📅 " + new Date().toLocaleString("it-IT", { month: "long", year: "numeric" });
 
-  const primoGiorno = new Date(anno, mese, 1);
-  const giorniNelMese = new Date(anno, mese + 1, 0).getDate();
-  const giornoSettimanaInizio = primoGiorno.getDay(); // 0 = domenica
+  const giorniConPartita = eventi
+    .map(e => new Date(e.data))
+    .filter(d => d.getMonth() === meseCorrente && d.getFullYear() === annoCorrente)
+    .map(d => d.getDate());
 
-  const partiteMese = calendario.filter(p => {
-    const data = new Date(p.data);
-    return data.getMonth() === mese && data.getFullYear() === anno;
-  });
+  // Genera giorni del mese attuale
+  const giorniNelMese = new Date(annoCorrente, meseCorrente + 1, 0).getDate();
+  contenitoreMese.innerHTML = "";
 
-  // Map dei giorni con partita
-  const giorniPartite = {};
-  partiteMese.forEach(p => {
-    const giorno = new Date(p.data).getDate();
-    giorniPartite[giorno] = p.casa_fuori.toLowerCase();
-  });
-
-  // Spazi vuoti inizio mese
-  for (let i = 0; i < (giornoSettimanaInizio === 0 ? 6 : giornoSettimanaInizio - 1); i++) {
-    const box = document.createElement("div");
-    box.className = "day-box empty";
-    grid.appendChild(box);
-  }
-
-  // Giorni mese
-  for (let d = 1; d <= giorniNelMese; d++) {
-    const box = document.createElement("div");
-    box.className = "day-box";
-    if (giorniPartite[d]) {
-      box.classList.add("partita", giorniPartite[d]);
+  for (let giorno = 1; giorno <= giorniNelMese; giorno++) {
+    const cerchio = document.createElement("div");
+    cerchio.className = "day-circle";
+    cerchio.textContent = giorno;
+    cerchio.style.margin = "4px";
+    if (giorniConPartita.includes(giorno)) {
+      const evento = eventi.find(e => new Date(e.data).getDate() === giorno);
+      cerchio.style.background = evento.casa_fuori === "casa" ? "#3399ff" : "#ffd700";
+    } else {
+      cerchio.style.background = "#666";
     }
-    box.textContent = d;
-    grid.appendChild(box);
+    contenitoreMese.appendChild(cerchio);
   }
 
-  // Elenco sotto
-  if (partiteMese.length === 0) {
-    elenco.innerHTML = "<p>Nessuna partita questo mese</p>";
-  } else {
-    elenco.innerHTML = "";
-    partiteMese.sort((a, b) => new Date(a.data) - new Date(b.data)).forEach(p => {
-      const dataObj = new Date(p.data);
-      const giorno = dataObj.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
-      const icona = p.casa_fuori.toLowerCase() === "casa" ? "🏠" : "✈️";
-
-      const row = document.createElement("div");
-      row.className = "partita-riga";
-      row.innerHTML = `<div>${giorno} - ${p.avversario}</div><div>${icona}</div>`;
-      elenco.appendChild(row);
-    });
+  // Sezione con elenco partite
+  contenitoreLista.innerHTML = "";
+  if (eventi.length === 0) {
+    contenitoreLista.innerHTML = "<p>Nessuna partita disponibile.</p>";
+    return;
   }
+
+  eventi.forEach(e => {
+    const data = new Date(e.data);
+    const giornoSettimana = data.toLocaleDateString("it-IT", { weekday: "long" });
+    const giorno = data.getDate();
+    const mese = data.toLocaleString("it-IT", { month: "long" });
+    const icona = e.casa_fuori === "casa" ? "🏠" : "✈️";
+    const colore = e.casa_fuori === "casa" ? "#3399ff" : "#ffd700";
+
+    const riga = document.createElement("div");
+    riga.className = "cal-giorno";
+    riga.innerHTML = `
+      <div class="cal-cerchio" style="background:${colore}">${giorno}</div>
+      <div class="cal-testo">${giornoSettimana} ${giorno} ${mese} - ${e.avversario}</div>
+      <div class="cal-icon">${icona}</div>
+    `;
+    contenitoreLista.appendChild(riga);
+  });
 });
