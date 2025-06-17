@@ -2,9 +2,56 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calendario - U.S. Corbiolo C5</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin: 16px;
+      text-align: center;
+    }
+
+    .day-box {
+      background: #801e1e;
+      padding: 12px;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .day-box.empty {
+      background: transparent;
+    }
+
+    .day-box.partita {
+      color: black;
+    }
+
+    .day-box.casa {
+      background: #3399ff;
+    }
+
+    .day-box.fuori {
+      background: #ffd700;
+    }
+
+    .partite-elenco {
+      margin: 0 16px 32px;
+    }
+
+    .partita-riga {
+      background: #801e1e;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      color: white;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -23,17 +70,18 @@
     <a href="admin.html">🔐 Admin</a>
   </div>
 
-  <!-- Calendario partite -->
   <div class="box-row">
     <div class="section">
+      <div class="section-title-icon">📅 Calendario del Mese</div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+
+    <div class="section">
       <div class="section-title-icon">📆 Prossime Partite</div>
-      <div id="calendario-container">
-        <p>Caricamento calendario...</p>
-      </div>
+      <div id="partiteElenco" class="partite-elenco">Caricamento...</div>
     </div>
   </div>
 
-  <!-- Sponsor -->
   <div class="footer">
     <div class="sponsor-title">Sponsor</div>
     <div class="carousel-wrapper">
@@ -51,7 +99,6 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     }
   </script>
-
   <script src="js/calendario.js"></script>
 </body>
 </html>
