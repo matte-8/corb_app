@@ -1,50 +1,39 @@
-const urlGiocatori = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
-const container = document.getElementById("squadra-container");
-const cacheKey = "giocatori";
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("squadra-container");
+  const giocatori = JSON.parse(localStorage.getItem("giocatori") || "[]");
 
-// 1. Mostra subito i dati dalla cache
-const cache = localStorage.getItem(cacheKey);
-if (cache) {
-  try {
-    const parsed = JSON.parse(cache);
-    renderGiocatori(parsed.giocatori || parsed); // compatibile con entrambe le strutture
-  } catch (e) {
-    console.warn("Errore nella cache squadra.");
-  }
-}
-
-// 2. Carica dati aggiornati da Sheets
-fetch(urlGiocatori)
-  .then((r) => r.json())
-  .then((data) => {
-    if (data.giocatori && Array.isArray(data.giocatori)) {
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      renderGiocatori(data.giocatori);
-    } else {
-      console.error("Formato dati non valido");
-    }
-  })
-  .catch(() => {
-    if (!cache) container.innerHTML = "<p>Errore nel caricamento della squadra.</p>";
-  });
-
-// 3. Render della lista giocatori
-function renderGiocatori(giocatori) {
-  if (!Array.isArray(giocatori) || giocatori.length === 0) {
+  if (giocatori.length === 0) {
     container.innerHTML = "<p>Nessun giocatore trovato.</p>";
     return;
   }
 
-  const html = giocatori.map(g => `
-    <div class="player-card">
-      <img src="img/${g.foto}" alt="${g.nome}" class="player-image" />
-      <div class="player-info">
-        <div class="player-name">${g.nome}</div>
-        <div class="player-role">${g.ruolo}</div>
-        <div class="player-number">#${g.numero}</div>
-      </div>
-    </div>
-  `).join("");
+  container.innerHTML = ""; // svuota contenuto
 
-  container.innerHTML = html;
-}
+  giocatori.forEach(gi => {
+    const card = document.createElement("div");
+    card.className = "player-card";
+
+    const img = document.createElement("img");
+    img.className = "player-image";
+    img.src = `img/${gi.foto}`;
+    img.alt = gi.nome;
+
+    const nome = document.createElement("div");
+    nome.className = "player-name";
+    nome.textContent = gi.nome;
+
+    const ruolo = document.createElement("div");
+    ruolo.className = "player-role";
+    ruolo.textContent = gi.ruolo;
+
+    const numero = document.createElement("div");
+    numero.className = "player-number";
+    numero.textContent = gi.numero;
+
+    card.appendChild(img);
+    card.appendChild(nome);
+    card.appendChild(ruolo);
+    card.appendChild(numero);
+    container.appendChild(card);
+  });
+});
