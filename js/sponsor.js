@@ -1,54 +1,31 @@
-const urlSponsor = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
 const container = document.getElementById("sponsor-container");
-const carousel = document.getElementById("carousel-sponsor");
-const cacheKey = "sponsorCache";
+const sponsorCache = localStorage.getItem("sponsor");
 
-// Mostra subito dati dalla cache
-const cache = localStorage.getItem(cacheKey);
-if (cache) {
+if (sponsorCache) {
   try {
-    const parsed = JSON.parse(cache);
-    renderSponsor(parsed);
+    const data = JSON.parse(sponsorCache);
+    renderSponsor(data);
   } catch (e) {
-    console.warn("Errore nella cache sponsor.");
+    console.warn("Errore lettura sponsor");
   }
 }
 
-// Carica da Sheets
-fetch(urlSponsor)
-  .then(res => res.json())
-  .then(data => {
-    if (data.sponsor && Array.isArray(data.sponsor)) {
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      renderSponsor(data);
-    }
-  })
-  .catch(() => {
-    if (!cache) container.innerHTML = "<p>Errore nel caricamento sponsor.</p>";
-  });
-
 function renderSponsor(data) {
-  if (!data.sponsor || data.sponsor.length === 0) {
-    container.innerHTML = "<p>Nessun sponsor trovato.</p>";
+  if (!Array.isArray(data) || data.length === 0) {
+    container.innerHTML = "<p>Nessuno sponsor trovato.</p>";
     return;
   }
 
-  const staticList = data.sponsor
-    .map(s => `
-      <div class="section">
-        <img src="img/${s.logo}" alt="${s.nome}" class="team-logo">
-        <div class="section-title-icon">${s.nome}</div>
-        <p><a href="${s.link}" target="_blank">Visita</a></p>
-      </div>
-    `)
-    .join("");
-
-  container.innerHTML = staticList;
-
-  // Aggiungi alla giostra
-  const logos = data.sponsor
-    .map(s => `<img src="img/${s.logo}" alt="${s.nome}" />`)
-    .join("");
-
-  carousel.innerHTML = logos + logos; // doppio per loop animazione
+  container.innerHTML = "";
+  data.forEach(sp => {
+    const card = document.createElement("div");
+    card.className = "sponsor-card";
+    card.innerHTML = `
+      <a href="${sp.link || "#"}" target="_blank">
+        <img src="img/${sp.logo}" alt="${sp.nome}" />
+        <div>${sp.nome}</div>
+      </a>
+    `;
+    container.appendChild(card);
+  });
 }
