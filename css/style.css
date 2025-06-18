@@ -255,7 +255,49 @@ body {
   text-align: center;
   flex-shrink: 0;
 }
+/* Admin - stile leggibile per modifica/elimina */
+.item-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 10px;
+  background-color: #4e0e0e;
+  border-radius: 8px;
+}
 
+.item-row input,
+.item-row textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: none;
+  background: #fff;
+  color: #000;
+}
+
+.item-row button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.item-row button:nth-child(n+2) {
+  width: 100%;
+}
+
+.item-row button:first-of-type {
+  background-color: #ff4444;
+  color: white;
+}
+
+.item-row button:last-of-type {
+  background-color: #33cc33;
+  color: white;
+}
 .team-vs {
   flex: 1;
   text-align: center;
