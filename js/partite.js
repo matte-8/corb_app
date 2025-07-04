@@ -1,39 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("partite-container");
+  const partiteContainer = document.getElementById("partiteContainer");
   const partite = JSON.parse(localStorage.getItem("partite") || "[]");
 
+  partiteContainer.innerHTML = "";
+
   if (partite.length === 0) {
-    container.innerHTML = "<p>Nessuna partita registrata.</p>";
+    partiteContainer.innerHTML = `
+      <div class="section">
+        <div class="section-title-icon">⚽ Nessuna partita registrata</div>
+      </div>`;
     return;
   }
 
-  container.innerHTML = "";
-
   partite.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "card";
+    const box = document.createElement("div");
+    box.className = "section";
 
-    const data = p.data ? new Date(p.data).toLocaleDateString() : "-";
-    const ora = p.ora || "";
-    const squadraCasa = p.casa || "Casa";
-    const squadraFuori = p.fuori || "Ospite";
-    const logoCasa = p.logocasa ? `img/${p.logocasa}` : "img/logo.png";
-    const logoFuori = p.logoavv ? `img/${p.logoavv}` : "img/opponent.png";
-    const risultato = p.risultato || "-";
+    const homeLogo = p.home_logo ? `img/${p.home_logo}` : "img/logo.png";
+    const awayLogo = p.away_logo ? `img/${p.away_logo}` : "img/opponent.png";
+    const homeName = p.home || "-";
+    const awayName = p.away || "-";
+    const risultato = p.score || "-";
 
-    card.innerHTML = `
+    box.innerHTML = `
       <div class="result-row">
-        <img src="${logoCasa}" alt="${squadraCasa}" class="team-logo" />
+        <img src="${homeLogo}" alt="Logo Casa" class="team-logo" />
         <div class="result-score">${risultato}</div>
-        <img src="${logoFuori}" alt="${squadraFuori}" class="team-logo" />
+        <img src="${awayLogo}" alt="Logo Fuori" class="team-logo" />
       </div>
       <div class="result-names">
-        <div class="team-name">${squadraCasa}</div>
-        <div class="team-name">${squadraFuori}</div>
+        <div class="team-name">${homeName}</div>
+        <div class="team-name">${awayName}</div>
       </div>
-      <div style="margin-top: 6px; font-size: 14px;">${data} ${ora}</div>
     `;
 
-    container.appendChild(card);
+    partiteContainer.appendChild(box);
   });
 });
