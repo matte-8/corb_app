@@ -12,9 +12,18 @@
     .section { background:#801e1e; padding:14px; border-radius:8px; margin-bottom:12px; }
     .section input, .section textarea, .section select { width:100%; margin-bottom:8px; padding:8px; border-radius:4px; border:none; }
     .section button { padding:10px 16px; margin-right:8px; border:none; border-radius:4px; background:#ffcc00; color:#000; cursor:pointer; }
-    .item-row { display:flex; align-items:center; gap:4px; margin-bottom:6px; flex-wrap: wrap; }
-    .item-row input, .item-row textarea { flex: 1; padding: 6px; margin-bottom: 4px; }
+    .item-row { display:flex; align-items:flex-start; gap:6px; margin-bottom:10px; flex-wrap: wrap; }
+    .item-row input, .item-row textarea { flex: 1; min-width: 150px; padding: 6px; margin-bottom: 4px; }
     .item-row button { background:#ff4444; color:white; padding:6px 10px; border:none; border-radius:4px; cursor:pointer; }
+    #updateMsg {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      text-align: center;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -41,11 +50,10 @@
       <a href="admin.html">🔐 Admin</a>
     </div>
 
-    <!-- PULSANTE AGGIORNAMENTO -->
     <div class="section">
-      <h3>🔄 Aggiorna Dati da Google Sheets</h3>
-      <button onclick="aggiornaDati()">Aggiorna Dati</button>
-      <p id="aggiornaMessaggio" style="margin-top:10px; font-weight: bold;"></p>
+      <h3>🔄 Aggiorna da Google Sheets</h3>
+      <button onclick="aggiornaDaSheets()">🔃 Carica dati da foglio Google</button>
+      <div id="updateMsg"></div>
     </div>
 
     <button class="toggle-btn" onclick="toggleSection('insertContent')">➕ Inserimento Contenuti</button>
@@ -100,60 +108,60 @@
   <script>
     function toggleMenu() {
       const m = document.getElementById("popupMenu");
-      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+      m.style.display = m.style.display==='flex'?'none':'flex';
     }
 
-    function checkPassword() {
-      if (document.getElementById("adminPass").value === 'corb25') {
-        document.getElementById("passwordPrompt").style.display = 'none';
-        document.getElementById("adminContent").style.display = 'block';
+    function checkPassword(){
+      if(document.getElementById("adminPass").value==='corb25'){
+        document.getElementById("passwordPrompt").style.display='none';
+        document.getElementById("adminContent").style.display='block';
         loadEditLists();
       } else alert("Password errata");
     }
 
-    function toggleSection(id) {
+    function toggleSection(id){
       const el = document.getElementById(id);
-      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+      el.style.display = el.style.display==='block'?'none':'block';
     }
 
-    function getData(key) {
-      try { return JSON.parse(localStorage.getItem(key)) || [] } catch { return []; }
+    function getData(key){
+      try{ return JSON.parse(localStorage.getItem(key))||[] }catch{ return []; }
     }
 
-    function saveData(key, arr) {
+    function saveData(key, arr){
       localStorage.setItem(key, JSON.stringify(arr));
     }
 
-    function insertItem(type) {
+    function insertItem(type){
       const m = {
-        news: ["i_news_title", "i_news_text"],
-        giocatori: ["i_player_name", "i_player_role", "i_player_number", "i_player_photo"],
-        sponsor: ["i_sponsor_name", "i_sponsor_logo", "i_sponsor_link"],
-        partite: ["i_match_date", "i_match_time", "i_match_home", "i_match_home_logo", "i_match_away", "i_match_away_logo", "i_match_score"],
-        calendario: ["i_cal_date", "i_cal_opponent", "i_cal_home"]
+        news:["i_news_title","i_news_text"],
+        giocatori:["i_player_name","i_player_role","i_player_number","i_player_photo"],
+        sponsor:["i_sponsor_name","i_sponsor_logo","i_sponsor_link"],
+        partite:["i_match_date","i_match_time","i_match_home","i_match_home_logo","i_match_away","i_match_away_logo","i_match_score"],
+        calendario:["i_cal_date","i_cal_opponent","i_cal_home"]
       };
       const ids = m[type];
       const obj = {};
-      ids.forEach(id => obj[id.split('_').slice(1).join('_')] = document.getElementById(id).value.trim());
+      ids.forEach(id=> obj[id.split('_').slice(1).join('_')] = document.getElementById(id).value.trim());
       const arr = getData(type);
       arr.unshift(obj);
       saveData(type, arr);
       alert(`${type} inserito`);
-      ids.forEach(id => document.getElementById(id).value = "");
+      ids.forEach(id=>document.getElementById(id).value="");
       loadEditLists();
     }
 
-    function loadEditLists() {
+    function loadEditLists(){
       const container = document.getElementById("editLists");
-      container.innerHTML = "";
-      ["news", "giocatori", "sponsor", "partite", "calendario"].forEach(type => {
+      container.innerHTML="";
+      ["news","giocatori","sponsor","partite","calendario"].forEach(type=>{
         const arr = getData(type);
         const sec = document.createElement("div");
-        sec.className = "section";
-        sec.innerHTML = `<h3>${type.toUpperCase()}</h3>`;
-        arr.forEach((it, i) => {
+        sec.className="section";
+        sec.innerHTML=`<h3>${type.toUpperCase()}</h3>`;
+        arr.forEach((it,i)=>{
           const row = document.createElement("div");
-          row.className = "item-row";
+          row.className="item-row";
           for (let key in it) {
             const input = document.createElement("input");
             input.value = it[key];
@@ -162,7 +170,7 @@
           }
           const delBtn = document.createElement("button");
           delBtn.textContent = "Elimina";
-          delBtn.onclick = () => removeItem(type, i);
+          delBtn.onclick = () => removeItem(type,i);
           row.appendChild(delBtn);
           const saveBtn = document.createElement("button");
           saveBtn.textContent = "Salva";
@@ -179,39 +187,32 @@
       });
     }
 
-    function removeItem(type, index) {
-      if (!confirm("Eliminare elemento?")) return;
+    function removeItem(type,index){
+      if(!confirm("Eliminare elemento?"))return;
       const arr = getData(type);
-      arr.splice(index, 1);
-      saveData(type, arr);
+      arr.splice(index,1);
+      saveData(type,arr);
       loadEditLists();
       alert("Eliminato");
     }
 
-    function aggiornaDati() {
-      const messaggio = document.getElementById("aggiornaMessaggio");
-      messaggio.textContent = "⏳ Aggiornamento in corso...";
-      messaggio.style.color = "#fff";
+    function aggiornaDaSheets() {
+      const msgBox = document.getElementById("updateMsg");
+      msgBox.style.display = "block";
+      msgBox.textContent = "⏳ Caricamento dati da Google Sheets...";
 
-      fetch("https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec")
-        .then(res => {
-          if (!res.ok) throw new Error("Errore rete");
-          return res.json();
-        })
+      fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev") // <--- sostituisci qui
+        .then(res => res.json())
         .then(data => {
-          localStorage.setItem("newsData", JSON.stringify(data.news));
-          localStorage.setItem("partite", JSON.stringify(data.partite));
-          localStorage.setItem("giocatori", JSON.stringify(data.giocatori));
-          localStorage.setItem("sponsor", JSON.stringify(data.sponsor));
-          localStorage.setItem("calendario", JSON.stringify(data.calendario));
-
-          messaggio.textContent = "✅ Dati aggiornati con successo!";
-          messaggio.style.color = "#00ff00";
+          for (let k in data) {
+            saveData(k === "news" ? "newsData" : k, data[k]);
+          }
+          msgBox.textContent = "✅ Dati aggiornati correttamente!";
+          loadEditLists();
         })
         .catch(err => {
-          console.error("Errore aggiornamento:", err);
-          messaggio.textContent = "❌ Errore nel caricamento dei dati.";
-          messaggio.style.color = "#ff4444";
+          console.error(err);
+          msgBox.textContent = "❌ Errore nel caricamento dati da Sheets.";
         });
     }
   </script>
