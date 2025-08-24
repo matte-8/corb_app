@@ -8,51 +8,99 @@
   <style>
     body { padding-top: 80px; }
     #adminContent, .section-content { display: none; }
+
     .toggle-btn {
-      width:100%; padding:12px; background:#801e1e; color:white;
-      font-size:18px; border:none; text-align:left; cursor:pointer; margin-bottom:4px;
+      width: 100%;
+      padding: 12px;
+      background: #801e1e;
+      color: white;
+      font-size: 18px;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      margin-bottom: 4px;
     }
+
     .section {
-      background:#801e1e; padding:14px; border-radius:8px; margin-bottom:12px;
+      background: #801e1e;
+      padding: 14px;
+      border-radius: 8px;
+      margin: 16px;
     }
+
     .section input, .section textarea, .section select {
-      width:100%; margin-bottom:8px; padding:10px; border-radius:6px; border:none;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 15px;
     }
+
     .section button {
-      padding:10px 16px; margin-top:8px; border:none; border-radius:6px;
-      background:#ffcc00; color:#000; font-weight:bold; cursor:pointer;
+      padding: 10px 16px;
+      margin-right: 8px;
+      border: none;
+      border-radius: 6px;
+      background-color: #ffcc00;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .item-row {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 16px;
-      background: #5a0d0d;
-      padding: 10px;
-      border-radius: 8px;
+      margin-bottom: 12px;
     }
-    .item-row input, .item-row textarea {
-      padding: 8px;
+
+    .item-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .success-message, .error-message {
+      display: none;
+      padding: 10px;
+      text-align: center;
+      border-radius: 6px;
+      margin: 10px 16px;
+    }
+
+    .success-message {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .error-message {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #passwordPrompt {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: white;
+    }
+
+    #passwordPrompt input, #passwordPrompt button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
       border-radius: 6px;
       border: none;
-      width: 100%;
-    }
-    .btn-group {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 6px;
-    }
-    .btn-delete {
-      background: #ff4444; color: white;
-    }
-    .btn-save {
-      background: #33cc33; color: white;
     }
   </style>
 </head>
 <body>
+
   <div id="passwordPrompt">
     <h2>Accesso Admin</h2>
     <input type="password" id="adminPass" placeholder="Inserisci password" />
@@ -95,7 +143,7 @@
       <div class="section">
         <h3>💼 Nuovo Sponsor</h3>
         <input id="i_sponsor_name" placeholder="Nome" />
-        <input id="i_sponsor_logo" placeholder="Logo (es: sponsor1.png)" />
+        <input id="i_sponsor_logo" placeholder="Logo (es: logo.png)" />
         <input id="i_sponsor_link" placeholder="Link" />
         <button onclick="insertItem('sponsor')">Salva</button>
       </div>
@@ -120,17 +168,18 @@
         </select>
         <button onclick="insertItem('calendario')">Salva</button>
       </div>
-
-      <div class="section">
-        <h3>📥 Aggiorna da Google Sheets</h3>
-        <button onclick="aggiornaDaGoogle()">Aggiorna Dati</button>
-        <p id="updateStatus" style="margin-top: 8px;"></p>
-      </div>
     </div>
 
     <button class="toggle-btn" onclick="toggleSection('editContent')">✏️ Modifica/Elimina Contenuti</button>
     <div id="editContent" class="section-content">
       <div id="editLists"></div>
+    </div>
+
+    <div class="section">
+      <h3>🔄 Sincronizza da Google Sheets</h3>
+      <button onclick="aggiornaDaGoogle()">Aggiorna dati da Google</button>
+      <div class="success-message" id="successMsg">✅ Aggiornamento completato!</div>
+      <div class="error-message" id="errorMsg">❌ Errore nel caricamento dati.</div>
     </div>
   </div>
 
@@ -140,116 +189,121 @@
       m.style.display = m.style.display === "flex" ? "none" : "flex";
     }
 
-    function checkPassword(){
-      if(document.getElementById("adminPass").value==='corb25'){
-        document.getElementById("passwordPrompt").style.display='none';
-        document.getElementById("adminContent").style.display='block';
+    function checkPassword() {
+      if (document.getElementById("adminPass").value === 'corb25') {
+        document.getElementById("passwordPrompt").style.display = 'none';
+        document.getElementById("adminContent").style.display = 'block';
         loadEditLists();
-      } else alert("Password errata");
+      } else {
+        alert("Password errata");
+      }
     }
 
-    function toggleSection(id){
+    function toggleSection(id) {
       const el = document.getElementById(id);
-      el.style.display = el.style.display==='block'?'none':'block';
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
     }
 
-    function getData(key){
-      try{ return JSON.parse(localStorage.getItem(key))||[] }catch{ return []; }
+    function getData(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; }
+      catch { return []; }
     }
 
-    function saveData(key, arr){
+    function saveData(key, arr) {
       localStorage.setItem(key, JSON.stringify(arr));
     }
 
-    function insertItem(type){
+    function insertItem(type) {
       const m = {
-        news:["i_news_title","i_news_text"],
-        giocatori:["i_player_name","i_player_role","i_player_number","i_player_photo"],
-        sponsor:["i_sponsor_name","i_sponsor_logo","i_sponsor_link"],
-        partite:["i_match_date","i_match_time","i_match_home","i_match_home_logo","i_match_away","i_match_away_logo","i_match_score"],
-        calendario:["i_cal_date","i_cal_opponent","i_cal_home"]
+        news: ["i_news_title", "i_news_text"],
+        giocatori: ["i_player_name", "i_player_role", "i_player_number", "i_player_photo"],
+        sponsor: ["i_sponsor_name", "i_sponsor_logo", "i_sponsor_link"],
+        partite: ["i_match_date", "i_match_time", "i_match_home", "i_match_home_logo", "i_match_away", "i_match_away_logo", "i_match_score"],
+        calendario: ["i_cal_date", "i_cal_opponent", "i_cal_home"]
       };
       const ids = m[type];
       const obj = {};
-      ids.forEach(id=> obj[id.split('_').slice(1).join('_')] = document.getElementById(id).value.trim());
+      ids.forEach(id => obj[id.split('_').slice(1).join('_')] = document.getElementById(id).value.trim());
       const arr = getData(type);
       arr.unshift(obj);
       saveData(type, arr);
       alert(`${type} inserito`);
-      ids.forEach(id=>document.getElementById(id).value="");
+      ids.forEach(id => document.getElementById(id).value = "");
       loadEditLists();
     }
 
-    function loadEditLists(){
+    function loadEditLists() {
       const container = document.getElementById("editLists");
-      container.innerHTML="";
-      ["news","giocatori","sponsor","partite","calendario"].forEach(type=>{
+      container.innerHTML = "";
+      ["news", "giocatori", "sponsor", "partite", "calendario"].forEach(type => {
         const arr = getData(type);
         const sec = document.createElement("div");
-        sec.className="section";
-        sec.innerHTML=`<h3>${type.toUpperCase()}</h3>`;
-        arr.forEach((it,i)=>{
+        sec.className = "section";
+        sec.innerHTML = `<h3>${type.toUpperCase()}</h3>`;
+        arr.forEach((it, i) => {
           const row = document.createElement("div");
-          row.className="item-row";
+          row.className = "item-row";
           for (let key in it) {
             const input = document.createElement("input");
             input.value = it[key];
             input.oninput = e => it[key] = e.target.value;
             row.appendChild(input);
           }
-          const btnGroup = document.createElement("div");
-          btnGroup.className = "btn-group";
+
+          const actions = document.createElement("div");
+          actions.className = "item-actions";
 
           const delBtn = document.createElement("button");
           delBtn.textContent = "Elimina";
-          delBtn.className = "btn-delete";
-          delBtn.onclick = () => removeItem(type,i);
-          btnGroup.appendChild(delBtn);
+          delBtn.onclick = () => removeItem(type, i);
+          actions.appendChild(delBtn);
 
           const saveBtn = document.createElement("button");
           saveBtn.textContent = "Salva";
-          saveBtn.className = "btn-save";
+          saveBtn.style.background = "#33cc33";
           saveBtn.onclick = () => {
             arr[i] = it;
             saveData(type, arr);
             alert("Modificato");
           };
-          btnGroup.appendChild(saveBtn);
+          actions.appendChild(saveBtn);
 
-          row.appendChild(btnGroup);
+          row.appendChild(actions);
           sec.appendChild(row);
         });
         container.appendChild(sec);
       });
     }
 
-    function removeItem(type,index){
-      if(!confirm("Eliminare elemento?"))return;
+    function removeItem(type, index) {
+      if (!confirm("Eliminare elemento?")) return;
       const arr = getData(type);
-      arr.splice(index,1);
-      saveData(type,arr);
+      arr.splice(index, 1);
+      saveData(type, arr);
       loadEditLists();
       alert("Eliminato");
     }
 
-    // ---- AGGIORNA DA GOOGLE SHEETS ----
-    async function aggiornaDaGoogle() {
-      const status = document.getElementById("updateStatus");
-      status.textContent = "Caricamento in corso...";
+    function aggiornaDaGoogle() {
+      const success = document.getElementById("successMsg");
+      const error = document.getElementById("errorMsg");
+      success.style.display = "none";
+      error.style.display = "none";
 
-      try {
-        const url = "https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev"; // sostituisci con il tuo
-        const keys = ["news", "giocatori", "sponsor", "partite", "calendario"];
-        for (const key of keys) {
-          const res = await fetch(url + key);
-          const data = await res.json();
-          saveData(key, data);
-        }
-        status.textContent = "✔️ Dati aggiornati con successo!";
+      Promise.all([
+        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=news").then(r => r.json()).then(d => localStorage.setItem("news", JSON.stringify(d))),
+        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=giocatori").then(r => r.json()).then(d => localStorage.setItem("giocatori", JSON.stringify(d))),
+        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=sponsor").then(r => r.json()).then(d => localStorage.setItem("sponsor", JSON.stringify(d))),
+        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=partite").then(r => r.json()).then(d => localStorage.setItem("partite", JSON.stringify(d))),
+        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=calendario").then(r => r.json()).then(d => localStorage.setItem("calendario", JSON.stringify(d)))
+      ])
+      .then(() => {
+        success.style.display = "block";
         loadEditLists();
-      } catch (e) {
-        status.textContent = "❌ Errore durante l’aggiornamento.";
-      }
+      })
+      .catch(() => {
+        error.style.display = "block";
+      });
     }
   </script>
 </body>
