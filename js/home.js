@@ -13,7 +13,7 @@ function getDati(key) {
 }
 
 function mostraUltimaNews() {
-  const news = getDati("newsData");
+  const news = getDati("newsData"); // <-- giusto così, da "newsData"
   if (news.length > 0) {
     document.getElementById("newsTitle").textContent = news[0].titolo || "-";
     document.getElementById("newsText").textContent = news[0].contenuto || "-";
