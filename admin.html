@@ -8,110 +8,52 @@
   <style>
     body { padding-top: 80px; }
     #adminContent, .section-content { display: none; }
-
     .toggle-btn {
-      width: 100%;
-      padding: 12px;
-      background: #801e1e;
-      color: white;
-      font-size: 18px;
-      border: none;
-      text-align: left;
-      cursor: pointer;
-      margin-bottom: 4px;
+      width:100%; padding:12px; background:#801e1e; color:white;
+      font-size:18px; border:none; text-align:left; cursor:pointer; margin-bottom:4px;
     }
-
     .section {
-      background: #801e1e;
-      padding: 14px;
-      border-radius: 8px;
-      margin-bottom: 12px;
+      background:#801e1e; padding:14px; border-radius:8px; margin-bottom:12px;
     }
-
-    .section input,
-    .section textarea,
-    .section select {
-      width: 100%;
-      margin-bottom: 8px;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 15px;
+    .section input, .section textarea, .section select {
+      width:100%; margin-bottom:8px; padding:10px; border-radius:6px; border:none;
     }
-
     .section button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
-      background: #ffcc00;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
+      padding:10px 16px; margin-top:8px; border:none; border-radius:6px;
+      background:#ffcc00; color:#000; font-weight:bold; cursor:pointer;
     }
 
     .item-row {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 12px;
+      gap: 6px;
+      margin-bottom: 16px;
+      background: #5a0d0d;
       padding: 10px;
-      background: #4e0e0e;
       border-radius: 8px;
     }
-
-    .item-row input {
-      width: 100%;
-      padding: 10px;
-      font-size: 15px;
+    .item-row input, .item-row textarea {
+      padding: 8px;
       border-radius: 6px;
       border: none;
-    }
-
-    .item-row button {
       width: 100%;
-      padding: 10px;
-      font-size: 15px;
-      font-weight: bold;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
     }
-
-    .item-row button:first-of-type {
-      background: #ff4444;
-      color: white;
-    }
-
-    .item-row button:last-of-type {
-      background: #33cc33;
-      color: white;
-    }
-
-    #passwordPrompt {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.9);
+    .btn-group {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      color: white;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
     }
-
-    #passwordPrompt input,
-    #passwordPrompt button {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: none;
+    .btn-delete {
+      background: #ff4444; color: white;
+    }
+    .btn-save {
+      background: #33cc33; color: white;
     }
   </style>
 </head>
 <body>
   <div id="passwordPrompt">
-    <img src="img/logo.png" alt="Logo" class="logo" />
     <h2>Accesso Admin</h2>
     <input type="password" id="adminPass" placeholder="Inserisci password" />
     <button onclick="checkPassword()">Accedi</button>
@@ -133,10 +75,7 @@
       <a href="sponsor.html">💰 Sponsor</a>
       <a href="admin.html">🔐 Admin</a>
     </div>
-    <div class="section">
-     <div class="section-title-icon">🔄 Aggiorna Tutti i Dati da Sheets</div>
-     <button onclick="aggiornaDaSheets()">Aggiorna Dati</button>
-    </div>
+
     <button class="toggle-btn" onclick="toggleSection('insertContent')">➕ Inserimento Contenuti</button>
     <div id="insertContent" class="section-content">
       <div class="section">
@@ -145,7 +84,6 @@
         <textarea id="i_news_text" placeholder="Contenuto"></textarea>
         <button onclick="insertItem('news')">Salva</button>
       </div>
-
       <div class="section">
         <h3>👤 Nuovo Giocatore</h3>
         <input id="i_player_name" placeholder="Nome" />
@@ -154,15 +92,13 @@
         <input id="i_player_photo" placeholder="Foto (es: player1.png)" />
         <button onclick="insertItem('giocatori')">Salva</button>
       </div>
-
       <div class="section">
         <h3>💼 Nuovo Sponsor</h3>
         <input id="i_sponsor_name" placeholder="Nome" />
-        <input id="i_sponsor_logo" placeholder="Logo (es: logo.png)" />
-        <input id="i_sponsor_link" placeholder="Link (opzionale)" />
+        <input id="i_sponsor_logo" placeholder="Logo (es: sponsor1.png)" />
+        <input id="i_sponsor_link" placeholder="Link" />
         <button onclick="insertItem('sponsor')">Salva</button>
       </div>
-
       <div class="section">
         <h3>⚽ Nuova Partita</h3>
         <input type="date" id="i_match_date" />
@@ -174,7 +110,6 @@
         <input id="i_match_score" placeholder="Risultato (es: 2-1)" />
         <button onclick="insertItem('partite')">Salva</button>
       </div>
-
       <div class="section">
         <h3>📅 Nuovo Evento Calendario</h3>
         <input type="date" id="i_cal_date" />
@@ -184,6 +119,12 @@
           <option value="fuori">Fuori</option>
         </select>
         <button onclick="insertItem('calendario')">Salva</button>
+      </div>
+
+      <div class="section">
+        <h3>📥 Aggiorna da Google Sheets</h3>
+        <button onclick="aggiornaDaGoogle()">Aggiorna Dati</button>
+        <p id="updateStatus" style="margin-top: 8px;"></p>
       </div>
     </div>
 
@@ -196,117 +137,119 @@
   <script>
     function toggleMenu() {
       const m = document.getElementById("popupMenu");
-      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+      m.style.display = m.style.display === "flex" ? "none" : "flex";
     }
 
-    function checkPassword() {
-      if (document.getElementById("adminPass").value === 'corb25') {
-        document.getElementById("passwordPrompt").style.display = 'none';
-        document.getElementById("adminContent").style.display = 'block';
+    function checkPassword(){
+      if(document.getElementById("adminPass").value==='corb25'){
+        document.getElementById("passwordPrompt").style.display='none';
+        document.getElementById("adminContent").style.display='block';
         loadEditLists();
-      } else {
-        alert("Password errata");
-      }
+      } else alert("Password errata");
     }
 
-    function toggleSection(id) {
+    function toggleSection(id){
       const el = document.getElementById(id);
-      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+      el.style.display = el.style.display==='block'?'none':'block';
     }
 
-    function getData(key) {
-      try {
-        return JSON.parse(localStorage.getItem(key)) || [];
-      } catch {
-        return [];
-      }
+    function getData(key){
+      try{ return JSON.parse(localStorage.getItem(key))||[] }catch{ return []; }
     }
 
-    function saveData(key, arr) {
+    function saveData(key, arr){
       localStorage.setItem(key, JSON.stringify(arr));
     }
 
-    function insertItem(type) {
+    function insertItem(type){
+      const m = {
+        news:["i_news_title","i_news_text"],
+        giocatori:["i_player_name","i_player_role","i_player_number","i_player_photo"],
+        sponsor:["i_sponsor_name","i_sponsor_logo","i_sponsor_link"],
+        partite:["i_match_date","i_match_time","i_match_home","i_match_home_logo","i_match_away","i_match_away_logo","i_match_score"],
+        calendario:["i_cal_date","i_cal_opponent","i_cal_home"]
+      };
+      const ids = m[type];
       const obj = {};
-      if (type === "news") {
-        obj.title = document.getElementById("i_news_title").value.trim();
-        obj.text = document.getElementById("i_news_text").value.trim();
-      } else if (type === "giocatori") {
-        obj.name = document.getElementById("i_player_name").value.trim();
-        obj.role = document.getElementById("i_player_role").value.trim();
-        obj.number = document.getElementById("i_player_number").value.trim();
-        obj.photo = document.getElementById("i_player_photo").value.trim();
-      } else if (type === "sponsor") {
-        obj.name = document.getElementById("i_sponsor_name").value.trim();
-        obj.logo = document.getElementById("i_sponsor_logo").value.trim();
-        obj.link = document.getElementById("i_sponsor_link").value.trim();
-      } else if (type === "partite") {
-        obj.date = document.getElementById("i_match_date").value.trim();
-        obj.time = document.getElementById("i_match_time").value.trim();
-        obj.home = document.getElementById("i_match_home").value.trim();
-        obj.home_logo = document.getElementById("i_match_home_logo").value.trim();
-        obj.away = document.getElementById("i_match_away").value.trim();
-        obj.away_logo = document.getElementById("i_match_away_logo").value.trim();
-        obj.score = document.getElementById("i_match_score").value.trim();
-      } else if (type === "calendario") {
-        obj.date = document.getElementById("i_cal_date").value.trim();
-        obj.opponent = document.getElementById("i_cal_opponent").value.trim();
-        obj.home = document.getElementById("i_cal_home").value.trim();
-      }
-
+      ids.forEach(id=> obj[id.split('_').slice(1).join('_')] = document.getElementById(id).value.trim());
       const arr = getData(type);
       arr.unshift(obj);
       saveData(type, arr);
-      alert(`${type} inserito correttamente!`);
+      alert(`${type} inserito`);
+      ids.forEach(id=>document.getElementById(id).value="");
       loadEditLists();
-
-      document.querySelectorAll(`#insertContent input, #insertContent textarea, #insertContent select`).forEach(el => el.value = "");
     }
 
-    function loadEditLists() {
+    function loadEditLists(){
       const container = document.getElementById("editLists");
-      container.innerHTML = "";
-      ["news", "giocatori", "sponsor", "partite", "calendario"].forEach(type => {
+      container.innerHTML="";
+      ["news","giocatori","sponsor","partite","calendario"].forEach(type=>{
         const arr = getData(type);
         const sec = document.createElement("div");
-        sec.className = "section";
-        sec.innerHTML = `<h3>${type.toUpperCase()}</h3>`;
-        arr.forEach((it, i) => {
+        sec.className="section";
+        sec.innerHTML=`<h3>${type.toUpperCase()}</h3>`;
+        arr.forEach((it,i)=>{
           const row = document.createElement("div");
-          row.className = "item-row";
+          row.className="item-row";
           for (let key in it) {
             const input = document.createElement("input");
             input.value = it[key];
             input.oninput = e => it[key] = e.target.value;
             row.appendChild(input);
           }
+          const btnGroup = document.createElement("div");
+          btnGroup.className = "btn-group";
+
           const delBtn = document.createElement("button");
           delBtn.textContent = "Elimina";
-          delBtn.onclick = () => removeItem(type, i);
-          row.appendChild(delBtn);
+          delBtn.className = "btn-delete";
+          delBtn.onclick = () => removeItem(type,i);
+          btnGroup.appendChild(delBtn);
 
           const saveBtn = document.createElement("button");
           saveBtn.textContent = "Salva";
+          saveBtn.className = "btn-save";
           saveBtn.onclick = () => {
             arr[i] = it;
             saveData(type, arr);
-            alert("Modificato con successo!");
+            alert("Modificato");
           };
-          row.appendChild(saveBtn);
+          btnGroup.appendChild(saveBtn);
 
+          row.appendChild(btnGroup);
           sec.appendChild(row);
         });
         container.appendChild(sec);
       });
     }
 
-    function removeItem(type, index) {
-      if (!confirm("Eliminare elemento?")) return;
+    function removeItem(type,index){
+      if(!confirm("Eliminare elemento?"))return;
       const arr = getData(type);
-      arr.splice(index, 1);
-      saveData(type, arr);
+      arr.splice(index,1);
+      saveData(type,arr);
       loadEditLists();
-      alert("Elemento eliminato");
+      alert("Eliminato");
+    }
+
+    // ---- AGGIORNA DA GOOGLE SHEETS ----
+    async function aggiornaDaGoogle() {
+      const status = document.getElementById("updateStatus");
+      status.textContent = "Caricamento in corso...";
+
+      try {
+        const url = "https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev"; // sostituisci con il tuo
+        const keys = ["news", "giocatori", "sponsor", "partite", "calendario"];
+        for (const key of keys) {
+          const res = await fetch(url + key);
+          const data = await res.json();
+          saveData(key, data);
+        }
+        status.textContent = "✔️ Dati aggiornati con successo!";
+        loadEditLists();
+      } catch (e) {
+        status.textContent = "❌ Errore durante l’aggiornamento.";
+      }
     }
   </script>
 </body>
