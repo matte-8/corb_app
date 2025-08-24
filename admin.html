@@ -211,5 +211,34 @@
         });
     }
   </script>
+  <script>
+function aggiornaDati() {
+  const messaggio = document.getElementById("aggiornaMessaggio");
+  messaggio.textContent = "⏳ Aggiornamento in corso...";
+  messaggio.style.color = "#fff";
+
+  fetch("https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec")
+    .then(res => {
+      if (!res.ok) throw new Error("Errore rete");
+      return res.json();
+    })
+    .then(data => {
+      localStorage.setItem("newsData", JSON.stringify(data.news));
+      localStorage.setItem("partite", JSON.stringify(data.partite));
+      localStorage.setItem("giocatori", JSON.stringify(data.giocatori));
+      localStorage.setItem("sponsor", JSON.stringify(data.sponsor));
+      localStorage.setItem("calendario", JSON.stringify(data.calendario));
+
+      messaggio.textContent = "✅ Dati aggiornati con successo!";
+      messaggio.style.color = "#00ff00";
+    })
+    .catch(err => {
+      console.error("Errore aggiornamento:", err);
+      messaggio.textContent = "❌ Errore nel caricamento dei dati.";
+      messaggio.style.color = "#ff4444";
+    });
+}
+</script>
+
 </body>
 </html>
