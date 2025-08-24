@@ -8,99 +8,17 @@
   <style>
     body { padding-top: 80px; }
     #adminContent, .section-content { display: none; }
-
-    .toggle-btn {
-      width: 100%;
-      padding: 12px;
-      background: #801e1e;
-      color: white;
-      font-size: 18px;
-      border: none;
-      text-align: left;
-      cursor: pointer;
-      margin-bottom: 4px;
-    }
-
-    .section {
-      background: #801e1e;
-      padding: 14px;
-      border-radius: 8px;
-      margin: 16px;
-    }
-
-    .section input, .section textarea, .section select {
-      width: 100%;
-      margin-bottom: 8px;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 15px;
-    }
-
-    .section button {
-      padding: 10px 16px;
-      margin-right: 8px;
-      border: none;
-      border-radius: 6px;
-      background-color: #ffcc00;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .item-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .item-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .success-message, .error-message {
-      display: none;
-      padding: 10px;
-      text-align: center;
-      border-radius: 6px;
-      margin: 10px 16px;
-    }
-
-    .success-message {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .error-message {
-      background-color: #f44336;
-      color: white;
-    }
-
-    #passwordPrompt {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.9);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      color: white;
-    }
-
-    #passwordPrompt input, #passwordPrompt button {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: none;
-    }
+    .toggle-btn { width:100%; padding:12px; background:#801e1e; color:white; font-size:18px; border:none; text-align:left; cursor:pointer; margin-bottom:4px; }
+    .section { background:#801e1e; padding:14px; border-radius:8px; margin-bottom:12px; }
+    .section input, .section textarea, .section select { width:100%; margin-bottom:8px; padding:8px; border-radius:4px; border:none; }
+    .section button { padding:10px 16px; margin-right:8px; border:none; border-radius:4px; background:#ffcc00; color:#000; cursor:pointer; }
+    .item-row { display:flex; align-items:center; gap:4px; margin-bottom:6px; flex-wrap: wrap; }
+    .item-row input, .item-row textarea { flex: 1; padding: 6px; margin-bottom: 4px; }
+    .item-row button { background:#ff4444; color:white; padding:6px 10px; border:none; border-radius:4px; cursor:pointer; }
+    #syncStatus { margin-top: 12px; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; }
   </style>
 </head>
 <body>
-
   <div id="passwordPrompt">
     <h2>Accesso Admin</h2>
     <input type="password" id="adminPass" placeholder="Inserisci password" />
@@ -137,7 +55,7 @@
         <input id="i_player_name" placeholder="Nome" />
         <input id="i_player_role" placeholder="Ruolo" />
         <input id="i_player_number" placeholder="Numero" />
-        <input id="i_player_photo" placeholder="Foto (es: player1.png)" />
+        <input id="i_player_photo" placeholder="Foto (es: nome.png)" />
         <button onclick="insertItem('giocatori')">Salva</button>
       </div>
       <div class="section">
@@ -162,10 +80,7 @@
         <h3>📅 Nuovo Evento Calendario</h3>
         <input type="date" id="i_cal_date" />
         <input id="i_cal_opponent" placeholder="Avversario" />
-        <select id="i_cal_home">
-          <option value="casa">Casa</option>
-          <option value="fuori">Fuori</option>
-        </select>
+        <select id="i_cal_home"><option value="casa">Casa</option><option value="fuori">Fuori</option></select>
         <button onclick="insertItem('calendario')">Salva</button>
       </div>
     </div>
@@ -175,38 +90,37 @@
       <div id="editLists"></div>
     </div>
 
+    <!-- SEZIONE SYNC -->
     <div class="section">
       <h3>🔄 Sincronizza da Google Sheets</h3>
-      <button onclick="aggiornaDaGoogle()">Aggiorna dati da Google</button>
-      <div class="success-message" id="successMsg">✅ Aggiornamento completato!</div>
-      <div class="error-message" id="errorMsg">❌ Errore nel caricamento dati.</div>
+      <button onclick="syncFromGoogle()" style="background: #ffcc00;">Aggiorna dati da Google</button>
+      <div id="syncStatus"></div>
     </div>
   </div>
 
   <script>
+    const SHEETS_URL = "https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec";
+
     function toggleMenu() {
       const m = document.getElementById("popupMenu");
       m.style.display = m.style.display === "flex" ? "none" : "flex";
     }
 
     function checkPassword() {
-      if (document.getElementById("adminPass").value === 'corb25') {
-        document.getElementById("passwordPrompt").style.display = 'none';
-        document.getElementById("adminContent").style.display = 'block';
+      if (document.getElementById("adminPass").value === "corb25") {
+        document.getElementById("passwordPrompt").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
         loadEditLists();
-      } else {
-        alert("Password errata");
-      }
+      } else alert("Password errata");
     }
 
     function toggleSection(id) {
       const el = document.getElementById(id);
-      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+      el.style.display = el.style.display === "block" ? "none" : "block";
     }
 
     function getData(key) {
-      try { return JSON.parse(localStorage.getItem(key)) || []; }
-      catch { return []; }
+      try { return JSON.parse(localStorage.getItem(key)) || [] } catch { return []; }
     }
 
     function saveData(key, arr) {
@@ -249,15 +163,10 @@
             input.oninput = e => it[key] = e.target.value;
             row.appendChild(input);
           }
-
-          const actions = document.createElement("div");
-          actions.className = "item-actions";
-
           const delBtn = document.createElement("button");
           delBtn.textContent = "Elimina";
           delBtn.onclick = () => removeItem(type, i);
-          actions.appendChild(delBtn);
-
+          row.appendChild(delBtn);
           const saveBtn = document.createElement("button");
           saveBtn.textContent = "Salva";
           saveBtn.style.background = "#33cc33";
@@ -266,9 +175,7 @@
             saveData(type, arr);
             alert("Modificato");
           };
-          actions.appendChild(saveBtn);
-
-          row.appendChild(actions);
+          row.appendChild(saveBtn);
           sec.appendChild(row);
         });
         container.appendChild(sec);
@@ -284,26 +191,24 @@
       alert("Eliminato");
     }
 
-    function aggiornaDaGoogle() {
-      const success = document.getElementById("successMsg");
-      const error = document.getElementById("errorMsg");
-      success.style.display = "none";
-      error.style.display = "none";
-
-      Promise.all([
-        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=news").then(r => r.json()).then(d => localStorage.setItem("news", JSON.stringify(d))),
-        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=giocatori").then(r => r.json()).then(d => localStorage.setItem("giocatori", JSON.stringify(d))),
-        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=sponsor").then(r => r.json()).then(d => localStorage.setItem("sponsor", JSON.stringify(d))),
-        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=partite").then(r => r.json()).then(d => localStorage.setItem("partite", JSON.stringify(d))),
-        fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev?type=calendario").then(r => r.json()).then(d => localStorage.setItem("calendario", JSON.stringify(d)))
-      ])
-      .then(() => {
-        success.style.display = "block";
-        loadEditLists();
-      })
-      .catch(() => {
-        error.style.display = "block";
-      });
+    function syncFromGoogle() {
+      const status = document.getElementById("syncStatus");
+      status.innerHTML = "⏳ Caricamento in corso...";
+      fetch(SHEETS_URL)
+        .then(res => res.json())
+        .then(data => {
+          Object.entries(data).forEach(([key, val]) => saveData(key, val));
+          status.style.background = "#33cc33";
+          status.style.color = "white";
+          status.innerHTML = "✅ Dati aggiornati correttamente!";
+          loadEditLists();
+        })
+        .catch(err => {
+          console.error(err);
+          status.style.background = "#cc0000";
+          status.style.color = "white";
+          status.innerHTML = "❌ Errore nel caricamento dati.";
+        });
     }
   </script>
 </body>
