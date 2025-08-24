@@ -201,7 +201,7 @@
       msgBox.style.display = "block";
       msgBox.textContent = "⏳ Caricamento dati da Google Sheets...";
 
-      fetch("https://script.google.com/macros/s/AKfycbzO4CqL3--A9-HlhnEkp2qYX_U0kFsel4zOZGlTrdP1/dev") // <--- sostituisci qui
+      fetch("https://script.google.com/macros/s/AKfycby2micXUeoJcAb0zx-MncNXFMJLkf5BtPJdKcTkgzHXNHuSZIHr5ActFbcyKlt0OnJk/exec") // <--- sostituisci qui
         .then(res => res.json())
         .then(data => {
           for (let k in data) {
